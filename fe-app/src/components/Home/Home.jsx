@@ -1,7 +1,7 @@
 import React from 'react';
 import About from './About';
 import ContactForm from './Contact';
-import { BrowserRouter as Router, Route, Switch, Link  } from 'react-router-dom';
+import { Link  } from 'react-router-dom';
 
 export default function Home() {
   return (
@@ -12,7 +12,7 @@ export default function Home() {
           Sharing memories that will last a lifetime
         </p>
 
-        <button><Link>Get Started</Link></button>
+        <Link to="/some-route" className="link">Get Started</Link>
       </div>
 
       <About />
