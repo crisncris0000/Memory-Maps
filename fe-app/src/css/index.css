@@ -1,0 +1,133 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #FAEEDD !important;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+.about-me {
+  background-color: #FAF3DD;
+  border-radius: 15px;
+  padding: 30px 50px;
+  margin: 40px auto;
+  max-width: 800px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  font-size: 28px;
+  color: #3C3B3F;
+  border-bottom: 2px solid #E07A5F;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.about-me p {
+  font-size: 18px;
+  color: #3C3B3F;
+  line-height: 1.6;
+}
+
+.title {
+  text-align: center;
+  margin-top: 80px;
+  color: #3C3B3F;
+}
+
+.title p {
+  font-size: 24px;
+  font-style: italic;
+}
+
+.target-audience, .getting-started {
+  background-color: #FAF3DD;
+  border-radius: 15px;
+  padding: 30px 50px;
+  margin: 40px auto;
+  max-width: 800px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  color: #3C3B3F;
+  flex: 1;
+  min-width: 300px;
+}
+
+.target-audience p, .getting-started p {
+  font-size: 18px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.info-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin: 0 auto;
+  max-width: 1100px;
+}
+
+/* Contact form */
+.contact-me {
+  background-color: #FAF3DD;
+  border-radius: 15px;
+  padding: 30px 50px;
+  margin: 40px auto;
+  max-width: 600px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  color: #3C3B3F;
+}
+
+.form-container {
+  margin-top: 20px;
+}
+
+.input-group {
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.input-group input, 
+.input-group textarea {
+  width: 100%;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+  resize: none;
+}
+
+.input-group input:focus, 
+.input-group textarea:focus {
+  border-color: #E07A5F;
+  outline: none;
+}
+
+button {
+  background-color: #E07A5F;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #D15E4F;
+}
