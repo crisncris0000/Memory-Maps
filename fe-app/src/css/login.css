@@ -1,0 +1,62 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #FAF3DD;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 50px auto;
+}
+
+h2 {
+    color: #3C3B3F;
+    margin-bottom: 20px;
+}
+
+p {
+    margin-bottom: 30px;
+    color: #3C3B3F;
+    text-align: center;
+}
+
+.oauth-btn {
+    display: flex;
+    align-items: center;
+    width: 220px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    margin-bottom: 10px;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    text-align: center;
+}
+
+.oauth-btn img {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.oauth-btn.google {
+    background-color: #DB4437;
+}
+
+.oauth-btn.google:hover {
+    background-color: #C33C23;
+}
+
+.oauth-btn.facebook {
+    background-color: #3B5998;
+}
+
+.oauth-btn.facebook:hover {
+    background-color: #2D4477;
+}
+
+.form-container button {
+    margin: 10px;
+}

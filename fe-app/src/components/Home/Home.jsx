@@ -12,7 +12,7 @@ export default function Home() {
           Sharing memories that will last a lifetime
         </p>
 
-        <Link to="/some-route" className="link">Get Started</Link>
+        <Link to="/login" className="link">Get Started</Link>
       </div>
 
       <About />
