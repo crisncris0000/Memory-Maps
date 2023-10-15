@@ -34,7 +34,7 @@ export default function Maps() {
         >
           
           {markers.map((marker, idx) => (
-            <MarkerF key={idx} position={marker} draggable/>
+            <MarkerF key={idx} position={marker}/>
           ))}
         </GoogleMap>
       </>
