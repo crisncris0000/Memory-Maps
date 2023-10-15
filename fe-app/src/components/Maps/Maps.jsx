@@ -31,10 +31,10 @@ export default function Maps() {
           center={center} 
           mapContainerClassName='map-container'
           onClick={handleMapClick}
-          >
+        >
           
           {markers.map((marker, idx) => (
-            <MarkerF key={idx} position={marker}/>
+            <MarkerF key={idx} position={marker} draggable/>
           ))}
         </GoogleMap>
       </>
