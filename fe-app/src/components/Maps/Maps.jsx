@@ -1,43 +1,20 @@
-import React, { useMemo, useState } from 'react';
-import '../../css/map.css';
-import { GoogleMap, MarkerF, useLoadScript } from "@react-google-maps/api";
+import React from 'react';
+import Map from 'react-map-gl';
+import '../../css/map.css'
 
 export default function Maps() {
-
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
-  })
-  const [markers, setMarkers] = useState([]);
-  
-  if(!isLoaded) return <h1>Loading....</h1>
-
   return (
-    <>
-      <Map />
-    </>
+    <div className="map-container">
+        <Map
+            mapboxAccessToken={process.env.REACT_APP_MAPS_API_KEY}
+            initialViewState={{
+                longitude: -122.4,
+                latitude: 37.8,
+                zoom: 10
+            }}
+            style={{width: 1000, height: 700}}
+            mapStyle="mapbox://styles/mapbox/streets-v9"
+        />
+    </div>
   )
-
-  function Map() {
-    const center = useMemo(() => ({lat: 44, lng: -80}), []);
-
-    const handleMapClick = (event) => {
-      const newMarker = {lat: event.latLng.lat(), lng: event.latLng.lng()}
-      setMarkers((prev) => [...prev, newMarker]);
-    }
-    
-    return(
-      <>
-        <GoogleMap zoom={10} 
-          center={center} 
-          mapContainerClassName='map-container'
-          onClick={handleMapClick}
-        >
-          
-          {markers.map((marker, idx) => (
-            <MarkerF key={idx} position={marker}/>
-          ))}
-        </GoogleMap>
-      </>
-    )
-  }
 }
