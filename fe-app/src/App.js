@@ -1,6 +1,7 @@
 import './css/App.css';
 import Home from './components/Home/Home';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'mapbox-gl/dist/mapbox-gl.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './components/Authentication/Login';
 import Maps from './components/Maps/Maps';
