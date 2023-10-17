@@ -12,9 +12,17 @@ export default function LocationInfo({show, setShow}) {
                 onHide={handleClose}
                 animation={false}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
+                    <Modal.Title>Marker Form</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
+                <Modal.Body>
+                    <form>
+                        <label>Image upload * </label>
+                        <input type="file" required />
+                        
+                        <label>Description *</label>
+                        <textarea type="text" placeholder="Please enter description" className="description"/>
+                    </form>
+                </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary"
                         onClick={handleClose}>
@@ -22,7 +30,7 @@ export default function LocationInfo({show, setShow}) {
                     </Button>
                     <Button variant="primary"
                         onClick={handleClose}>
-                        Save Changes
+                        Submit
                     </Button>
                 </Modal.Footer>
             </Modal>

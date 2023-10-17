@@ -5,3 +5,58 @@
 
   margin-top: 5rem;
 }
+
+
+/* locationInfo css */
+.modal-content {
+  background-color: #f7f7f7;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  border-bottom: none;
+}
+
+.modal-title {
+  font-size: 1.5em;
+  font-weight: 500;
+}
+
+form {
+  margin: 20px 0;
+}
+
+input[type="file"], .description {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1em;
+}
+
+.description {
+  height: 100px;
+  resize: vertical;
+}
+
+.modal-footer {
+  border-top: none;
+}
+
+.button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
