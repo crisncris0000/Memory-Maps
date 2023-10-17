@@ -1,15 +1,20 @@
 import React, { useState } from 'react';
-import Map, { Marker } from 'react-map-gl';
+import Map, { Marker, Popup } from 'react-map-gl';
 import '../../css/map.css';
+import LocationInfo from './LocationInfo';
 
 export default function Maps() {
   const [markers, setMarkers] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
+  const [show, setShow] = useState(false);
 
   const addMarker = (event) => {
     const longitude = event.lngLat.lng;
     const latitude = event.lngLat.lat;
 
-    setMarkers([...markers, { longitude, latitude }]);
+    setShow(true);    
+
+    //setMarkers([...markers, { longitude, latitude }]);
   };
 
   return (
@@ -24,9 +29,15 @@ export default function Maps() {
       style={{ width: "100vw", height: "100vh" }}
       onClick={addMarker}
     >
+      
+      <LocationInfo show={show} setShow={setShow}/>
+
       {markers.map((marker, index) => (
-        <Marker key={index} longitude={marker.longitude} latitude={marker.latitude} offsetTop={-20} offsetLeft={-10} />
+        <Marker key={index} longitude={marker.longitude} 
+        latitude={marker.latitude} offsetTop={-20} offsetLeft={-10} />
       ))}
+
+
     </Map>
   );
 }
