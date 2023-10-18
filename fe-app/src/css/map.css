@@ -1,11 +1,18 @@
+/* Existing styles... */
+
 .map-container {
   display: flex;
-  align-items: center;
   justify-content: center;
-
-  margin-top: 5rem;
+  align-items: center;
+  height: 100vh;
 }
 
+.map-content {
+  width: 1000px;
+  height: 700px;
+  border: 1px solid #ccc; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 
 /* locationInfo css */
 .modal-content {
@@ -59,4 +66,32 @@ input[type="file"], .description {
 
 .button:hover {
   background-color: #0056b3;
+}
+
+
+.search-container {
+  position: relative;
+  width: 250px;
+  margin: 20px auto;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.address-dropdown {
+  position: absolute;
+  top: 100%;  /* This will ensure the dropdown starts right after the input ends. */
+  left: 0;   /* This will align the dropdown to the left edge of the input box. */
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  margin-top: 4px;   /* A small space between the input and the dropdown */
 }

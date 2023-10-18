@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import Map, { Marker, Popup} from 'react-map-gl';
+import Map, { GeolocateControl, Marker, Popup} from 'react-map-gl';
 import { AddressAutofill } from '@mapbox/search-js-react';
 import '../../css/map.css';
 import LocationInfo from './LocationInfo';
+import SearchBar from './SearchBar';
 
 export default function Maps() {
   const [markers, setMarkers] = useState([]);
@@ -19,36 +20,44 @@ export default function Maps() {
     //setMarkers([...markers, { longitude, latitude }]);
   };
 
+  const handleGeolocation = (position) => {
+    const {longitude, latitude} = position.coords;
+    setMarkers([...markers, { longitude, latitude }]);
+  }
+
   return (
     <>
-      <form>
-        <AddressAutofill accessToken={process.env.REACT_APP_MAPS_API_KEY}>
-          <input
-          autoComplete="shipping address-line1"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          />
-        </AddressAutofill>
-      </form>
-      <Map
-        mapboxAccessToken={process.env.REACT_APP_MAPS_API_KEY}
-        initialViewState={{
-          longitude: -100,
-          latitude: 40,
-          zoom: 3.5
-        }}
-        mapStyle="mapbox://styles/mapbox/streets-v9"
-        style={{ width: "100vw", height: "100vh" }}
-        onClick={addMarker}
-      >
-        
-        <LocationInfo show={show} setShow={setShow}/>
+      <SearchBar markers={markers} setMarkers={setMarkers}/>
+      <div className="map-container">
+        <div className="map-content">
+          <Map
+            mapboxAccessToken={process.env.REACT_APP_MAPS_API_KEY}
+            initialViewState={{
+              longitude: -100,
+              latitude: 40,
+              zoom: 3.5
+            }}
+            mapStyle="mapbox://styles/mapbox/streets-v9"
+            style={{ width: 1000, height: 700 }}
+            onClick={addMarker}
+          >
 
-        {markers.map((marker, index) => (
-          <Marker key={index} longitude={marker.longitude} 
-          latitude={marker.latitude} offsetTop={-20} offsetLeft={-10} />
-        ))}
-      </Map>
+            
+            <LocationInfo show={show} setShow={setShow}/>
+
+            {markers.map((marker, index) => (
+              <Marker key={index} longitude={marker.longitude} 
+              latitude={marker.latitude} offsetTop={-20} offsetLeft={-10} />
+            ))}
+
+            <GeolocateControl
+            position="top-left"
+            trackUserLocation
+            onGeolocate={handleGeolocation}
+            />
+          </Map>
+        </div>
+      </div>
     </>
   );
 }
