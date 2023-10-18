@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Select from 'react-select';
 
 export default function SearchBar({ markers, setMarkers }) {
 
     const [suggestions, setSuggestions] = useState([]);
     const [selectedAddress, setSelectedAddress] = useState(null);
+    const [inputValue, setInputValue] = useState('');
+
 
     const fetchAddressSuggestions = async (query) => {
         const API_URL = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(query)}.json?access_token=${process.env.REACT_APP_MAPS_API_KEY}`;
@@ -18,50 +21,47 @@ export default function SearchBar({ markers, setMarkers }) {
         }
     }
 
-    const handleAddressChange = async (event) => {
-        const query = event.target.value;
-
-        if(query) {
-            const results = await fetchAddressSuggestions(query);
-            setSuggestions(results);
-        } else {
-            setSuggestions([]);
-        }
+    const handleInputChange = (inputValue) => {
+        setInputValue(inputValue);
+        return inputValue; // Just return the input value
     }
 
-    const handleSelectChange = (event) => {
-        const selected = suggestions.find(suggestion => suggestion.id === event.target.value);
-        setSelectedAddress(selected.place_name);
-        if (selected) {
-            const [longitude, latitude] = selected.center;
-            setMarkers([...markers, { latitude, longitude }]);
-        }
+    const handleChange = option => {
+        setSelectedAddress(option.label);
+        const [longitude, latitude] = option.center;
+        setMarkers([...markers, { latitude, longitude }]);
+    }
 
-        console.log(selected);
-    };
+    useEffect(() => {
+        const fetchSuggestions = async () => {
+            if (inputValue) {
+                const results = await fetchAddressSuggestions(inputValue);
+                setSuggestions(results.map(feature => ({
+                    value: feature.id,
+                    label: feature.place_name,
+                    center: feature.center
+                })));
+            } else {
+                setSuggestions([]);
+            }
+        }
+        fetchSuggestions();
+    }, [inputValue]);
+    
 
     return (
         <div className="search-container">
-            <input 
-                type="text" 
-                onChange={handleAddressChange} 
-                placeholder="Search for an address..." 
-                className="search-input"
+            <Select
+                onInputChange={handleInputChange}
+                onChange={handleChange}
+                options={suggestions}
+                value={selectedAddress ? { label: selectedAddress } : null}
+                placeholder="Search for an address..."
+                className="address-dropdown"
+                noOptionsMessage={() => "No results found"}
+                isLoading={suggestions.length === 0}
+                filterOption={false}
             />
-            {suggestions.length > 0 && (
-                <select 
-                    onChange={handleSelectChange} 
-                    value={selectedAddress}
-                    className="address-dropdown"
-                >
-                    <option value="" disabled>Select an address</option>
-                    {suggestions.map((feature) => (
-                        <option key={feature.id} value={feature.id}>
-                            {feature.place_name}
-                        </option>
-                    ))}
-                </select>
-            )}
         </div>
     );
 }

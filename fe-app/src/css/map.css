@@ -14,6 +14,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+
 /* locationInfo css */
 .modal-content {
   background-color: #f7f7f7;
@@ -69,29 +70,26 @@ input[type="file"], .description {
 }
 
 
+/* map.css */
 .search-container {
-  position: relative;
-  width: 250px;
-  margin: 20px auto;
+  width: 80%;
+  margin: 1rem auto;
 }
 
-.search-input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  box-sizing: border-box;
-}
-
+/* Style for react-select */
 .address-dropdown {
-  position: absolute;
-  top: 100%;  /* This will ensure the dropdown starts right after the input ends. */
-  left: 0;   /* This will align the dropdown to the left edge of the input box. */
-  width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  margin-top: 4px;   /* A small space between the input and the dropdown */
+  font-family: 'Arial', sans-serif;
 }
+
+.css-yk16xz-control, .css-1pahdxg-control {
+  border-radius: 25px !important;
+  border: 2px solid #ddd !important;
+  box-shadow: none !important;
+  transition: all 0.3s ease !important;
+  height: 50px !important;
+}
+
+.css-yk16xz-control:hover, .css-1pahdxg-control:hover {
+  border: 2px solid #aaa !important;
+}
+
