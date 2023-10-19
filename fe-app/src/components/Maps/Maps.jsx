@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import Map, { GeolocateControl, Marker, Popup} from 'react-map-gl';
-import { AddressAutofill } from '@mapbox/search-js-react';
 import '../../css/map.css';
 import LocationInfo from './LocationInfo';
 import SearchBar from './SearchBar';
 
 export default function Maps() {
   const [markers, setMarkers] = useState([]);
-  const [showPopup, setShowPopup] = useState(false);
   const [show, setShow] = useState(false);
   const [value, setValue] = useState('');
 

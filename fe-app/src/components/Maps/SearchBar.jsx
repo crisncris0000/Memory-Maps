@@ -23,7 +23,7 @@ export default function SearchBar({ markers, setMarkers }) {
 
     const handleInputChange = (inputValue) => {
         setInputValue(inputValue);
-        return inputValue; // Just return the input value
+        return inputValue;
     }
 
     const handleChange = option => {
