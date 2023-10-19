@@ -2,7 +2,6 @@ import React from 'react';
 import About from './About';
 import ContactForm from './Contact';
 import { Link  } from 'react-router-dom';
-import Maps from '../Maps/Maps';
 
 export default function Home() {
   return (

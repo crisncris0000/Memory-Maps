@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Map, { GeolocateControl, Marker, Popup} from 'react-map-gl';
+import Map, { GeolocateControl, Marker} from 'react-map-gl';
 import '../../css/map.css';
 import LocationInfo from './LocationInfo';
 import SearchBar from './SearchBar';
