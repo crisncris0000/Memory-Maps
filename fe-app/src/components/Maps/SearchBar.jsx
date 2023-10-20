@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Select from 'react-select';
 
-export default function SearchBar({ markers, setMarkers }) {
+export default function SearchBar({ markers, setMarkers, viewState, setViewState }) {
 
     const [suggestions, setSuggestions] = useState([]);
     const [selectedAddress, setSelectedAddress] = useState(null);
@@ -29,6 +29,11 @@ export default function SearchBar({ markers, setMarkers }) {
     const handleChange = option => {
         setSelectedAddress(option.label);
         const [longitude, latitude] = option.center;
+        setViewState({
+            longitude,
+            latitude,
+            zoom: 3.5,
+        })
         setMarkers([...markers, { latitude, longitude }]);
     }
 

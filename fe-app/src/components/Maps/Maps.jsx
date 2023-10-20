@@ -7,9 +7,13 @@ import SearchBar from './SearchBar';
 export default function Maps() {
   const [markers, setMarkers] = useState([]);
   const [show, setShow] = useState(false);
-  const [value, setValue] = useState('');
+  const [viewState, setViewState] = useState({
+    longitude: -100,
+    latitude: 40,
+    zoom: 3.5
+  })
 
-  const addMarker = (event) => {
+  const showForm = (event) => {
     const longitude = event.lngLat.lng;
     const latitude = event.lngLat.lat;
 
@@ -25,19 +29,15 @@ export default function Maps() {
 
   return (
     <>
-      <SearchBar markers={markers} setMarkers={setMarkers}/>
+      <SearchBar markers={markers} setMarkers={setMarkers} viewState={viewState} setViewState={setViewState}/>
       <div className="map-container">
         <div className="map-content">
           <Map
             mapboxAccessToken={process.env.REACT_APP_MAPS_API_KEY}
-            initialViewState={{
-              longitude: -100,
-              latitude: 40,
-              zoom: 3.5
-            }}
+            {...viewState}
             mapStyle="mapbox://styles/mapbox/streets-v9"
             style={{ width: 1000, height: 700 }}
-            onClick={addMarker}
+            onClick={showForm}
           >
 
             
