@@ -1,0 +1,7 @@
+{
+    "database": {
+        "drivername": "mysql",
+        "dataSourceName": "root:Megamitensei00@tcp(localhost:3306)/"
+    },
+    "port" : ":8080"
+}

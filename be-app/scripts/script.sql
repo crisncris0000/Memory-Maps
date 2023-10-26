@@ -1,12 +1,10 @@
+CREATE SCHEMA NostalgiaMaps;
+USE NostalgiaMaps;
+
 DROP TABLE IF EXISTS Roles;
 DROP TABLE IF EXISTS Comments;
 DROP TABLE IF EXISTS MarkerPost;
 DROP TABLE IF EXISTS Users;
-
-DROP SCHEMA IF EXISTS NostalgiaMaps;
-
-CREATE SCHEMA NostalgiaMaps;
-USE NostalgiaMaps;
 
 CREATE TABLE Roles (
     id INT PRIMARY KEY AUTO_INCREMENT,
