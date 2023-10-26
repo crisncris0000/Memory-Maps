@@ -18,7 +18,7 @@ func StartConfiguration() (*Config, error) {
 
 	var config Config
 
-	configFile, err := os.ReadFile("config.json")
+	configFile, err := os.ReadFile("config/config.json")
 
 	if err != nil {
 		fmt.Println("Error reading the file", err)
