@@ -17,7 +17,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	_, err = db.Connect(cf.Database.Drivername, cf.Database.DataSourceName)
+	database, err = db.Connect(cf.Database.Drivername, cf.Database.DataSourceName)
 
 	if err != nil {
 		log.Fatal(err)
