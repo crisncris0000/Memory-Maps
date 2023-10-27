@@ -24,5 +24,4 @@ func (uHandler *UserHandler) GetUsers(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusOK, users)
-
 }

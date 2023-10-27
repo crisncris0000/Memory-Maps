@@ -54,3 +54,25 @@ func (uModel *UserModelImpl) GetUsers() ([]User, error) {
 
 	return users, nil
 }
+
+func (uModel *UserModelImpl) CreateUser(user User) error {
+	query := `INSERT INTO User (email, password, role_id, created_at, updated_at)
+				VALUES(?, ?, ?, ?, ?)`
+
+	result, err := uModel.Database.Exec(query, user)
+
+	if err != nil {
+		fmt.Println("Error querying a database", err)
+		return err
+	}
+
+	id, err := result.LastInsertId()
+
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(id)
+
+	return nil
+}
