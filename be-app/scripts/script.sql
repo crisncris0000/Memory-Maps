@@ -1,10 +1,10 @@
-CREATE SCHEMA NostalgiaMaps;
+CREATE SCHEMA IF NOT EXISTS NostalgiaMaps;
 USE NostalgiaMaps;
 
-DROP TABLE IF EXISTS Roles;
 DROP TABLE IF EXISTS Comments;
 DROP TABLE IF EXISTS MarkerPost;
 DROP TABLE IF EXISTS Users;
+DROP TABLE IF EXISTS Roles;
 
 CREATE TABLE Roles (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -23,8 +23,8 @@ CREATE TABLE Users (
 
 CREATE TABLE MarkerPost (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    longitude FLOAT NOT NULL,
     latitude FLOAT NOT NULL,
+    longitude FLOAT NOT NULL,
     image BLOB NOT NULL,
     description TEXT NOT NULL,
     likes INT NOT NULL,
@@ -45,3 +45,9 @@ CREATE TABLE Comments (
     FOREIGN KEY (user_id) REFERENCES Users(id),
     FOREIGN KEY (marker_id) REFERENCES MarkerPost(id)
 );
+
+INSERT INTO Roles(role_name)
+VALUES ('ADMIN'), ('USER');
+
+INSERT INTO Users(email, password, role_id, created_at, updated_at)
+VALUES ('Christopherrivera384@gmail.com', '123', 1,  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);

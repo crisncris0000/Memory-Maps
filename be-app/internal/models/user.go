@@ -10,13 +10,14 @@ type User struct {
 	ID        int       `json:"id" db:"id"`
 	Email     string    `json:"email" db:"email"`
 	Password  string    `json:"password" db:"password"`
-	Role      Role      `json:"role_id" db:"role_id"`
+	RoleID    int       `json:"role_id" db:"role_id"`
 	CreatedAt time.Time `json:"createdAt" db:"created_at"`
 	UpdatedAt time.Time `json:"updatedAt" db:"updated_at"`
 }
 
 type UserModel interface {
 	GetUsers() ([]User, error)
+	CreateUser(user User) error
 }
 
 type UserModelImpl struct {
@@ -27,8 +28,8 @@ func NewUserModel(db *sql.DB) *UserModelImpl {
 	return &UserModelImpl{Database: db}
 }
 
-func (uModel *UserModelImpl) GetUsers() ([]User, error) {
-	query := "SELECT * FROM User"
+func (uModel *UserModelImpl) GetUsers() (*[]User, error) {
+	query := "SELECT * FROM Users"
 
 	var users []User
 
@@ -42,7 +43,7 @@ func (uModel *UserModelImpl) GetUsers() ([]User, error) {
 	for rows.Next() {
 		var user User
 
-		err = rows.Scan(&user.ID, &user.Email, &user.Password, &user.Role, user.CreatedAt, &user.UpdatedAt)
+		err = rows.Scan(&user.ID, &user.Email, &user.Password, &user.RoleID, &user.CreatedAt, &user.UpdatedAt)
 
 		if err != nil {
 			fmt.Println("Error retrieving users", err)
@@ -52,11 +53,11 @@ func (uModel *UserModelImpl) GetUsers() ([]User, error) {
 		users = append(users, user)
 	}
 
-	return users, nil
+	return &users, nil
 }
 
 func (uModel *UserModelImpl) CreateUser(user User) error {
-	query := `INSERT INTO User (email, password, role_id, created_at, updated_at)
+	query := `INSERT INTO Users (email, password, role_id, created_at, updated_at)
 				VALUES(?, ?, ?, ?, ?)`
 
 	result, err := uModel.Database.Exec(query, user)
@@ -67,6 +68,8 @@ func (uModel *UserModelImpl) CreateUser(user User) error {
 	}
 
 	id, err := result.LastInsertId()
+
+	fmt.Println(id)
 
 	if err != nil {
 		return err

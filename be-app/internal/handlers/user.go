@@ -1,9 +1,11 @@
 package handlers
 
 import (
+	"fmt"
+	"net/http"
+
 	"github.com/crisncris0000/Memory-Maps/be-app/internal/models"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
 
 type UserHandler struct {
@@ -24,4 +26,21 @@ func (uHandler *UserHandler) GetUsers(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusOK, users)
+}
+
+func (uHandler *UserHandler) CreateUser(context *gin.Context) {
+	var user models.User
+
+	if err := context.ShouldBindJSON(&user); err != nil {
+		fmt.Println("Error binding the JSON of user", err)
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	err := uHandler.db.CreateUser(user)
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 }

@@ -14,5 +14,5 @@ func NewRoleRouter(rHandler *handlers.RoleHandler) *RoleRouter {
 }
 
 func (rRouter *RoleRouter) InitializeRouter(router *gin.Engine) {
-
+	router.GET("/roles/:id", rRouter.GetRole)
 }
