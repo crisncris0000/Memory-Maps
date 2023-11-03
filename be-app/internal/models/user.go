@@ -53,6 +53,11 @@ func (uModel *UserModelImpl) GetUsers() (*[]User, error) {
 		users = append(users, user)
 	}
 
+	if err = rows.Err(); err != nil {
+		fmt.Println("Error iterating over rows", err)
+		return nil, err
+	}
+
 	return &users, nil
 }
 
@@ -69,7 +74,7 @@ func (uModel *UserModelImpl) CreateUser(user User) error {
 
 	id, err := result.LastInsertId()
 
-	fmt.Println(id)
+	fmt.Println("Last inserted id", id)
 
 	if err != nil {
 		return err
