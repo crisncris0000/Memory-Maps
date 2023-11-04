@@ -51,3 +51,5 @@ VALUES ('ADMIN'), ('USER');
 
 INSERT INTO Users(email, password, role_id, created_at, updated_at)
 VALUES ('Christopherrivera384@gmail.com', '123', 1,  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+SELECT * FROM MarkerPost;

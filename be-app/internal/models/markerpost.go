@@ -8,12 +8,12 @@ import (
 
 type MarkerPost struct {
 	ID          int       `json:"id" db:"id"`
-	Lattitude   float64   `json:"latitude" db:"latitude"`
-	Longitude   float64   `json:"longitude" db:"longitude"`
+	Lattitude   float32   `json:"latitude" db:"latitude"`
+	Longitude   float32   `json:"longitude" db:"longitude"`
 	Image       []byte    `json:"image" db:"image"`
 	Description string    `json:"description" db:"description"`
 	Likes       int       `json:"likes" db:"likes"`
-	UserId      int       `json:"userId" db:"user_id"`
+	UserId      int       `json:"user_id" db:"user_id"`
 	CreatedAt   time.Time `json:"createdAt" db:"created_at"`
 	UpdatedAt   time.Time `json:"updatedAt" db:"updated_at"`
 }
@@ -35,7 +35,13 @@ func (mModel *MarkerPostImpl) CreateMarkerPost(post MarkerPost) error {
 	query := `INSERT INTO MarkerPost(latitude, longitude, image, description, likes, user_id, created_at, updated_at)
 	VALUES(?, ?, ?, ?, ?, ?, ?, ?)`
 
-	res, err := mModel.Exec(query, post)
+	created := time.Now()
+	updated := time.Now()
+
+	fmt.Println(created, updated)
+
+	res, err := mModel.Exec(query, post.Lattitude, post.Longitude, post.Image, post.Description,
+		post.Likes, post.UserId, created, updated)
 
 	if err != nil {
 		fmt.Println("Error inserting marker post within the database", err)
@@ -111,4 +117,17 @@ func (mModel *MarkerPostImpl) GetPostsByDate(startDate, endDate time.Time) ([]Ma
 	}
 
 	return posts, nil
+}
+
+func (mModel *MarkerPostImpl) DeletePost(id int) error {
+	query := `DELETE FROM MarkerPost WHERE id = ?`
+
+	_, err := mModel.Exec(query, id)
+
+	if err != nil {
+		fmt.Println("Error deleting post", err)
+		return err
+	}
+
+	return nil
 }

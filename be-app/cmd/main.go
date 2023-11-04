@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+
 	"github.com/crisncris0000/Memory-Maps/be-app/config"
 	"github.com/crisncris0000/Memory-Maps/be-app/internal/handlers"
 	"github.com/crisncris0000/Memory-Maps/be-app/internal/models"
@@ -8,7 +10,6 @@ import (
 	"github.com/crisncris0000/Memory-Maps/be-app/internal/routes"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
-	"log"
 )
 
 func main() {
@@ -36,8 +37,13 @@ func main() {
 	rHandler := handlers.NewRoleHandler(rModel)
 	rRouter := routes.NewRoleRouter(rHandler)
 
+	mModel := models.NewMarkerPost(database)
+	mHandler := handlers.NewMarkerPostHandler(mModel)
+	mRouter := routes.NewMarkerPostRouter(mHandler)
+
 	uRouter.InitializeUserRouter(r)
 	rRouter.InitializeRouter(r)
+	mRouter.InitializeRouter(r)
 
 	log.Fatal(r.Run(cf.Port))
 }
