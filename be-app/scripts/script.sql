@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS Comments;
 DROP TABLE IF EXISTS MarkerPost;
 DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS Roles;
+DROP TABLE IF EXISTS Visibility;
 
 CREATE TABLE Roles (
     id INT PRIMARY KEY AUTO_INCREMENT,
@@ -21,6 +22,11 @@ CREATE TABLE Users (
     FOREIGN KEY (role_id) REFERENCES Roles(id)
 );
 
+CREATE TABLE Visibility (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    visibility VARCHAR(100) NOT NULL
+);
+
 CREATE TABLE MarkerPost (
     id INT PRIMARY KEY AUTO_INCREMENT,
     latitude FLOAT NOT NULL,
@@ -28,10 +34,12 @@ CREATE TABLE MarkerPost (
     image BLOB NOT NULL,
     description TEXT NOT NULL,
     likes INT NOT NULL,
+    visibility_id INT NOT NULL,
     user_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES Users(id)
+    FOREIGN KEY (user_id) REFERENCES Users(id),
+    FOREIGN KEY (visibility_id) REFERENCES Visibility(id)
 );
 
 CREATE TABLE Comments (

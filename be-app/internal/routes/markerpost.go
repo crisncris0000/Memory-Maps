@@ -17,5 +17,6 @@ func (mHandler *MarkerPostRouter) InitializeRouter(router *gin.Engine) {
 	router.GET("/marker-posts", mHandler.MarkerPostHandler.GetAllMarkerPosts)
 	router.GET("/marker-posts/filter", mHandler.MarkerPostHandler.FilterByDate)
 	router.POST("/marker-posts/new", mHandler.MarkerPostHandler.CreateMarkerPost)
+	router.PUT("/marker-posts/update/:id", mHandler.MarkerPostHandler.UpdatePost)
 	router.DELETE("/marker-posts/delete/:id", mHandler.MarkerPostHandler.DeletePost)
 }

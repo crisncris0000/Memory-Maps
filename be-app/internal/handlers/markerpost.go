@@ -82,6 +82,22 @@ func (mHandler *MarkerPostHandler) FilterByDate(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{"success": posts})
 }
 
+func (mHandler *MarkerPostHandler) UpdatePost(context *gin.Context) {
+	var marker models.MarkerPost
+
+	if err := context.BindJSON(&marker); err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+	}
+
+	err := mHandler.DB.UpdatePost(marker)
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+	}
+
+	context.JSON(http.StatusOK, gin.H{"success": marker})
+}
+
 func (mHandler *MarkerPostHandler) DeletePost(context *gin.Context) {
 	param := context.Param("id")
 
