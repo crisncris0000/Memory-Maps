@@ -9,11 +9,11 @@ import (
 )
 
 type RoleHandler struct {
-	DB *models.RoleModelImpl
+	RoleModel *models.RoleModelImpl
 }
 
 func NewRoleHandler(rModel *models.RoleModelImpl) *RoleHandler {
-	return &RoleHandler{DB: rModel}
+	return &RoleHandler{RoleModel: rModel}
 }
 
 func (rHandler *RoleHandler) GetRole(context *gin.Context) {
@@ -24,7 +24,7 @@ func (rHandler *RoleHandler) GetRole(context *gin.Context) {
 		return
 	}
 
-	role, err := rHandler.DB.GetRole(id)
+	role, err := rHandler.RoleModel.GetRole(id)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

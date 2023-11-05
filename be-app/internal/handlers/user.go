@@ -9,16 +9,16 @@ import (
 )
 
 type UserHandler struct {
-	DB *models.UserModelImpl
+	UserModel *models.UserModelImpl
 }
 
 func NewUserHandler(uModelImpl *models.UserModelImpl) *UserHandler {
-	return &UserHandler{DB: uModelImpl}
+	return &UserHandler{UserModel: uModelImpl}
 }
 
 func (uHandler *UserHandler) GetUsers(context *gin.Context) {
 
-	users, err := uHandler.DB.GetUsers()
+	users, err := uHandler.UserModel.GetUsers()
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -37,7 +37,7 @@ func (uHandler *UserHandler) CreateUser(context *gin.Context) {
 		return
 	}
 
-	err := uHandler.DB.CreateUser(user)
+	err := uHandler.UserModel.CreateUser(user)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

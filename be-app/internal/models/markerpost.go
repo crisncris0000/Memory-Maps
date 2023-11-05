@@ -22,6 +22,9 @@ type MarkerPost struct {
 type MarkerPostModel interface {
 	CreateMarkerPost(post MarkerPost) error
 	GetMarkerPosts() ([]MarkerPost, error)
+	GetPostsByDate(startDate, endDate time.Time) ([]MarkerPost, error)
+	UpdatePost(post MarkerPost) error
+	DeletePost(id int) error
 }
 
 type MarkerPostImpl struct {

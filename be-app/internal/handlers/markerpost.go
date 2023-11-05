@@ -11,7 +11,7 @@ import (
 )
 
 type MarkerPostHandler struct {
-	DB *models.MarkerPostImpl
+	MarkerPostModel *models.MarkerPostImpl
 }
 
 type DateRange struct {
@@ -19,12 +19,12 @@ type DateRange struct {
 	EndDate   string `json:"endDate"`
 }
 
-func NewMarkerPostHandler(db *models.MarkerPostImpl) *MarkerPostHandler {
-	return &MarkerPostHandler{DB: db}
+func NewMarkerPostHandler(mModel *models.MarkerPostImpl) *MarkerPostHandler {
+	return &MarkerPostHandler{MarkerPostModel: mModel}
 }
 
 func (mHandler *MarkerPostHandler) GetAllMarkerPosts(context *gin.Context) {
-	posts, err := mHandler.DB.GetMarkerPosts()
+	posts, err := mHandler.MarkerPostModel.GetMarkerPosts()
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -43,7 +43,7 @@ func (mHandler *MarkerPostHandler) CreateMarkerPost(context *gin.Context) {
 		return
 	}
 
-	err := mHandler.DB.CreateMarkerPost(marker)
+	err := mHandler.MarkerPostModel.CreateMarkerPost(marker)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -73,7 +73,7 @@ func (mHandler *MarkerPostHandler) FilterByDate(context *gin.Context) {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
 	}
 
-	posts, err := mHandler.DB.GetPostsByDate(startDate, endDate)
+	posts, err := mHandler.MarkerPostModel.GetPostsByDate(startDate, endDate)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
@@ -89,7 +89,7 @@ func (mHandler *MarkerPostHandler) UpdatePost(context *gin.Context) {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
 	}
 
-	err := mHandler.DB.UpdatePost(marker)
+	err := mHandler.MarkerPostModel.UpdatePost(marker)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
@@ -107,7 +107,7 @@ func (mHandler *MarkerPostHandler) DeletePost(context *gin.Context) {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
 	}
 
-	err = mHandler.DB.DeletePost(id)
+	err = mHandler.MarkerPostModel.DeletePost(id)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})

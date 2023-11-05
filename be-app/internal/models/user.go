@@ -5,6 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"time"
+
+	"github.com/crisncris0000/Memory-Maps/be-app/internal/utils"
 )
 
 type User struct {
@@ -76,7 +78,13 @@ func (uModel *UserModelImpl) CreateUser(user User) error {
 		return errors.New("User exist")
 	}
 
-	result, err := uModel.DB.Exec(query, user.Email, user.Password, user.RoleID, createdAt, updatedAt)
+	hashedPassword, err := utils.HashPassword(user.Password)
+
+	if err != nil {
+		return err
+	}
+
+	result, err := uModel.DB.Exec(query, user.Email, hashedPassword, user.RoleID, createdAt, updatedAt)
 
 	if err != nil {
 		fmt.Println("Error querying a database", err)
