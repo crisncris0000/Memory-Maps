@@ -41,9 +41,14 @@ func main() {
 	mHandler := handlers.NewMarkerPostHandler(mModel)
 	mRouter := routes.NewMarkerPostRouter(mHandler)
 
+	vModel := models.NewVisibilityModel(database)
+	vHandler := handlers.NewVisibilityHandler(vModel)
+	vRouter := routes.NewVisibilityRouter(vHandler)
+
 	uRouter.InitializeUserRouter(r)
 	rRouter.InitializeRouter(r)
 	mRouter.InitializeRouter(r)
+	vRouter.InitializeRouter(r)
 
 	log.Fatal(r.Run(cf.Port))
 }
