@@ -14,5 +14,5 @@ func NewVisibilityRouter(vHandler *handlers.VisibilityHandler) *VisibilityRouter
 }
 
 func (vRouter *VisibilityRouter) InitializeRouter(router *gin.Engine) {
-
+	router.GET("/visibility/:id", vRouter.vHandler.GetVisibilityByID)
 }

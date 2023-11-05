@@ -16,7 +16,7 @@ func NewVisibilityHandler(vModel *models.VisibilityImpl) *VisibilityHandler {
 	return &VisibilityHandler{VisibilityModel: vModel}
 }
 
-func (vHandler *VisibilityHandler) GetVisibilityName(context *gin.Context) {
+func (vHandler *VisibilityHandler) GetVisibilityByID(context *gin.Context) {
 
 	param := context.Param("id")
 
