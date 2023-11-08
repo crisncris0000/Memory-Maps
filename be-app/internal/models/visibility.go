@@ -11,6 +11,7 @@ type Visibility struct {
 }
 
 type VisibilityModel interface {
+	GetVisibilityByID(id int) (*Visibility, error)
 }
 
 type VisibilityImpl struct {
