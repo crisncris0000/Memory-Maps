@@ -1,12 +1,15 @@
-import React, { useEffect, useRef } from 'react';
-import '../../css/map.css'
-import mapboxgl from 'mapbox-gl';
-import { SearchBox } from '@mapbox/search-js-react'
+import React, { useEffect, useRef, useState } from 'react';
+import '../../css/map.css';
+import mapboxgl, { Marker } from 'mapbox-gl';
+import { SearchBox } from '@mapbox/search-js-react';
 
 
 export default function Maps() {
     const mapContainerRef = useRef(null);
     const mapRef = useRef(null)
+    const markerRef = useRef(null);
+
+    const [marker, setMarker] = useState([]);
 
     const handleOnRetrieve = (result) => {
        const coords = result.features[0].geometry.coordinates
@@ -20,6 +23,12 @@ export default function Maps() {
             center: [longitude, latitude],
             zoom: 20
        })
+       
+       const marker = new mapboxgl.Marker()
+       .setLngLat([longitude, latitude])
+       .addTo(mapRef.current)
+
+       markerRef.current = marker
     }
 
     useEffect(() => {
@@ -29,8 +38,11 @@ export default function Maps() {
         const map = new mapboxgl.Map({
             container: mapContainerRef.current,
             style: "mapbox://styles/mapbox/streets-v12",
-        })
-        mapRef.current = map
+        });
+
+
+        mapRef.current = map;
+        
     }, [])
 
 
