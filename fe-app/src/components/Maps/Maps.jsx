@@ -15,6 +15,11 @@ export default function Maps() {
        const latitude = coords[1]
 
        console.log(longitude, latitude)
+
+       mapRef.current.flyTo({
+            center: [longitude, latitude],
+            zoom: 20
+       })
     }
 
     useEffect(() => {
