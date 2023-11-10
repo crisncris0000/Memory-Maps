@@ -9,11 +9,11 @@ import (
 )
 
 type CommentsHandler struct {
-	CommentsModel *models.CommentsModelImpl
+	DB *models.CommentsModelImpl
 }
 
 func NewCommentsModel(cModel *models.CommentsModelImpl) *CommentsHandler {
-	return &CommentsHandler{CommentsModel: cModel}
+	return &CommentsHandler{DB: cModel}
 }
 
 func (cHandler *CommentsHandler) CreateComment(context *gin.Context) {
@@ -25,7 +25,7 @@ func (cHandler *CommentsHandler) CreateComment(context *gin.Context) {
 		return
 	}
 
-	err := cHandler.CommentsModel.CreateComment(comment)
+	err := cHandler.DB.CreateComment(comment)
 
 	if err != nil {
 		fmt.Println("Error Creating Comment", err)
