@@ -16,3 +16,22 @@
   justify-content: center;
   align-items: center;
 }
+
+
+.location-modal {
+  max-width: 600px;
+  margin: 50px auto;
+}
+
+.upload-label {
+  font-weight: bold;
+}
+
+.upload-input {
+  margin-top: 5px;
+}
+
+.description-label {
+  font-weight: bold;
+  margin-top: 15px;
+}

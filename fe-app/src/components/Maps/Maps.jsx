@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import '../../css/map.css';
-import mapboxgl, { Marker } from 'mapbox-gl';
+import mapboxgl from 'mapbox-gl';
 import { SearchBox } from '@mapbox/search-js-react';
+import LocationInfo from './LocationInfo';
 
 
 export default function Maps() {
@@ -9,26 +10,28 @@ export default function Maps() {
     const mapRef = useRef(null)
     const markerRef = useRef(null);
 
-    const [marker, setMarker] = useState([]);
+    const [markers, setMarkers] = useState([]);
+    const [show, setShow] = useState(false);
+    const [longitude, setLongitude] = useState(null);
+    const [latitude, setLatitude] = useState(null);
 
     const handleOnRetrieve = (result) => {
-       const coords = result.features[0].geometry.coordinates
+       const coords = result.features[0].geometry.coordinates;
 
-       const longitude = coords[0]
-       const latitude = coords[1]
-
-       console.log(longitude, latitude)
+       setLongitude(coords[0]);
+       setLatitude(coords[1]);
+       setShow(true);
 
        mapRef.current.flyTo({
             center: [longitude, latitude],
             zoom: 20
-       })
+       });
        
        const marker = new mapboxgl.Marker()
        .setLngLat([longitude, latitude])
-       .addTo(mapRef.current)
-
-       markerRef.current = marker
+       .addTo(mapRef.current);
+       
+       markerRef.current = marker;
     }
 
     useEffect(() => {
@@ -48,6 +51,7 @@ export default function Maps() {
 
     return (
         <>
+            <LocationInfo show={show} setShow={setShow} longitude={longitude} latitude={latitude}/>
             <div className="search-box-container">
                 <SearchBox
                 accessToken={process.env.REACT_APP_MAPS_API_KEY} 

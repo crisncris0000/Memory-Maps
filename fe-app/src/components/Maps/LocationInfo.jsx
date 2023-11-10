@@ -1,39 +1,39 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-export default function LocationInfo({show, setShow}) {
-    
+export default function LocationInfo({ show, setShow, longitude, latitude }) {
+
     const handleClose = () => setShow(false);
 
     return (
         <>
-            <Modal show={show}
-                onHide={handleClose}
-                animation={false}>
+            <Modal show={show} onHide={handleClose} animation={false} className="location-modal">
                 <Modal.Header closeButton>
                     <Modal.Title>Marker Form</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <form>
-                        <label>Image upload * </label>
-                        <input type="file" required />
-                        
-                        <label>Description *</label>
-                        <textarea type="text" placeholder="Please enter description" className="description"/>
+                        <div className="form-group">
+                            <label className="upload-label">Image upload *</label>
+                            <input type="file" required className="form-control upload-input" />
+                        </div>
+
+                        <div className="form-group">
+                            <label className="description-label">Description *</label>
+                            <textarea type="text" placeholder="Please enter description" className="form-control description" />
+                        </div>
                     </form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary"
-                        onClick={handleClose}>
+                    <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary"
-                        onClick={handleClose}>
+                    <Button variant="primary" onClick={handleClose}>
                         Submit
                     </Button>
                 </Modal.Footer>
             </Modal>
         </>
-    )
+    );
 }
