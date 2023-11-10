@@ -9,11 +9,11 @@ import (
 )
 
 type VisibilityHandler struct {
-	VisibilityModel *models.VisibilityImpl
+	DB *models.VisibilityImpl
 }
 
 func NewVisibilityHandler(vModel *models.VisibilityImpl) *VisibilityHandler {
-	return &VisibilityHandler{VisibilityModel: vModel}
+	return &VisibilityHandler{DB: vModel}
 }
 
 func (vHandler *VisibilityHandler) GetVisibilityByID(context *gin.Context) {
@@ -27,7 +27,7 @@ func (vHandler *VisibilityHandler) GetVisibilityByID(context *gin.Context) {
 		return
 	}
 
-	visibilityName, err := vHandler.VisibilityModel.GetVisibilityByID(id)
+	visibilityName, err := vHandler.DB.GetVisibilityByID(id)
 	if err != nil {
 		context.JSON(500, gin.H{"error": err.Error()})
 		return

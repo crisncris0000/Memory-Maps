@@ -11,7 +11,7 @@ import (
 )
 
 type MarkerPostHandler struct {
-	MarkerPostModel *models.MarkerPostImpl
+	DB *models.MarkerPostImpl
 }
 
 type DateRange struct {
@@ -20,11 +20,11 @@ type DateRange struct {
 }
 
 func NewMarkerPostHandler(mModel *models.MarkerPostImpl) *MarkerPostHandler {
-	return &MarkerPostHandler{MarkerPostModel: mModel}
+	return &MarkerPostHandler{DB: mModel}
 }
 
 func (mHandler *MarkerPostHandler) GetAllMarkerPosts(context *gin.Context) {
-	posts, err := mHandler.MarkerPostModel.GetMarkerPosts()
+	posts, err := mHandler.DB.GetMarkerPosts()
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -43,7 +43,7 @@ func (mHandler *MarkerPostHandler) CreateMarkerPost(context *gin.Context) {
 		return
 	}
 
-	err := mHandler.MarkerPostModel.CreateMarkerPost(marker)
+	err := mHandler.DB.CreateMarkerPost(marker)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -73,7 +73,7 @@ func (mHandler *MarkerPostHandler) FilterByDate(context *gin.Context) {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
 	}
 
-	posts, err := mHandler.MarkerPostModel.GetPostsByDate(startDate, endDate)
+	posts, err := mHandler.DB.GetPostsByDate(startDate, endDate)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
@@ -89,7 +89,7 @@ func (mHandler *MarkerPostHandler) UpdatePost(context *gin.Context) {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
 	}
 
-	err := mHandler.MarkerPostModel.UpdatePost(marker)
+	err := mHandler.DB.UpdatePost(marker)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
@@ -107,7 +107,7 @@ func (mHandler *MarkerPostHandler) DeletePost(context *gin.Context) {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
 	}
 
-	err = mHandler.MarkerPostModel.DeletePost(id)
+	err = mHandler.DB.DeletePost(id)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})

@@ -1,6 +1,8 @@
 CREATE SCHEMA IF NOT EXISTS NostalgiaMaps;
 USE NostalgiaMaps;
 
+DROP TABLE IF EXISTS PendingRequest;
+DROP TABLE IF EXISTS FriendsWith;
 DROP TABLE IF EXISTS Comments;
 DROP TABLE IF EXISTS MarkerPost;
 DROP TABLE IF EXISTS Users;
@@ -20,6 +22,20 @@ CREATE TABLE Users (
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,
     FOREIGN KEY (role_id) REFERENCES Roles(id)
+);
+
+CREATE TABLE PendingRequest (
+    user_id INT NOT NULL,
+    pending_user INT NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES Users(id),
+    FOREIGN KEY(pending_user) REFERENCES Users(id)
+);
+
+CREATE TABLE FriendsWith (
+    user_id INT NOT NULL,
+    friends_with INT NOT NULL,
+    FOREIGN KEY(user_id) REFERENCES Users(id),
+    FOREIGN KEY(friends_with) REFERENCES Users(id)
 );
 
 CREATE TABLE Visibility (
@@ -59,5 +75,3 @@ VALUES ('ADMIN'), ('USER');
 
 INSERT INTO Users(email, password, role_id, created_at, updated_at)
 VALUES ('Christopherrivera384@gmail.com', '123', 1,  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
-SELECT * FROM MarkerPost;

@@ -17,6 +17,10 @@ type Comments struct {
 }
 
 type CommentsModel interface {
+	CreateComment(comment Comments) error
+	GetAllComments() ([]Comments, error)
+	UpdateComment(comment string) error
+	DeleteCommentByID(id int) error
 }
 
 type CommentsModelImpl struct {
