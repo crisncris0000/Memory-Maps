@@ -22,6 +22,33 @@ func NewPendingRequestModel(db *sql.DB) *PendingRequestModelImpl {
 	return &PendingRequestModelImpl{DB: db}
 }
 
+func (db *PendingRequestModelImpl) GetUserPendingRequests(id int) ([]PendingRequest, error) {
+	query := `SELECT * FROM PendingRequest`
+
+	var requests []PendingRequest
+
+	rows, err := db.DB.Query(query)
+
+	if err != nil {
+		fmt.Println("Error querying database", err)
+		return nil, err
+	}
+
+	for rows.Next() {
+		var request PendingRequest
+
+		err = rows.Scan(&request.UserID, &request.PendingUser)
+
+		if err != nil {
+			fmt.Println("Error scanning into PendingRequest", err)
+			return nil, err
+		}
+		requests = append(requests, request)
+	}
+
+	return requests, nil
+}
+
 func (db *PendingRequestModelImpl) SendFriendRequest(pendingRequest PendingRequest) error {
 	query := `INSERT INTO PendingRequest(user_id, pending_user) VALUES(?, ?)`
 

@@ -45,10 +45,20 @@ func main() {
 	vHandler := handlers.NewVisibilityHandler(vModel)
 	vRouter := routes.NewVisibilityRouter(vHandler)
 
+	pModel := models.NewPendingRequestModel(database)
+	pHandler := handlers.NewPendingRequestHandler(pModel)
+	pRouter := routes.NewPendingRequestRouter(pHandler)
+
+	cModel := models.NewCommentsModel(database)
+	cHandler := handlers.NewCommentsHandler(cModel)
+	cRouter := routes.NewCommentsRouter(cHandler)
+
 	uRouter.InitializeUserRouter(r)
 	rRouter.InitializeRouter(r)
 	mRouter.InitializeRouter(r)
 	vRouter.InitializeRouter(r)
+	pRouter.InitializeRouter(r)
+	cRouter.InitializeRouter(r)
 
 	log.Fatal(r.Run(cf.Port))
 }

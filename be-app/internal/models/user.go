@@ -75,7 +75,7 @@ func (uModel *UserModelImpl) CreateUser(user User) error {
 
 	if !exists {
 		fmt.Println("User already exist")
-		return errors.New("User exist")
+		return errors.New("user exist")
 	}
 
 	hashedPassword, err := utils.HashPassword(user.Password)
