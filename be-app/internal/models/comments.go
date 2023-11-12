@@ -31,21 +31,6 @@ func NewCommentsModel(db *sql.DB) *CommentsModelImpl {
 	return &CommentsModelImpl{DB: db}
 }
 
-func (cModel *CommentsModelImpl) CreateComment(comment Comments) error {
-	query := `INSERT INTO Comments (user_id, marker_id, comment, likes, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)`
-
-	createdAt := time.Now()
-	updatedAt := time.Now()
-
-	_, err := cModel.DB.Exec(query, comment.UserID, comment.MarkerID, comment.Comment, comment.Likes, createdAt, updatedAt)
-
-	if err != nil {
-		fmt.Println("Error inserting into table comments", err)
-	}
-
-	return nil
-}
-
 func (cModel *CommentsModelImpl) GetAllComments() ([]Comments, error) {
 	query := `SELECT * FROM Comments`
 	var comments []Comments
@@ -60,7 +45,7 @@ func (cModel *CommentsModelImpl) GetAllComments() ([]Comments, error) {
 	for rows.Next() {
 		var comment Comments
 
-		err := rows.Scan(&comment.ID, &comment.UserID, &comment.MarkerID, &comment.Comment,
+		err = rows.Scan(&comment.ID, &comment.UserID, &comment.MarkerID, &comment.Comment,
 			&comment.Comment)
 
 		if err != nil {
@@ -70,6 +55,49 @@ func (cModel *CommentsModelImpl) GetAllComments() ([]Comments, error) {
 	}
 
 	return comments, nil
+}
+
+func (cModel *CommentsModelImpl) GetCommentsByMarkerID(id int) ([]Comments, error) {
+	query := `SELECT * FROM Comments WHERE marker_id = ?`
+
+	var comments []Comments
+
+	rows, err := cModel.DB.Query(query, id)
+
+	if err != nil {
+		fmt.Println("Error querying Comments by ID", err)
+		return nil, err
+	}
+
+	for rows.Next() {
+		var comment Comments
+
+		err = rows.Scan(&comment.ID, &comment.UserID, &comment.MarkerID, &comment.Comment,
+			&comment.Comment)
+
+		if err != nil {
+			fmt.Println("Error Scanning comment by marker ID", err)
+			return nil, err
+		}
+		comments = append(comments, comment)
+	}
+
+	return comments, nil
+}
+
+func (cModel *CommentsModelImpl) CreateComment(comment Comments) error {
+	query := `INSERT INTO Comments (user_id, marker_id, comment, likes, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)`
+
+	createdAt := time.Now()
+	updatedAt := time.Now()
+
+	_, err := cModel.DB.Exec(query, comment.UserID, comment.MarkerID, comment.Comment, comment.Likes, createdAt, updatedAt)
+
+	if err != nil {
+		fmt.Println("Error inserting into table comments", err)
+	}
+
+	return nil
 }
 
 func (cModel *CommentsModelImpl) UpdateComment(comment string) error {
