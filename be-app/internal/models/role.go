@@ -22,7 +22,7 @@ func NewRoleModel(db *sql.DB) *RoleModelImpl {
 	return &RoleModelImpl{DB: db}
 }
 
-func (rModel *RoleModelImpl) GetRole(id int) (Role, error) {
+func (rModel *RoleModelImpl) GetRole(id int) (*Role, error) {
 	query := "SELECT * FROM Roles WHERE id = ?"
 
 	var role Role
@@ -34,5 +34,5 @@ func (rModel *RoleModelImpl) GetRole(id int) (Role, error) {
 		return nil, err
 	}
 
-	return role, nil
+	return &role, nil
 }
