@@ -12,6 +12,9 @@ type PendingRequest struct {
 }
 
 type PendingRequestModel interface {
+	GetUserPendingRequests(id int) ([]PendingRequest, error)
+	SendFriendRequest(pendingRequest PendingRequest) error
+	DeclineFriendRequest(id int) error
 }
 
 type PendingRequestModelImpl struct {
