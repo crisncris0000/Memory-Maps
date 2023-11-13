@@ -21,6 +21,7 @@ type User struct {
 type UserModel interface {
 	GetUsers() ([]User, error)
 	CreateUser(user User) error
+	UserExists(email string) error
 }
 
 type UserModelImpl struct {

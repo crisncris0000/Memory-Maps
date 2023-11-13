@@ -49,6 +49,10 @@ func main() {
 	pHandler := handlers.NewPendingRequestHandler(pModel)
 	pRouter := routes.NewPendingRequestRouter(pHandler)
 
+	fModel := models.NewFriendsWithModel(database)
+	fHandler := handlers.NewFriendsWithHandler(fModel)
+	fRouter := routes.NewFriendsWithRouter(fHandler)
+
 	cModel := models.NewCommentsModel(database)
 	cHandler := handlers.NewCommentsHandler(cModel)
 	cRouter := routes.NewCommentsRouter(cHandler)
@@ -58,6 +62,7 @@ func main() {
 	mRouter.InitializeRouter(r)
 	vRouter.InitializeRouter(r)
 	pRouter.InitializeRouter(r)
+	fRouter.InitializeRouter(r)
 	cRouter.InitializeRouter(r)
 
 	log.Fatal(r.Run(cf.Port))
