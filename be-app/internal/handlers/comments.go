@@ -101,5 +101,4 @@ func (cHandler *CommentsHandler) DeleteComment(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusOK, gin.H{"Message": "Successfully deleted comment"})
->>>>>>> 5d1c7b6ac4f8680bee938d5a51149e4dc99d84c7
 }

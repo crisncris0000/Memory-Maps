@@ -15,4 +15,6 @@ func NewPendingRequestRouter(pHandler *handlers.PendingRequestHandler) *PendingR
 
 func (pRouter *PendingRequestRouter) InitializeRouter(router *gin.Engine) {
 	router.GET("/pending-request/:id", pRouter.PendingHandler.GetUserPendingRequests)
+	router.POST("/pending-request/send", pRouter.PendingHandler.SendFriendRequest)
+	router.DELETE("/pending-request/decline", pRouter.PendingHandler.DeclineFriendRequest)
 }
