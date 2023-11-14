@@ -43,7 +43,6 @@ export default function Maps() {
             style: "mapbox://styles/mapbox/streets-v12",
         });
 
-
         mapRef.current = map;
         
     }, [])
@@ -52,16 +51,17 @@ export default function Maps() {
     return (
         <>
             <LocationInfo show={show} setShow={setShow} longitude={longitude} latitude={latitude}/>
-            <div className="search-box-container">
-                <SearchBox
-                accessToken={process.env.REACT_APP_MAPS_API_KEY} 
-                value=''
-                onRetrieve={handleOnRetrieve}/>
-            </div>
             <div className="map-container">
                 <div className="map-content">
                     <div ref={mapContainerRef}
-                    style={{width: 1000, height: 700}}></div>
+                    style={{width: "100%", height: "100%"}}>
+                        <div className="search-box-container">
+                            <SearchBox
+                            accessToken={process.env.REACT_APP_MAPS_API_KEY} 
+                            value=''
+                            onRetrieve={handleOnRetrieve}/>
+                        </div>
+                    </div>
                 </div>
             </div>
         </>

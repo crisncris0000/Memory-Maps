@@ -12,11 +12,9 @@
 }
 
 .search-box-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: absolute;
+  z-index: 100;
 }
-
 
 .location-modal {
   max-width: 600px;
