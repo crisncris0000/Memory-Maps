@@ -34,6 +34,12 @@ export default function Maps() {
        markerRef.current = marker;
     }
 
+    const handleOnClose = () => {
+        if(markerRef.current) {
+            markerRef.current.remove()
+        }
+    }
+
     useEffect(() => {
 
         mapboxgl.accessToken= process.env.REACT_APP_MAPS_API_KEY;
@@ -50,7 +56,7 @@ export default function Maps() {
 
     return (
         <>
-            <LocationInfo show={show} setShow={setShow} longitude={longitude} latitude={latitude}/>
+            <LocationInfo show={show} setShow={setShow} longitude={longitude} latitude={latitude} onHide={handleOnClose}/>
             <div className="map-container">
                 <div className="map-content">
                     <div ref={mapContainerRef}

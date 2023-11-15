@@ -2,14 +2,18 @@ import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-export default function LocationInfo({ show, setShow, longitude, latitude }) {
+export default function LocationInfo({ show, setShow, longitude, latitude, onHide }) {
 
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        onHide()
+        setShow(false);
+
+    }
 
     return (
         <>
-            <Modal show={show} onHide={handleClose} animation={false} className="location-modal">
-                <Modal.Header closeButton>
+            <Modal show={show} onHide={handleClose} animation={false} className="location-modal mx-auto" centered>
+                <Modal.Header closeButton> 
                     <Modal.Title>Marker Form</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
