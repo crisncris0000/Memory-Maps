@@ -28,6 +28,7 @@ func (mHandler *MarkerPostHandler) GetAllMarkerPosts(context *gin.Context) {
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
 	}
 
 	context.JSON(http.StatusOK, gin.H{"Success": posts})
