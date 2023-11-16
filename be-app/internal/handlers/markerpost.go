@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -43,13 +42,12 @@ func (mHandler *MarkerPostHandler) CreateMarkerPost(context *gin.Context) {
 	visibilityIDStr := context.PostForm("visibilityID")
 	userIDStr := context.PostForm("userID")
 
-	fmt.Println(likesStr)
-
 	latitude, longitude, image, description, likes, visibilityID, userID, err :=
 		utils.HandleMarkerPostConversion(latitudeStr, longitudeStr, userIDStr, description, likesStr, visibilityIDStr, imageFile)
 
 	if err != nil {
 		context.JSON(http.StatusNotAcceptable, gin.H{"error": err})
+		return
 	}
 
 	marker := models.MarkerPost{
@@ -78,24 +76,28 @@ func (mHandler *MarkerPostHandler) FilterByDate(context *gin.Context) {
 
 	if err := context.BindJSON(&dateRange); err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
 	}
 
 	startDate, err := time.Parse("2006-01-01", dateRange.StartDate)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
 	}
 
 	endDate, err := time.Parse("2006-01-01", dateRange.EndDate)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
 	}
 
 	posts, err := mHandler.DB.GetPostsByDate(startDate, endDate)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
 	}
 
 	context.JSON(http.StatusOK, gin.H{"success": posts})
@@ -106,12 +108,14 @@ func (mHandler *MarkerPostHandler) UpdatePost(context *gin.Context) {
 
 	if err := context.BindJSON(&marker); err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
 	}
 
 	err := mHandler.DB.UpdatePost(marker)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
 	}
 
 	context.JSON(http.StatusOK, gin.H{"success": marker})
@@ -124,12 +128,14 @@ func (mHandler *MarkerPostHandler) DeletePost(context *gin.Context) {
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
 	}
 
 	err = mHandler.DB.DeletePost(id)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
 	}
 
 	context.JSON(http.StatusOK, gin.H{"success": "Post deleted"})
