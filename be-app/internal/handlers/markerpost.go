@@ -39,12 +39,11 @@ func (mHandler *MarkerPostHandler) CreateMarkerPost(context *gin.Context) {
 	longitudeStr := context.PostForm("longitude")
 	imageFile, _ := context.FormFile("image")
 	description := context.PostForm("description")
-	likesStr := context.PostForm("likes")
 	visibilityIDStr := context.PostForm("visibilityID")
 	userIDStr := context.PostForm("userID")
 
-	latitude, longitude, image, description, likes, visibilityID, userID, err :=
-		utils.HandleMarkerPostConversion(latitudeStr, longitudeStr, userIDStr, description, likesStr, visibilityIDStr, imageFile)
+	latitude, longitude, image, description, visibilityID, userID, err :=
+		utils.HandleMarkerPostConversion(latitudeStr, longitudeStr, userIDStr, description, visibilityIDStr, imageFile)
 
 	if err != nil {
 		context.JSON(http.StatusNotAcceptable, gin.H{"error": err})
@@ -56,7 +55,7 @@ func (mHandler *MarkerPostHandler) CreateMarkerPost(context *gin.Context) {
 		Longitude:    longitude,
 		Image:        image,
 		Description:  description,
-		Likes:        likes,
+		Likes:        0,
 		VisibilityID: visibilityID,
 		UserID:       userID,
 	}

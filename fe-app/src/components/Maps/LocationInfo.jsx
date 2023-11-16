@@ -27,7 +27,6 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
         formData.append("longitude", longitude);
         formData.append("image", image);
         formData.append("description", description);
-        formData.append("likes", 0);
         formData.append("visibilityID", 1);
         formData.append("userID", 1);
     
