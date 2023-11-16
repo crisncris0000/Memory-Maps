@@ -27,9 +27,9 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
         formData.append("longitude", longitude);
         formData.append("image", image);
         formData.append("description", description);
-        formData.append("likes", 5);
-        formData.append("visibilityID", 2);
-        formData.append("userID", 5);
+        formData.append("likes", 0);
+        formData.append("visibilityID", 1);
+        formData.append("userID", 1);
     
         axios.post("http://localhost:8080/marker-posts/new", formData)
             .then((response) => {

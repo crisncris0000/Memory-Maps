@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -37,10 +38,12 @@ func (mHandler *MarkerPostHandler) CreateMarkerPost(context *gin.Context) {
 	latitudeStr := context.PostForm("latitude")
 	longitudeStr := context.PostForm("longitude")
 	imageFile, _ := context.FormFile("image")
-	description := context.PostForm("latitude")
-	likesStr := context.PostForm("latitude")
-	visibilityIDStr := context.PostForm("latitude")
-	userIDStr := context.PostForm("latitude")
+	description := context.PostForm("description")
+	likesStr := context.PostForm("likes")
+	visibilityIDStr := context.PostForm("visibilityID")
+	userIDStr := context.PostForm("userID")
+
+	fmt.Println(likesStr)
 
 	latitude, longitude, image, description, likes, visibilityID, userID, err :=
 		utils.HandleMarkerPostConversion(latitudeStr, longitudeStr, userIDStr, description, likesStr, visibilityIDStr, imageFile)

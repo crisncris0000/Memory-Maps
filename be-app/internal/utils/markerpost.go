@@ -10,8 +10,8 @@ import (
 )
 
 func HandleMarkerPostConversion(latitudeStr, longitudeStr,
-	descriptionStr, likesStr,
-	visibilityIDStr, userIDStr string, imageFIle *multipart.FileHeader) (float32, float32, []byte, string, int, int, int, error) {
+	userIDStr, descriptionStr,
+	likesStr, visibilityIDStr string, imageFIle *multipart.FileHeader) (float32, float32, []byte, string, int, int, int, error) {
 
 	latitude, err := strconv.ParseFloat(latitudeStr, 32)
 
@@ -56,6 +56,8 @@ func HandleMarkerPostConversion(latitudeStr, longitudeStr,
 func HandleImageConversion(image multipart.FileHeader) []byte {
 	extension := filepath.Ext(image.Filename)
 	newImageName := uuid.New().String() + extension
+
+	fmt.Println(newImageName)
 
 	return []byte(newImageName)
 }
