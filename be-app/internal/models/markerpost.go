@@ -7,16 +7,16 @@ import (
 )
 
 type MarkerPost struct {
-	ID          int       `json:"id" db:"id"`
-	Lattitude   float32   `json:"latitude" db:"latitude"`
-	Longitude   float32   `json:"longitude" db:"longitude"`
-	Image       []byte    `json:"image" db:"image"`
-	Description string    `json:"description" db:"description"`
-	Likes       int       `json:"likes" db:"likes"`
-	Visibility  int       `json:"visibility" db:"visibility"`
-	UserId      int       `json:"user_id" db:"user_id"`
-	CreatedAt   time.Time `json:"createdAt" db:"created_at"`
-	UpdatedAt   time.Time `json:"updatedAt" db:"updated_at"`
+	ID           int       `json:"id" db:"id"`
+	Lattitude    float32   `json:"latitude" db:"latitude"`
+	Longitude    float32   `json:"longitude" db:"longitude"`
+	Image        []byte    `json:"image" db:"image"`
+	Description  string    `json:"description" db:"description"`
+	Likes        int       `json:"likes" db:"likes"`
+	VisibilityID int       `json:"visibilityID" db:"visibility_id"`
+	UserID       int       `json:"userID" db:"user_id"`
+	CreatedAt    time.Time `json:"createdAt" db:"created_at"`
+	UpdatedAt    time.Time `json:"updatedAt" db:"updated_at"`
 }
 
 type MarkerPostModel interface {
@@ -36,8 +36,9 @@ func NewMarkerPost(db *sql.DB) *MarkerPostImpl {
 }
 
 func (mModel *MarkerPostImpl) CreateMarkerPost(post MarkerPost) error {
-	query := `INSERT INTO MarkerPost(latitude, longitude, image, description, likes, visibility, user_id, created_at, updated_at)
-	VALUES(?, ?, ?, ?, ?, ?, ?, ?)`
+
+	query := `INSERT INTO MarkerPost(latitude, longitude, image, description, likes, visibility_id, user_id, created_at, updated_at)
+	VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`
 
 	created := time.Now()
 	updated := time.Now()
@@ -45,20 +46,18 @@ func (mModel *MarkerPostImpl) CreateMarkerPost(post MarkerPost) error {
 	fmt.Println(created, updated)
 
 	res, err := mModel.Exec(query, post.Lattitude, post.Longitude, post.Image, post.Description,
-		post.Likes, post.Visibility, post.UserId, created, updated)
+		post.Likes, post.VisibilityID, post.UserID, created, updated)
 
 	if err != nil {
 		fmt.Println("Error inserting marker post within the database", err)
 		return err
 	}
 
-	id, err := res.LastInsertId()
+	_, err = res.LastInsertId()
 
 	if err != nil {
 		fmt.Println("Error getting id of last inserted", err)
 	}
-
-	fmt.Println("Last inserted id", id)
 
 	return nil
 }
@@ -78,7 +77,7 @@ func (mModel *MarkerPostImpl) GetMarkerPosts() ([]MarkerPost, error) {
 		var post MarkerPost
 
 		if err := rows.Scan(&post.ID, &post.Lattitude, &post.Longitude, &post.Image, post.Description,
-			&post.Likes, &post.Visibility, &post.UserId, &post.CreatedAt, &post.UpdatedAt); err != nil {
+			&post.Likes, &post.VisibilityID, &post.UserID, &post.CreatedAt, &post.UpdatedAt); err != nil {
 
 			fmt.Println("Error getting posts", err)
 			return nil, err
@@ -106,7 +105,7 @@ func (mModel *MarkerPostImpl) GetPostsByDate(startDate, endDate time.Time) ([]Ma
 		var post MarkerPost
 
 		if err := rows.Scan(&post.ID, &post.Lattitude, &post.Longitude, &post.Image, post.Description,
-			&post.Likes, &post.Visibility, &post.UserId, &post.CreatedAt, &post.UpdatedAt); err != nil {
+			&post.Likes, &post.VisibilityID, &post.UserID, &post.CreatedAt, &post.UpdatedAt); err != nil {
 
 			fmt.Println("Error getting posts", err)
 			return nil, err
@@ -128,7 +127,7 @@ func (mModel *MarkerPostImpl) UpdatePost(post MarkerPost) error {
 	description = ?, likes = ?, visibility = ?, user_id = ?, created_at = ?, updated_at = ? WHERE id = ?`
 
 	_, err := mModel.Exec(query, post.Lattitude, post.Longitude, post.Image, post.Description,
-		post.Likes, post.Visibility, post.UserId, post.CreatedAt, post.UpdatedAt, post.ID)
+		post.Likes, post.VisibilityID, post.UserID, post.CreatedAt, post.UpdatedAt, post.ID)
 
 	if err != nil {
 		fmt.Println("Error updating post", err)

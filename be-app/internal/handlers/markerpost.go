@@ -1,12 +1,12 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"time"
 
 	"github.com/crisncris0000/Memory-Maps/be-app/internal/models"
+	"github.com/crisncris0000/Memory-Maps/be-app/internal/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -34,16 +34,32 @@ func (mHandler *MarkerPostHandler) GetAllMarkerPosts(context *gin.Context) {
 }
 
 func (mHandler *MarkerPostHandler) CreateMarkerPost(context *gin.Context) {
+	latitudeStr := context.PostForm("latitude")
+	longitudeStr := context.PostForm("longitude")
+	imageFile, _ := context.FormFile("image")
+	description := context.PostForm("latitude")
+	likesStr := context.PostForm("latitude")
+	visibilityIDStr := context.PostForm("latitude")
+	userIDStr := context.PostForm("latitude")
 
-	var marker models.MarkerPost
+	latitude, longitude, image, description, likes, visibilityID, userID, err :=
+		utils.HandleMarkerPostConversion(latitudeStr, longitudeStr, userIDStr, description, likesStr, visibilityIDStr, imageFile)
 
-	if err := context.BindJSON(&marker); err != nil {
-		fmt.Println("Error binding json of marker post", err)
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+	if err != nil {
+		context.JSON(http.StatusNotAcceptable, gin.H{"error": err})
 	}
 
-	err := mHandler.DB.CreateMarkerPost(marker)
+	marker := models.MarkerPost{
+		Lattitude:    latitude,
+		Longitude:    longitude,
+		Image:        image,
+		Description:  description,
+		Likes:        likes,
+		VisibilityID: visibilityID,
+		UserID:       userID,
+	}
+
+	err = mHandler.DB.CreateMarkerPost(marker)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

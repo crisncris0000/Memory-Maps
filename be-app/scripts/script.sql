@@ -73,5 +73,12 @@ CREATE TABLE Comments (
 INSERT INTO Roles(role_name)
 VALUES ('ADMIN'), ('USER');
 
+INSERT INTO Visibility(view)
+VALUES('Public'), ('Private');
+
 INSERT INTO Users(email, password, role_id, created_at, updated_at)
 VALUES ('Christopherrivera384@gmail.com', '123', 1,  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+SELECT * FROM Users;
+
+SELECT * FROM MarkerPost;
