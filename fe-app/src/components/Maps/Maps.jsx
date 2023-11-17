@@ -4,6 +4,7 @@ import mapboxgl from 'mapbox-gl';
 import { SearchBox } from '@mapbox/search-js-react';
 import LocationInfo from './LocationInfo';
 import axios from 'axios';
+import MarkerInfo from './MarkerInfo';
 
 
 export default function Maps() {
@@ -11,7 +12,8 @@ export default function Maps() {
     const mapRef = useRef(null)
     const markerRef = useRef(null);
 
-    const [show, setShow] = useState(false);
+    const [showForm, setShowForm] = useState(false);
+    const [showMarkerInfo, setShowMarkerInfo] = useState(false)
     const [longitude, setLongitude] = useState(null);
     const [latitude, setLatitude] = useState(null);
 
@@ -20,7 +22,7 @@ export default function Maps() {
 
        setLongitude(coords[0]);
        setLatitude(coords[1]);
-       setShow(true);
+       setShowForm(true);
 
        mapRef.current.flyTo({
             center: [longitude, latitude],
@@ -41,6 +43,10 @@ export default function Maps() {
                 const marker = new mapboxgl.Marker()
                 .setLngLat([post.longitude, post.latitude])
                 .addTo(mapRef.current);
+
+                marker.getElement().addEventListener('click', () => {
+                    setShowMarkerInfo(true)
+                })
                 
                 markerRef.current = marker;
             })
@@ -63,7 +69,8 @@ export default function Maps() {
 
     return (
         <>
-            <LocationInfo show={show} setShow={setShow} longitude={longitude} latitude={latitude} onHide={handleOnClose}/>
+            <LocationInfo show={showForm} setShow={setShowForm} longitude={longitude} latitude={latitude} onHide={handleOnClose}/>
+            <MarkerInfo show={showMarkerInfo} setShow={setShowMarkerInfo}/>
             <div className="map-container">
                 <div className="map-content">
                     <div ref={mapContainerRef}
