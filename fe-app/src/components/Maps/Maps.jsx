@@ -41,6 +41,7 @@ export default function Maps() {
                 const marker = new mapboxgl.Marker()
                 .setLngLat([post.longitude, post.latitude])
                 .addTo(mapRef.current);
+                
                 markerRef.current = marker;
             })
         }).catch((error) => {

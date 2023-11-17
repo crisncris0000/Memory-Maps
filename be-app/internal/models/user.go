@@ -65,6 +65,21 @@ func (uModel *UserModelImpl) GetUsers() (*[]User, error) {
 	return &users, nil
 }
 
+func (uModel *UserModelImpl) GetUserByEmail(email string) (*User, error) {
+	query := `SELECT * FROM Users WHERE Users.email = ?`
+
+	var user User
+
+	err := uModel.DB.QueryRow(query, email).Scan(&user.ID, &user.Email, &user.Password, &user.RoleID, &user.CreatedAt, &user.UpdatedAt)
+
+	if err != nil {
+		fmt.Println("User does not exist", err)
+		return nil, err
+	}
+
+	return &user, nil
+}
+
 func (uModel *UserModelImpl) CreateUser(user User) error {
 	query := `INSERT INTO Users (email, password, role_id, created_at, updated_at)
 				VALUES(?, ?, ?, ?, ?)`
