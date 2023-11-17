@@ -11,7 +11,6 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
     const handleImageChange = (e) => {
         const file = e.target.files[0]
         setImage(file)
-        console.log(file);
     }
 
     const handleClose = () => {
@@ -19,8 +18,7 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
         setShow(false);
     }
 
-    const handleOnSubmit = (e) => {
-        e.preventDefault();
+    const handleOnSubmit = () => {
     
         const formData = new FormData();
         formData.append("latitude", latitude);
@@ -46,8 +44,8 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
                 <Modal.Header closeButton> 
                     <Modal.Title>Marker Form</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    <form onSubmit={handleOnSubmit}>
+                <form onSubmit={handleOnSubmit}>
+                    <Modal.Body>
                         <div className="form-group">
                             <label className="upload-label">Image upload *</label>
                             <input type="file" required className="form-control upload-input" onChange={handleImageChange} />
@@ -58,16 +56,17 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
                             <textarea type="text" placeholder="Please enter description" className="form-control description" 
                             onChange={e => setDescription(e.target.value)}/>
                         </div>
-                    </form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleOnSubmit} type="submit">
-                        Submit
-                    </Button>
-                </Modal.Footer>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                            Close
+                        </Button>
+                        <Button variant="primary" type="submit">
+                            Submit
+                        </Button>
+                    
+                    </Modal.Footer>
+                </form>
             </Modal>
         </>
     );

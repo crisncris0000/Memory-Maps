@@ -35,33 +35,6 @@ func NewMarkerPost(db *sql.DB) *MarkerPostImpl {
 	return &MarkerPostImpl{DB: db}
 }
 
-func (mModel *MarkerPostImpl) CreateMarkerPost(post MarkerPost) error {
-
-	query := `INSERT INTO MarkerPost(latitude, longitude, image, description, likes, visibility_id, user_id, created_at, updated_at)
-	VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`
-
-	created := time.Now()
-	updated := time.Now()
-
-	fmt.Println(created, updated)
-
-	res, err := mModel.Exec(query, post.Lattitude, post.Longitude, post.Image, post.Description,
-		post.Likes, post.VisibilityID, post.UserID, created, updated)
-
-	if err != nil {
-		fmt.Println("Error inserting marker post within the database", err)
-		return err
-	}
-
-	_, err = res.LastInsertId()
-
-	if err != nil {
-		fmt.Println("Error getting id of last inserted", err)
-	}
-
-	return nil
-}
-
 func (mModel *MarkerPostImpl) GetMarkerPosts() ([]MarkerPost, error) {
 	query := `SELECT * FROM MarkerPost`
 
@@ -76,7 +49,7 @@ func (mModel *MarkerPostImpl) GetMarkerPosts() ([]MarkerPost, error) {
 	for rows.Next() {
 		var post MarkerPost
 
-		if err := rows.Scan(&post.ID, &post.Lattitude, &post.Longitude, &post.Image, post.Description,
+		if err := rows.Scan(&post.ID, &post.Lattitude, &post.Longitude, &post.Image, &post.Description,
 			&post.Likes, &post.VisibilityID, &post.UserID, &post.CreatedAt, &post.UpdatedAt); err != nil {
 
 			fmt.Println("Error getting posts", err)
@@ -120,6 +93,33 @@ func (mModel *MarkerPostImpl) GetPostsByDate(startDate, endDate time.Time) ([]Ma
 	}
 
 	return posts, nil
+}
+
+func (mModel *MarkerPostImpl) CreateMarkerPost(post MarkerPost) error {
+
+	query := `INSERT INTO MarkerPost(latitude, longitude, image, description, likes, visibility_id, user_id, created_at, updated_at)
+	VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`
+
+	created := time.Now()
+	updated := time.Now()
+
+	fmt.Println(created, updated)
+
+	res, err := mModel.Exec(query, post.Lattitude, post.Longitude, post.Image, post.Description,
+		post.Likes, post.VisibilityID, post.UserID, created, updated)
+
+	if err != nil {
+		fmt.Println("Error inserting marker post within the database", err)
+		return err
+	}
+
+	_, err = res.LastInsertId()
+
+	if err != nil {
+		fmt.Println("Error getting id of last inserted", err)
+	}
+
+	return nil
 }
 
 func (mModel *MarkerPostImpl) UpdatePost(post MarkerPost) error {

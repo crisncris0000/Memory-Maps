@@ -3,6 +3,7 @@ import '../../css/map.css';
 import mapboxgl from 'mapbox-gl';
 import { SearchBox } from '@mapbox/search-js-react';
 import LocationInfo from './LocationInfo';
+import axios from 'axios';
 
 
 export default function Maps() {
@@ -10,7 +11,6 @@ export default function Maps() {
     const mapRef = useRef(null)
     const markerRef = useRef(null);
 
-    const [markers, setMarkers] = useState([]);
     const [show, setShow] = useState(false);
     const [longitude, setLongitude] = useState(null);
     const [latitude, setLatitude] = useState(null);
@@ -26,12 +26,6 @@ export default function Maps() {
             center: [longitude, latitude],
             zoom: 20
        });
-       
-       const marker = new mapboxgl.Marker()
-       .setLngLat([longitude, latitude])
-       .addTo(mapRef.current);
-       
-       markerRef.current = marker;
     }
 
     const handleOnClose = () => {
@@ -41,6 +35,18 @@ export default function Maps() {
     }
 
     useEffect(() => {
+
+        axios.get("http://localhost:8080/marker-posts").then((response) => {
+            response.data.markerposts.forEach((post) => {
+                const marker = new mapboxgl.Marker()
+                .setLngLat([post.longitude, post.latitude])
+                .addTo(mapRef.current);
+                markerRef.current = marker;
+            })
+        }).catch((error) => {
+            console.log(error);
+        });
+
 
         mapboxgl.accessToken= process.env.REACT_APP_MAPS_API_KEY;
 

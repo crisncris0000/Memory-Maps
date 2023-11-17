@@ -31,7 +31,7 @@ func (mHandler *MarkerPostHandler) GetAllMarkerPosts(context *gin.Context) {
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{"Success": posts})
+	context.JSON(http.StatusOK, gin.H{"markerposts": posts})
 }
 
 func (mHandler *MarkerPostHandler) CreateMarkerPost(context *gin.Context) {
