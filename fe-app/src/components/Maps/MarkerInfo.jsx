@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 
 export default function MarkerInfo({ show, setShow }) {
-  
+
+
+  const [markerPosts, setMarkerPosts] = useState()
   const handleClose = () => setShow(false);
+
+  useEffect(() => {
+    axios.get("http://localhost:8080/marker-post")
+    .then((response) => {
+
+    })
+  }, [])
   
   return (
     <>
