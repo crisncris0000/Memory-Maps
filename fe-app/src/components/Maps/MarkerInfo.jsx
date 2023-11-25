@@ -9,9 +9,9 @@ export default function MarkerInfo({ show, setShow }) {
   const handleClose = () => setShow(false);
 
   useEffect(() => {
-    axios.get("http://localhost:8080/marker-post")
+    axios.get(`http://localhost:8080/marker-post`)
     .then((response) => {
-
+      console.log(response);
     })
   }, [])
   

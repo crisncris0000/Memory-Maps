@@ -15,7 +15,7 @@ type RoleModel interface {
 }
 
 type RoleModelImpl struct {
-	*sql.DB
+	DB *sql.DB
 }
 
 func NewRoleModel(db *sql.DB) *RoleModelImpl {
