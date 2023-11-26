@@ -28,7 +28,7 @@ type MarkerPostModel interface {
 }
 
 type MarkerPostImpl struct {
-	*sql.DB
+	DB *sql.DB
 }
 
 func NewMarkerPost(db *sql.DB) *MarkerPostImpl {
@@ -40,7 +40,7 @@ func (mModel *MarkerPostImpl) GetMarkerPosts() ([]MarkerPost, error) {
 
 	var posts []MarkerPost
 
-	rows, err := mModel.Query(query)
+	rows, err := mModel.DB.Query(query)
 
 	if err != nil {
 		fmt.Println("Error getting posts", err)
@@ -72,7 +72,7 @@ func (mModel *MarkerPostImpl) GetPostsByDate(startDate, endDate time.Time) ([]Ma
 
 	var posts []MarkerPost
 
-	rows, err := mModel.Query(query, startDate, endDate)
+	rows, err := mModel.DB.Query(query, startDate, endDate)
 
 	if err != nil {
 		var post MarkerPost
@@ -105,7 +105,7 @@ func (mModel *MarkerPostImpl) CreateMarkerPost(post MarkerPost) error {
 
 	fmt.Println(created, updated)
 
-	res, err := mModel.Exec(query, post.Lattitude, post.Longitude, post.Image, post.Description,
+	res, err := mModel.DB.Exec(query, post.Lattitude, post.Longitude, post.Image, post.Description,
 		post.Likes, post.VisibilityID, post.UserID, created, updated)
 
 	if err != nil {
@@ -126,7 +126,7 @@ func (mModel *MarkerPostImpl) UpdatePost(post MarkerPost) error {
 	query := `UPDATE MarkerPost SET latitude = ?, longitude = ?, image = ?, 
 	description = ?, likes = ?, visibility = ?, user_id = ?, created_at = ?, updated_at = ? WHERE id = ?`
 
-	_, err := mModel.Exec(query, post.Lattitude, post.Longitude, post.Image, post.Description,
+	_, err := mModel.DB.Exec(query, post.Lattitude, post.Longitude, post.Image, post.Description,
 		post.Likes, post.VisibilityID, post.UserID, post.CreatedAt, post.UpdatedAt, post.ID)
 
 	if err != nil {
@@ -140,7 +140,7 @@ func (mModel *MarkerPostImpl) UpdatePost(post MarkerPost) error {
 func (mModel *MarkerPostImpl) DeletePost(id int) error {
 	query := `DELETE FROM MarkerPost WHERE id = ?`
 
-	_, err := mModel.Exec(query, id)
+	_, err := mModel.DB.Exec(query, id)
 
 	if err != nil {
 		fmt.Println("Error deleting post", err)

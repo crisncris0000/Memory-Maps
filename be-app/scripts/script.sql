@@ -4,7 +4,9 @@ USE NostalgiaMaps;
 DROP TABLE IF EXISTS PendingRequest;
 DROP TABLE IF EXISTS FriendsWith;
 DROP TABLE IF EXISTS Comments;
+DROP TABLE IF EXISTS MarkerTags;
 DROP TABLE IF EXISTS MarkerPost;
+DROP TABLE IF EXISTS Tags;
 DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS Roles;
 DROP TABLE IF EXISTS Visibility;
@@ -43,6 +45,11 @@ CREATE TABLE Visibility (
     view VARCHAR(100) NOT NULL
 );
 
+CREATE TABLE Tags (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    tag_name VARCHAR(150)
+);
+
 CREATE TABLE MarkerPost (
     id INT PRIMARY KEY AUTO_INCREMENT,
     latitude FLOAT NOT NULL,
@@ -56,6 +63,13 @@ CREATE TABLE MarkerPost (
     updated_at TIMESTAMP NOT NULL,
     FOREIGN KEY (user_id) REFERENCES Users(id),
     FOREIGN KEY (visibility_id) REFERENCES Visibility(id)
+);
+
+CREATE TABLE MarkerPostTags (
+    marker_id INT NOT NULL,
+    tag_id INT NOT NULL,
+    FOREIGN KEY (marker_id) REFERENCES MarkerPost(id),
+    FOREIGN KEY (tag_id) REFERENCES Tags(id)
 );
 
 CREATE TABLE Comments (
