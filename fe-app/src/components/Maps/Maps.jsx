@@ -13,7 +13,8 @@ export default function Maps() {
     const markerRef = useRef(null);
 
     const [showForm, setShowForm] = useState(false);
-    const [showMarkerInfo, setShowMarkerInfo] = useState(false)
+    const [showMarkerInfo, setShowMarkerInfo] = useState(false);
+    const [selectedMarker, setSelectedMarker] = useState(null);
     const [longitude, setLongitude] = useState(null);
     const [latitude, setLatitude] = useState(null);
 
@@ -45,7 +46,8 @@ export default function Maps() {
                 .addTo(mapRef.current);
 
                 marker.getElement().addEventListener('click', () => {
-                    setShowMarkerInfo(true)
+                    setShowMarkerInfo(true);
+                    setSelectedMarker(post);
                 })
                 
                 markerRef.current = marker;
@@ -70,7 +72,7 @@ export default function Maps() {
     return (
         <>
             <LocationInfo show={showForm} setShow={setShowForm} longitude={longitude} latitude={latitude} onHide={handleOnClose}/>
-            <MarkerInfo show={showMarkerInfo} setShow={setShowMarkerInfo}/>
+            <MarkerInfo show={showMarkerInfo} setShow={setShowMarkerInfo} markerPost={selectedMarker}/>
             <div className="map-container">
                 <div className="map-content">
                     <div ref={mapContainerRef}

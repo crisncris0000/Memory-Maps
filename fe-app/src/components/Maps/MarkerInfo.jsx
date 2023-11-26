@@ -1,20 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
-import axios from 'axios';
 
-export default function MarkerInfo({ show, setShow }) {
+export default function MarkerInfo({ show, setShow, markerPost}) {
 
 
   const [markerPosts, setMarkerPosts] = useState()
   const handleClose = () => setShow(false);
 
-  useEffect(() => {
-    axios.get("http://localhost:8080/marker-post")
-    .then((response) => {
-
-    })
-  }, [])
-  
   return (
     <>
       <Modal show={show} onHide={handleClose} animation={false} className="location-modal mx-auto" centered>
@@ -23,7 +15,7 @@ export default function MarkerInfo({ show, setShow }) {
         </Modal.Header>
                 
         <Modal.Body>
-
+        
         </Modal.Body>
       </Modal>
     </>
