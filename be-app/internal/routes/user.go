@@ -15,5 +15,6 @@ func NewUserRouter(uHandler *handlers.UserHandler) *UserRouter {
 
 func (uRouter *UserRouter) InitializeUserRouter(router *gin.Engine) {
 	router.GET("/users", uRouter.UserHandler.GetUsers)
+	router.GET("/users/:id", uRouter.UserHandler.GetUserByID)
 	router.POST("/users/new", uRouter.UserHandler.CreateUser)
 }

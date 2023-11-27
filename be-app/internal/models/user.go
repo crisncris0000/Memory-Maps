@@ -20,6 +20,7 @@ type User struct {
 
 type UserModel interface {
 	GetUsers() ([]User, error)
+	GetUserByEmail(email string) (*User, error)
 	CreateUser(user User) error
 	UserExists(email string) error
 }
@@ -78,6 +79,21 @@ func (uModel *UserModelImpl) GetUserByEmail(email string) (*User, error) {
 	}
 
 	return &user, nil
+}
+
+func (uModel *UserModelImpl) GetUserByID(id int) (*User, error) {
+	query := `SELECT * FROM Users WHERE Users.id = ?`
+
+	var user User
+
+	err := uModel.DB.QueryRow(query, id).Scan(&user.ID, &user.Email, &user.Password, &user.RoleID, &user.CreatedAt, &user.UpdatedAt)
+
+	if err != nil {
+		fmt.Println("User not found with the id", id)
+		return nil, err
+	}
+
+	return &user, err
 }
 
 func (uModel *UserModelImpl) CreateUser(user User) error {

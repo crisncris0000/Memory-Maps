@@ -2,10 +2,13 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/crisncris0000/Memory-Maps/be-app/internal/models"
 	"github.com/crisncris0000/Memory-Maps/be-app/internal/utils"
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt"
 )
 
 type UserHandler struct {
@@ -31,6 +34,27 @@ func (uHandler *UserHandler) GetUsers(context *gin.Context) {
 	}
 
 	context.JSON(http.StatusOK, users)
+}
+
+func (uHandler *UserHandler) GetUserByID(context *gin.Context) {
+
+	param := context.Param("id")
+
+	id, err := strconv.Atoi(param)
+
+	if err != nil {
+		context.JSON(http.StatusNotAcceptable, gin.H{"error": err})
+		return
+	}
+
+	user, err := uHandler.DB.GetUserByID(id)
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{"message": user})
 }
 
 func (uHandler *UserHandler) CreateUser(context *gin.Context) {
@@ -83,5 +107,13 @@ func (uHandler *UserHandler) LoginUser(context *gin.Context) {
 		return
 	}
 
-	context.JSON(http.StatusAccepted, gin.H{"success": "User logged in"})
+	token := jwt.New(jwt.SigningMethodEdDSA)
+
+	claims := token.Claims.(jwt.MapClaims)
+
+	claims["email"] = user.Email
+	claims["role"] = user.RoleID
+	claims["exp"] = time.Now().Add(time.Hour * 24)
+
+	context.JSON(http.StatusAccepted, gin.H{"success": token})
 }

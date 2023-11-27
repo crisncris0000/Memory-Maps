@@ -69,5 +69,6 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
                 </form>
             </Modal>
         </>
+        
     );
 }
