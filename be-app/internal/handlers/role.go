@@ -20,15 +20,24 @@ func (rHandler *RoleHandler) GetRole(context *gin.Context) {
 	id, err := strconv.Atoi(context.Param("id"))
 
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error converting to integer for role ID",
+			"error":   err,
+		})
 		return
 	}
 
 	role, err := rHandler.DB.GetRole(id)
 
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Failure querying database to get role by ID",
+			"error":   err,
+		})
 	}
 
-	context.JSON(http.StatusOK, role)
+	context.JSON(http.StatusOK, gin.H{
+		"message": "Successfully retrieved role",
+		"role":    role,
+	})
 }

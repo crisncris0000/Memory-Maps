@@ -23,13 +23,19 @@ func (vHandler *VisibilityHandler) GetVisibilityByID(context *gin.Context) {
 	id, err := strconv.Atoi(param)
 
 	if err != nil {
-		context.JSON(http.StatusNotAcceptable, gin.H{"error": err.Error()})
+		context.JSON(http.StatusNotAcceptable, gin.H{
+			"messsage": "Error converting to integer",
+			"error":    err,
+		})
 		return
 	}
 
 	visibilityName, err := vHandler.DB.GetVisibilityByID(id)
 	if err != nil {
-		context.JSON(500, gin.H{"error": err.Error()})
+		context.JSON(500, gin.H{
+			"message": "Error querying database for visibility ID",
+			"error":   err,
+		})
 		return
 	}
 	context.JSON(200, gin.H{"visibility": visibilityName})

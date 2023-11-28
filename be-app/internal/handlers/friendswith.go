@@ -22,14 +22,20 @@ func (fHandler *FriendsWithHandler) GetUserFriends(context *gin.Context) {
 	id, err := strconv.Atoi(param)
 
 	if err != nil {
-		context.JSON(http.StatusNotAcceptable, gin.H{"error": err})
+		context.JSON(http.StatusNotAcceptable, gin.H{
+			"message": "Error converting to integer",
+			"error":   err,
+		})
 		return
 	}
 
 	friends, err := fHandler.DB.GetUserFriends(id)
 
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error querying database to retrieve users friends",
+			"error":   err,
+		})
 	}
 
 	context.JSON(http.StatusOK, friends)
@@ -41,15 +47,21 @@ func (fHandler *FriendsWithHandler) DeleteFriend(context *gin.Context) {
 	id, err := strconv.Atoi(param)
 
 	if err != nil {
-		context.JSON(http.StatusNotAcceptable, gin.H{"error": err})
+		context.JSON(http.StatusNotAcceptable, gin.H{
+			"message": "Error converting to integer",
+			"error":   err,
+		})
 		return
 	}
 
 	err = fHandler.DB.DeleteFriend(id)
 
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error querying database for deleting friend",
+			"error":   err,
+		})
 	}
 
-	context.JSON(http.StatusOK, gin.H{"Message": "Deleted Friend"})
+	context.JSON(http.StatusOK, gin.H{"message": "Deleted Friend"})
 }

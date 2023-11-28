@@ -21,7 +21,10 @@ func (cHandler *CommentsHandler) GetAllComments(context *gin.Context) {
 	comments, err := cHandler.DB.GetAllComments()
 
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error retrieving all comments",
+			"error":   err,
+		})
 	}
 
 	context.JSON(http.StatusOK, comments)
@@ -33,24 +36,35 @@ func (cHandler *CommentsHandler) GetAllCommentsByMarkerPostID(context *gin.Conte
 	id, err := strconv.Atoi(param)
 
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error converting to integer",
+			"error":   err,
+		})
 	}
 
 	comments, err := cHandler.DB.GetCommentsByMarkerID(id)
 
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error querying database get comments by marker ID",
+			"error":   err,
+		})
 	}
 
-	context.JSON(http.StatusOK, comments)
+	context.JSON(http.StatusOK, gin.H{
+		"message":  "Successfully retrieved comments for marker post",
+		"comments": comments,
+	})
 }
 
 func (cHandler *CommentsHandler) CreateComment(context *gin.Context) {
 	var comment models.Comments
 
 	if err := context.ShouldBindJSON(&comment); err != nil {
-		fmt.Println("Error binding JSON", err)
-		context.JSON(http.StatusNotAcceptable, gin.H{"error": err})
+		context.JSON(http.StatusNotAcceptable, gin.H{
+			"message": "Error binding JSON for Comment",
+			"error":   err,
+		})
 		return
 	}
 
@@ -58,29 +72,40 @@ func (cHandler *CommentsHandler) CreateComment(context *gin.Context) {
 
 	if err != nil {
 		fmt.Println("Error Creating Comment", err)
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"Message": "Erorr querying database for creating comment",
+			"error":   err,
+		})
 		return
 	}
 
-	context.JSON(http.StatusAccepted, gin.H{"Message": "Comment has been posted"})
+	context.JSON(http.StatusAccepted, gin.H{"message": "Comment has been posted"})
 }
 
 func (cHandler *CommentsHandler) UpdateComment(context *gin.Context) {
 	var comment models.Comments
 
 	if err := context.ShouldBindJSON(&comment); err != nil {
-		context.JSON(http.StatusNotAcceptable, gin.H{"error": "error binding json " + err.Error()})
+		context.JSON(http.StatusNotAcceptable, gin.H{
+			"message": "Error binding json for comment",
+			"error":   err,
+		})
 		return
 	}
 
 	err := cHandler.DB.UpdateComment(comment.Comment)
 
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "error updating comment " + err.Error()})
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error updating comment",
+			"error":   err,
+		})
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{"Message": "Comment has been updated"})
+	context.JSON(http.StatusOK, gin.H{
+		"message": "Comment has been updated",
+	})
 }
 
 func (cHandler *CommentsHandler) DeleteComment(context *gin.Context) {
@@ -89,16 +114,24 @@ func (cHandler *CommentsHandler) DeleteComment(context *gin.Context) {
 	id, err := strconv.Atoi(param)
 
 	if err != nil {
-		context.JSON(http.StatusNotAcceptable, gin.H{"error": err})
+		context.JSON(http.StatusNotAcceptable, gin.H{
+			"message": "Error converting id to integer",
+			"error":   err,
+		})
 		return
 	}
 
 	err = cHandler.DB.DeleteCommentByID(id)
 
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error deleting comment",
+			"error":   err,
+		})
 		return
 	}
 
-	context.JSON(http.StatusOK, gin.H{"Message": "Successfully deleted comment"})
+	context.JSON(http.StatusOK, gin.H{
+		"message": "Successfully deleted comment",
+	})
 }
