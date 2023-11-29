@@ -10,7 +10,7 @@ export default function Navigation() {
     return (
         <Navbar className="bg-body-tertiary custom-navbar">
             <Container>
-                <Link className="nav-link" to={"/"}><Navbar.Brand>Nostalgia Maps</Navbar.Brand></Link>
+                <Link className="nav-link" to="/"><Navbar.Brand>Nostalgia Maps</Navbar.Brand></Link>
                 <Navbar.Toggle/>
                 <Navbar.Collapse className="justify-content-end">
                     <NavDropdown title="Friends List" id="basic-nav-dropdown">

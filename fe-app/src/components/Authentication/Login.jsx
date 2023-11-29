@@ -19,7 +19,7 @@ export default function Login() {
                     <input type="password" id="password" name="password" required />
                 </div>
 
-                <button type="submit">Register</button>
+                <Link to="/register"><button type="submit">Register</button></Link>
                 <button type="submit">Login</button>
             </div>
 

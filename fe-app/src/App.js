@@ -5,6 +5,7 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './components/Authentication/Login';
 import Maps from './components/Maps/Maps';
+import Register from './components/Authentication/Register';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path='/' element={<Home />}></Route>
         <Route path='/login' element={<Login />}></Route>
         <Route path='/maps' element={<Maps />}></Route>
+        <Route path='/register' element={<Register />}></Route>
       </Routes>
       </div>
     </Router>
