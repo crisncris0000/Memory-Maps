@@ -2,11 +2,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 80px;
 }
 
 .map-content {
-  width: 1000px;
-  height: 700px;
+  width: 800px;
+  height: 500px;
   border: 1px solid #ccc; 
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -14,6 +15,7 @@
 .search-box-container {
   position: absolute;
   z-index: 100;
+  padding: 5px 0 0 5px;
 }
 
 .upload-label {

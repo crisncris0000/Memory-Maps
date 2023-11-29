@@ -5,6 +5,7 @@ import { SearchBox } from '@mapbox/search-js-react';
 import LocationInfo from './LocationInfo';
 import axios from 'axios';
 import MarkerInfo from './MarkerInfo';
+import Navigation from './Navigation';
 
 
 export default function Maps() {
@@ -71,12 +72,13 @@ export default function Maps() {
 
     return (
         <>
+            <Navigation />
             <LocationInfo show={showForm} setShow={setShowForm} longitude={longitude} latitude={latitude} onHide={handleOnClose}/>
             <MarkerInfo show={showMarkerInfo} setShow={setShowMarkerInfo} markerPost={selectedMarker}/>
             <div className="map-container">
                 <div className="map-content">
                     <div ref={mapContainerRef}
-                    style={{width: "100%", height: "100%"}}>
+                    style={{width: "100%", height: "100%", borderRadius: "5px"}}>
                         <div className="search-box-container">
                             <SearchBox
                             accessToken={process.env.REACT_APP_MAPS_API_KEY} 

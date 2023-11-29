@@ -73,7 +73,7 @@ func (cHandler *CommentsHandler) CreateComment(context *gin.Context) {
 	if err != nil {
 		fmt.Println("Error Creating Comment", err)
 		context.JSON(http.StatusInternalServerError, gin.H{
-			"Message": "Erorr querying database for creating comment",
+			"message": "Erorr querying database for creating comment",
 			"error":   err,
 		})
 		return
