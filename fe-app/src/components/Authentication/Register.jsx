@@ -4,27 +4,50 @@ import '../../css/register.css'
 export default function Register() {
     return (
         <>
-            <div className="register-container">
-                <h2>Register</h2>
-                <form onSubmit={null}>
-                    <div className="form-group">
-                        <label htmlFor="name">Name</label>
-                        <input type="text" id="name" name="name" required/>
-                    </div>
+<div className="register-container">
+      <h2>Register</h2>
+      <form>
+        <div className="form-group">
+          <label className="label">First Name</label>
+          <input
+            type="text"
+            className="input"
+            placeholder="Enter your first name"
+          />
+        </div>
 
-                    <div className="form-group">
-                        <label htmlFor="email">Email</label>
-                        <input type="email" id="email" name="email" required/>
-                    </div>
+        <div className="form-group">
+          <label className="label">Last Name</label>
+          <input
+            type="text"
+            className="input"
+            placeholder="Enter your last name"
+          />
+        </div>
 
-                    <div className="form-group">
-                        <label htmlFor="password">Password</label>
-                        <input type="password" id="password" name="password" required/>
-                    </div>
+        <div className="form-group">
+          <label className="label">Email</label>
+          <input
+            type="email"
+            className="input"
+            placeholder="Enter your email"
+          />
+        </div>
 
-                    <button type="submit">Register</button>
-                </form>
-            </div>
+        <div className="form-group">
+          <label className="label">Password</label>
+          <input
+            type="password"
+            className="input"
+            placeholder="Enter your password"
+          />
+        </div>
+
+        <button type="submit" className="button">
+          Register
+        </button>
+      </form>
+    </div>
         </>
     )
 }
