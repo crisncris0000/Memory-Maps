@@ -1,27 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../../css/login.css';
 import Google from '../../images/google-logo.png';
 import Facebook from '../../images/facebook-logo.png';
 import { Link } from 'react-router-dom';
+import axios from 'axios'
 
 export default function Login() {
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+
+    const handleSubmit = () => {
+        axios.post("http://localhost:8080/")
+    }
+
     return (
         <div className="login-container">
             <h2>Login</h2>
-            <div className="form-container">
+            <form className="form-container" onSubmit={handleSubmit}>
                 <div className="input-group">
                     <label htmlFor="email">Email</label>
-                    <input type="email" id="email" name="email" required />
+                    <input type="email" id="email" name="email" required 
+                    onChange={(e) => setEmail(e.target.value)}/>
                 </div>
                 
                 <div className="input-group">
                     <label htmlFor="password">Password</label>
-                    <input type="password" id="password" name="password" required />
+                    <input type="password" id="password" name="password" required 
+                    onChange={(e) => setPassword(e.target.value)}/>
                 </div>
 
                 <Link to="/register"><button type="submit">Register</button></Link>
                 <button type="submit">Login</button>
-            </div>
+            </form>
 
             <p>Or login using one of the following services:</p>
             <button className="oauth-btn google">

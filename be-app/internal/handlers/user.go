@@ -29,7 +29,10 @@ func (uHandler *UserHandler) GetUsers(context *gin.Context) {
 	users, err := uHandler.DB.GetUsers()
 
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error retrieving all users",
+			"error":   err,
+		})
 		return
 	}
 
@@ -88,6 +91,7 @@ func (uHandler *UserHandler) CreateUser(context *gin.Context) {
 	}
 
 	user.Password = hashedPassword
+	user.RoleID = 1
 
 	err = uHandler.DB.CreateUser(user)
 

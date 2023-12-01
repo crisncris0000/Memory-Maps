@@ -103,11 +103,16 @@ func (uModel *UserModelImpl) CreateUser(user User) error {
 	createdAt := time.Now()
 	updatedAt := time.Now()
 
-	exists := uModel.UserExists(user.Email)
+	exists, err := uModel.UserExists(user.Email)
 
-	if !exists {
+	if err != nil {
+		fmt.Println("error checking count ", err)
+		return err
+	}
+
+	if exists {
 		fmt.Println("User already exist")
-		return errors.New("user exist")
+		return errors.New("User exist")
 	}
 
 	hashedPassword, err := utils.HashPassword(user.Password)
@@ -116,38 +121,29 @@ func (uModel *UserModelImpl) CreateUser(user User) error {
 		return err
 	}
 
-	result, err := uModel.DB.Exec(query, user.Email, hashedPassword, user.RoleID, createdAt, updatedAt)
+	_, err = uModel.DB.Exec(query, user.Email, hashedPassword, user.RoleID, createdAt, updatedAt)
 
 	if err != nil {
 		fmt.Println("Error querying a database", err)
 		return err
 	}
 
-	id, err := result.LastInsertId()
-
-	fmt.Println("Last inserted id", id)
-
 	if err != nil {
 		return err
 	}
 
-	fmt.Println(id)
-
 	return nil
 }
 
-func (uModel *UserModelImpl) UserExists(email string) bool {
-	query := `SELECT * FROM Users WHERE Users.email = ?`
+func (uModel *UserModelImpl) UserExists(email string) (bool, error) {
+	query := `SELECT COUNT(*) FROM Users WHERE Users.email = ?`
 
-	var user User
-
-	err := uModel.DB.QueryRow(query).Scan(&user.ID, &user.Email, &user.Password, &user.RoleID,
-		&user.CreatedAt, &user.UpdatedAt)
+	var count int
+	err := uModel.DB.QueryRow(query, email).Scan(&count)
 
 	if err != nil {
-		fmt.Println("User does not exist", err)
-		return false
+		return false, err
 	}
 
-	return true
+	return count > 0, nil
 }
