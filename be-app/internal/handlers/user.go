@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -123,9 +124,14 @@ func (uHandler *UserHandler) LoginUser(context *gin.Context) {
 	user, err := uHandler.DB.GetUserByEmail(loginForm.Email)
 
 	if err != nil {
-		context.JSON(http.StatusNotFound, gin.H{"error": err})
+		context.JSON(http.StatusNotFound, gin.H{
+			"message": "Cannot find user's email",
+			"error":   err,
+		})
 		return
 	}
+
+	fmt.Println(loginForm.Password, user.Password)
 
 	err = utils.ComparePasswords(user.Password, loginForm.Password)
 

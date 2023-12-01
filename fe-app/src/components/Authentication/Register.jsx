@@ -17,7 +17,7 @@ export default function Register() {
             email,
             password
         }).then((response) => {
-            console.log(response.message);
+            console.log(response);
         }).catch((error) => {
             console.log(error);
         })

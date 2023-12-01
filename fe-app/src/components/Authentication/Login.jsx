@@ -11,8 +11,18 @@ export default function Login() {
     const [password, setPassword] = useState("");
 
 
-    const handleSubmit = () => {
-        axios.post("http://localhost:8080/")
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+
+        axios.post("http://localhost:8080/users/login", {
+            email, 
+            password,
+        }).then((response) => {
+            console.log(response.data);
+        }).catch((error) => {
+            console.log(error);
+        })
     }
 
     return (

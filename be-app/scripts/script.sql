@@ -4,7 +4,7 @@ USE NostalgiaMaps;
 DROP TABLE IF EXISTS PendingRequest;
 DROP TABLE IF EXISTS FriendsWith;
 DROP TABLE IF EXISTS Comments;
-DROP TABLE IF EXISTS MarkerTags;
+DROP TABLE IF EXISTS MarkerPostTags;
 DROP TABLE IF EXISTS MarkerPost;
 DROP TABLE IF EXISTS Tags;
 DROP TABLE IF EXISTS Users;
@@ -89,9 +89,6 @@ VALUES ('ADMIN'), ('USER');
 
 INSERT INTO Visibility(view)
 VALUES('Public'), ('Private');
-
-INSERT INTO Users(email, password, role_id, created_at, updated_at)
-VALUES ('Christopherrivera384@gmail.com', '123', 1,  CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 SELECT * FROM Users;
 
