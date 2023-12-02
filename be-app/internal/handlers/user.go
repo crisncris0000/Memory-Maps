@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -130,8 +129,6 @@ func (uHandler *UserHandler) LoginUser(context *gin.Context) {
 		})
 		return
 	}
-
-	fmt.Println(loginForm.Password, user.Password)
 
 	err = utils.ComparePasswords(user.Password, loginForm.Password)
 
