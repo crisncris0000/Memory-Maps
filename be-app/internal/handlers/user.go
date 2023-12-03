@@ -80,20 +80,9 @@ func (uHandler *UserHandler) CreateUser(context *gin.Context) {
 		return
 	}
 
-	hashedPassword, err := utils.HashPassword(user.Password)
-
-	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Error hashing password for user",
-			"error":   err,
-		})
-		return
-	}
-
-	user.Password = hashedPassword
 	user.RoleID = 1
 
-	err = uHandler.DB.CreateUser(user)
+	err := uHandler.DB.CreateUser(user)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{
@@ -130,9 +119,9 @@ func (uHandler *UserHandler) LoginUser(context *gin.Context) {
 		return
 	}
 
-	err = utils.ComparePasswords(user.Password, loginForm.Password)
+	matches := utils.ComparePasswords(user.Password, loginForm.Password)
 
-	if err != nil {
+	if !matches {
 		context.JSON(http.StatusNotAcceptable, gin.H{
 			"message": "passwords do not match",
 			"error":   err,
