@@ -3,9 +3,25 @@ import '../../css/login.css';
 import Google from '../../images/google-logo.png';
 import Facebook from '../../images/facebook-logo.png';
 import { Link } from 'react-router-dom';
-import axios from 'axios'
+import axios from 'axios';
+import GoogleAuth from './GoogleAuth';
+import { gapi } from 'gapi-script';
+import { useEffect } from 'react';
+
+const clientID = process.env.REACT_APP_CLIENT_KEY
 
 export default function Login() {
+
+    useEffect(() => {
+        function start() {
+            gapi.client.init({
+                clientID, 
+                scope: ""
+            })
+        }
+
+        gapi.load("client:auth2", start)
+    });
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -46,10 +62,7 @@ export default function Login() {
             </form>
 
             <p>Or login using one of the following services:</p>
-            <button className="oauth-btn google">
-                <img src={Google} alt="Google Logo"/>
-                Login with Google
-            </button>
+            <GoogleAuth />
             <button className="oauth-btn facebook">
                 <img src={Facebook} alt="Facebook Logo" />
                 Login with Facebook

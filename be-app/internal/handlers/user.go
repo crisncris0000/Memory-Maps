@@ -97,7 +97,7 @@ func (uHandler *UserHandler) CreateUser(context *gin.Context) {
 	})
 }
 
-func (uHandler *UserHandler) LoginUser(context *gin.Context) {
+func (uHandler *UserHandler) AuthenticateUser(context *gin.Context) {
 
 	var loginForm LoginForm
 
@@ -135,6 +135,23 @@ func (uHandler *UserHandler) LoginUser(context *gin.Context) {
 
 	claims["email"] = user.Email
 	claims["role"] = user.RoleID
+	claims["exp"] = time.Now().Add(time.Hour * 24)
+
+	context.JSON(http.StatusAccepted, gin.H{
+		"message": "Successfully login user",
+		"token":   token,
+	})
+}
+
+func (uHandler *UserHandler) GetJWTToken(context *gin.Context) {
+	email := context.Param("email")
+
+	token := jwt.New(jwt.SigningMethodEdDSA)
+
+	claims := token.Claims.(jwt.MapClaims)
+
+	claims["email"] = email
+	claims["role"] = 1
 	claims["exp"] = time.Now().Add(time.Hour * 24)
 
 	context.JSON(http.StatusAccepted, gin.H{
