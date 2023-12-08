@@ -3,12 +3,10 @@ package handlers
 import (
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/crisncris0000/Memory-Maps/be-app/internal/models"
 	"github.com/crisncris0000/Memory-Maps/be-app/internal/utils"
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt"
 )
 
 type UserHandler struct {
@@ -129,13 +127,7 @@ func (uHandler *UserHandler) AuthenticateUser(context *gin.Context) {
 		return
 	}
 
-	token := jwt.New(jwt.SigningMethodEdDSA)
-
-	claims := token.Claims.(jwt.MapClaims)
-
-	claims["email"] = user.Email
-	claims["role"] = user.RoleID
-	claims["exp"] = time.Now().Add(time.Hour * 24)
+	token := utils.GenerateJWTToken(user.Email, user.RoleID)
 
 	context.JSON(http.StatusAccepted, gin.H{
 		"message": "Successfully login user",
@@ -146,13 +138,7 @@ func (uHandler *UserHandler) AuthenticateUser(context *gin.Context) {
 func (uHandler *UserHandler) GetJWTToken(context *gin.Context) {
 	email := context.Param("email")
 
-	token := jwt.New(jwt.SigningMethodEdDSA)
-
-	claims := token.Claims.(jwt.MapClaims)
-
-	claims["email"] = email
-	claims["role"] = 1
-	claims["exp"] = time.Now().Add(time.Hour * 24)
+	token := utils.GenerateJWTToken(email, 1)
 
 	context.JSON(http.StatusAccepted, gin.H{
 		"message": "Successfully login user",
