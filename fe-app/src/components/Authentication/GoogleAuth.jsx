@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { GoogleLogin } from 'react-google-login';
+import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import axios from 'axios';
 
 export default function GoogleAuth() {
@@ -13,13 +13,18 @@ export default function GoogleAuth() {
     console.log(obj)
   }
 
+  const onError = (error) => {
+    console.log(error)
+  }
+
   return (
-    <div className="sign-in-button">
-      <GoogleLogin 
-        clientId={clientID}
-        cookiePolicy="single_host_origin"
-        onSuccess={onSuccess}
-      />
-    </div>
+    <GoogleOAuthProvider clientId={clientID}>
+      <div className="sign-in-button">
+        <GoogleLogin 
+          onSuccess={onSuccess}
+          onError={onError}
+        />
+      </div>
+    </GoogleOAuthProvider>
   )
 }
