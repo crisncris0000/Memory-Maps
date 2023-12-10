@@ -28,7 +28,7 @@ func ComparePasswords(hashedPassword, password string) bool {
 	return err == nil
 }
 
-func GenerateJWTToken(email string, role int) string {
+func GenerateJWTToken(email string, role int) (string, error) {
 
 	token := jwt.New(jwt.SigningMethodHS256)
 
@@ -36,6 +36,7 @@ func GenerateJWTToken(email string, role int) string {
 
 	if err != nil {
 		fmt.Println("Error converting token to string", err)
+		return "", err
 	}
 
 	claims := token.Claims.(jwt.MapClaims)
@@ -44,5 +45,5 @@ func GenerateJWTToken(email string, role int) string {
 	claims["role"] = role
 	claims["exp"] = time.Now().Add(time.Hour * 24)
 
-	return tokenString
+	return tokenString, nil
 }

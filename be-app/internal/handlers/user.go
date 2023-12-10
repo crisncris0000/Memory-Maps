@@ -127,7 +127,14 @@ func (uHandler *UserHandler) AuthenticateUser(context *gin.Context) {
 		return
 	}
 
-	token := utils.GenerateJWTToken(user.Email, user.RoleID)
+	token, err := utils.GenerateJWTToken(user.Email, user.RoleID)
+
+	if err != nil {
+		context.JSON(http.StatusNotAcceptable, gin.H{
+			"message": "Error retrieving JWT",
+			"error":   err,
+		})
+	}
 
 	context.JSON(http.StatusAccepted, gin.H{
 		"message": "Successfully login user",
