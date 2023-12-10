@@ -8,9 +8,7 @@ export default function GoogleAuth() {
   const [email, setEmail] = useState("");
 
   const onSuccess = (response) => {
-    const obj = response.profileObj
-
-    console.log(obj)
+    console.log(response)
   }
 
   const onError = (error) => {
@@ -20,7 +18,7 @@ export default function GoogleAuth() {
   return (
     <GoogleOAuthProvider clientId={clientID}>
       <div className="sign-in-button">
-        <GoogleLogin 
+        <GoogleLogin
           onSuccess={onSuccess}
           onError={onError}
         />

@@ -8,6 +8,8 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+var jwtKey = []byte("SECRET_KEY")
+
 func HashPassword(password string) (string, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 
@@ -26,7 +28,7 @@ func ComparePasswords(hashedPassword, password string) bool {
 	return err == nil
 }
 
-func GenerateJWTToken(email string, role int) *jwt.Token {
+func GenerateJWTToken(email string, role int) string {
 	token := jwt.New(jwt.SigningMethodEdDSA)
 
 	claims := token.Claims.(jwt.MapClaims)
@@ -35,5 +37,11 @@ func GenerateJWTToken(email string, role int) *jwt.Token {
 	claims["role"] = role
 	claims["exp"] = time.Now().Add(time.Hour * 24)
 
-	return token
+	tokenString, err := token.SignedString(jwtKey)
+
+	if err != nil {
+		fmt.Println("Error converting token to string", err)
+	}
+
+	return tokenString
 }

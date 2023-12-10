@@ -134,14 +134,3 @@ func (uHandler *UserHandler) AuthenticateUser(context *gin.Context) {
 		"token":   token,
 	})
 }
-
-func (uHandler *UserHandler) GetJWTToken(context *gin.Context) {
-	email := context.Param("email")
-
-	token := utils.GenerateJWTToken(email, 1)
-
-	context.JSON(http.StatusAccepted, gin.H{
-		"message": "Successfully login user",
-		"token":   token,
-	})
-}
