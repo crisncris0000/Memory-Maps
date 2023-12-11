@@ -32,18 +32,18 @@ func GenerateJWTToken(email string, role int) (string, error) {
 
 	token := jwt.New(jwt.SigningMethodHS256)
 
+	claims := token.Claims.(jwt.MapClaims)
+
+	claims["email"] = email
+	claims["role"] = role
+	claims["exp"] = time.Now().Add(time.Hour * 24)
+
 	tokenString, err := token.SignedString(secretKey)
 
 	if err != nil {
 		fmt.Println("Error converting token to string", err)
 		return "", err
 	}
-
-	claims := token.Claims.(jwt.MapClaims)
-
-	claims["email"] = email
-	claims["role"] = role
-	claims["exp"] = time.Now().Add(time.Hour * 24)
 
 	return tokenString, nil
 }

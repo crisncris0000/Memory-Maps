@@ -6,14 +6,20 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import GoogleAuth from './GoogleAuth';
 import { gapi } from 'gapi-script';
-import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUser } from '../../user/userSlice';
+import { jwtDecode } from "jwt-decode";
+
+const clientID = process.env.REACT_APP_CLIENT_KEY
 
 export default function Login() {
 
-    const clientID = process.env.REACT_APP_CLIENT_KEY;
-    
-    const dispatch = useDispatch();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
     const user = useSelector((state) => state.user.value);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         function start() {
@@ -26,19 +32,20 @@ export default function Login() {
         gapi.load("client:auth2", start)
     });
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
 
         axios.post("http://localhost:8080/users/login", {
             email, 
             password,
         }).then((response) => {
-            console.log(response.data);
+
+            const decodedJWT = jwtDecode(response.data.token);
+
+            dispatch(setUser(decodedJWT))
+
+            localStorage.setItem("token", response.data.token);
         }).catch((error) => {
             console.log(error);
         })
