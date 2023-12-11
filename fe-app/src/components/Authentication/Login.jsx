@@ -6,11 +6,14 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import GoogleAuth from './GoogleAuth';
 import { gapi } from 'gapi-script';
-import { useEffect } from 'react';
-
-const clientID = process.env.REACT_APP_CLIENT_KEY
+import { useSelector, useDispatch } from 'react-redux';
 
 export default function Login() {
+
+    const clientID = process.env.REACT_APP_CLIENT_KEY;
+    
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user.value);
 
     useEffect(() => {
         function start() {
