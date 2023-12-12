@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
+import Map from '../../images/pinpoint-map.jpg';
 
 export default function MarkerInfo({ show, setShow, markerPost}) {
 
@@ -13,8 +14,11 @@ export default function MarkerInfo({ show, setShow, markerPost}) {
     <>
       {show &&
         <Modal show={show} onHide={handleClose} animation={false} className="location-modal mx-auto" centered>
-          <Modal.Header closeButton> 
+          <Modal.Header> 
             <Modal.Title>
+              <div className="img-container">
+                <img src={Map}/>
+              </div>
             </Modal.Title>
           </Modal.Header>
                   

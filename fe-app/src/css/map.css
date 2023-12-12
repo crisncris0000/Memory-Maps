@@ -30,3 +30,7 @@
   font-weight: bold;
   margin-top: 15px;
 }
+
+.img-container img {
+  width: 100%;
+}

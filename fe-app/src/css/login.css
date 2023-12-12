@@ -49,14 +49,6 @@ p {
     background-color: #C33C23;
 }
 
-.oauth-btn.facebook {
-    background-color: #3B5998;
-}
-
-.oauth-btn.facebook:hover {
-    background-color: #2D4477;
-}
-
 .form-container button {
     margin: 10px;
 }
