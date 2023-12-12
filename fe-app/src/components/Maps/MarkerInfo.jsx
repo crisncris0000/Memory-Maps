@@ -7,7 +7,7 @@ export default function MarkerInfo({ show, setShow, markerPost}) {
   const handleClose = () => setShow(false);
 
   useEffect(() => {
-    
+    console.log(markerPost)
   })
 
   return (

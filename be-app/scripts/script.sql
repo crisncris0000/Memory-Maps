@@ -65,6 +65,13 @@ CREATE TABLE MarkerPost (
     FOREIGN KEY (visibility_id) REFERENCES Visibility(id)
 );
 
+CREATE TABLE MarkerPostImage (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    image BLOB NOT NULL,
+    marker_id INT NOT NULL,
+    FOREIGN KEY (marker_id) REFERENCES MarkerPost(id)
+);
+
 CREATE TABLE MarkerPostTags (
     marker_id INT NOT NULL,
     tag_id INT NOT NULL,
