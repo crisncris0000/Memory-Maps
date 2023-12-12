@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import '../../css/login.css';
-import Google from '../../images/google-logo.png';
-import Facebook from '../../images/facebook-logo.png';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import GoogleAuth from './GoogleAuth';
@@ -73,10 +71,6 @@ export default function Login() {
 
             <p>Or login using one of the following services:</p>
             <GoogleAuth />
-            <button className="oauth-btn facebook">
-                <img src={Facebook} alt="Facebook Logo" />
-                Login with Facebook
-            </button>
 
             <Link to="/">Return to home</Link>
         </div>
