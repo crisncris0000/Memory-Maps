@@ -51,11 +51,8 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
             success(result) {
                 const reader = new FileReader();
                 reader.onloadend = () => {
-                    // Convert the result to a base64-encoded string
                     const base64String = reader.result.split(',')[1];
                     setImage(base64String);
-    
-                    console.log(base64String);
                 };
                 reader.readAsDataURL(result);
             },

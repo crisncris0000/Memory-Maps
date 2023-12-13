@@ -24,6 +24,7 @@ type MarkerPostDTO struct {
 	Longitude    float32 `json:"longitude"`
 	Description  string  `json:"description"`
 	Image        []byte  `json:"image"`
+	MimeType     string  `json:"mimeType"`
 	Likes        int     `json:"likes"`
 	VisibilityID int     `json:"visibilityID"`
 	UserEmail    string  `json:"userEmail"`
@@ -59,7 +60,25 @@ func (mHandler *MarkerPostHandler) CreateMarkerPost(context *gin.Context) {
 		return
 	}
 
-	fmt.Println(markerPostDTO.Image)
+	err := mHandler.DB.CreateMarkerPost(models.MarkerPost{
+		Lattitude:    markerPostDTO.Lattitude,
+		Longitude:    markerPostDTO.Longitude,
+		Description:  markerPostDTO.Description,
+		Likes:        markerPostDTO.Likes,
+		VisibilityID: markerPostDTO.VisibilityID,
+	})
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "error creating marker post with given data",
+			"error":   err,
+		})
+		return
+	}
+
+	context.JSON(http.StatusInternalServerError, gin.H{
+		"message": "marker post created",
+	})
 }
 
 func (mHandler *MarkerPostHandler) FilterByDate(context *gin.Context) {
