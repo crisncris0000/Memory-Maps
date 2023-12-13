@@ -15,8 +15,6 @@ export default function Login() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
-    const user = useSelector((state) => state.user.value);
     const dispatch = useDispatch();
 
     useEffect(() => {

@@ -1,12 +1,12 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
 
 	"github.com/crisncris0000/Memory-Maps/be-app/internal/models"
-	"github.com/crisncris0000/Memory-Maps/be-app/internal/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,6 +17,16 @@ type MarkerPostHandler struct {
 type DateRange struct {
 	StartDate string `json:"startDate"`
 	EndDate   string `json:"endDate"`
+}
+
+type MarkerPostDTO struct {
+	Lattitude    float32 `json:"lattitude"`
+	Longitude    float32 `json:"longitude"`
+	Description  string  `json:"description"`
+	Image        []byte  `json:"image"`
+	Likes        int     `json:"likes"`
+	VisibilityID int     `json:"visibilityID"`
+	UserEmail    string  `json:"userEmail"`
 }
 
 func NewMarkerPostHandler(mModel *models.MarkerPostImpl) *MarkerPostHandler {
@@ -38,47 +48,18 @@ func (mHandler *MarkerPostHandler) GetAllMarkerPosts(context *gin.Context) {
 }
 
 func (mHandler *MarkerPostHandler) CreateMarkerPost(context *gin.Context) {
-	latitudeStr := context.PostForm("latitude")
-	longitudeStr := context.PostForm("longitude")
-	imageFile, _ := context.FormFile("image")
-	description := context.PostForm("description")
-	visibilityIDStr := context.PostForm("visibilityID")
-	userIDStr := context.PostForm("userID")
+	var markerPostDTO MarkerPostDTO
 
-	latitude, longitude, image, description, visibilityID, userID, err :=
-		utils.HandleMarkerPostConversion(latitudeStr, longitudeStr, userIDStr, description, visibilityIDStr, imageFile)
-
-	if err != nil {
-		context.JSON(http.StatusNotAcceptable, gin.H{
-			"message": "Error converting when creating marker post",
-			"error":   err,
-		})
-		return
-	}
-
-	marker := models.MarkerPost{
-		Lattitude:    latitude,
-		Longitude:    longitude,
-		Image:        image,
-		Description:  description,
-		Likes:        0,
-		VisibilityID: visibilityID,
-		UserID:       userID,
-	}
-
-	err = mHandler.DB.CreateMarkerPost(marker)
-
-	if err != nil {
+	if err := context.ShouldBindJSON(&markerPostDTO); err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Error querying database for creating marker post",
+			"message": "error binding json of marker post DTO",
 			"error":   err,
 		})
+		fmt.Println(err)
 		return
 	}
 
-	context.JSON(http.StatusCreated, gin.H{
-		"message": "Successfully created marker post",
-	})
+	fmt.Println(markerPostDTO.Image)
 }
 
 func (mHandler *MarkerPostHandler) FilterByDate(context *gin.Context) {

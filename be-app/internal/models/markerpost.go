@@ -10,7 +10,6 @@ type MarkerPost struct {
 	ID           int       `json:"id" db:"id"`
 	Lattitude    float32   `json:"latitude" db:"latitude"`
 	Longitude    float32   `json:"longitude" db:"longitude"`
-	Image        []byte    `json:"image" db:"image"`
 	Description  string    `json:"description" db:"description"`
 	Likes        int       `json:"likes" db:"likes"`
 	VisibilityID int       `json:"visibilityID" db:"visibility_id"`
@@ -49,7 +48,7 @@ func (mModel *MarkerPostImpl) GetMarkerPosts() ([]MarkerPost, error) {
 	for rows.Next() {
 		var post MarkerPost
 
-		if err := rows.Scan(&post.ID, &post.Lattitude, &post.Longitude, &post.Image, &post.Description,
+		if err := rows.Scan(&post.ID, &post.Lattitude, &post.Longitude, &post.Description,
 			&post.Likes, &post.VisibilityID, &post.UserID, &post.CreatedAt, &post.UpdatedAt); err != nil {
 
 			fmt.Println("Error getting posts", err)
@@ -77,7 +76,7 @@ func (mModel *MarkerPostImpl) GetPostsByDate(startDate, endDate time.Time) ([]Ma
 	if err != nil {
 		var post MarkerPost
 
-		if err := rows.Scan(&post.ID, &post.Lattitude, &post.Longitude, &post.Image, post.Description,
+		if err := rows.Scan(&post.ID, &post.Lattitude, &post.Longitude, post.Description,
 			&post.Likes, &post.VisibilityID, &post.UserID, &post.CreatedAt, &post.UpdatedAt); err != nil {
 
 			fmt.Println("Error getting posts", err)
@@ -105,7 +104,7 @@ func (mModel *MarkerPostImpl) CreateMarkerPost(post MarkerPost) error {
 
 	fmt.Println(created, updated)
 
-	res, err := mModel.DB.Exec(query, post.Lattitude, post.Longitude, post.Image, post.Description,
+	res, err := mModel.DB.Exec(query, post.Lattitude, post.Longitude, post.Description,
 		post.Likes, post.VisibilityID, post.UserID, created, updated)
 
 	if err != nil {
@@ -126,7 +125,7 @@ func (mModel *MarkerPostImpl) UpdatePost(post MarkerPost) error {
 	query := `UPDATE MarkerPost SET latitude = ?, longitude = ?, image = ?, 
 	description = ?, likes = ?, visibility = ?, user_id = ?, created_at = ?, updated_at = ? WHERE id = ?`
 
-	_, err := mModel.DB.Exec(query, post.Lattitude, post.Longitude, post.Image, post.Description,
+	_, err := mModel.DB.Exec(query, post.Lattitude, post.Longitude, post.Description,
 		post.Likes, post.VisibilityID, post.UserID, post.CreatedAt, post.UpdatedAt, post.ID)
 
 	if err != nil {

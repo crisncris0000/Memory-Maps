@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS PendingRequest;
 DROP TABLE IF EXISTS FriendsWith;
 DROP TABLE IF EXISTS Comments;
 DROP TABLE IF EXISTS MarkerPostTags;
+DROP TABLE IF EXISTS MarkerPostImage;
 DROP TABLE IF EXISTS MarkerPost;
 DROP TABLE IF EXISTS Tags;
 DROP TABLE IF EXISTS Users;
@@ -54,7 +55,6 @@ CREATE TABLE MarkerPost (
     id INT PRIMARY KEY AUTO_INCREMENT,
     latitude FLOAT NOT NULL,
     longitude FLOAT NOT NULL,
-    image BLOB NOT NULL,
     description TEXT NOT NULL,
     likes INT NOT NULL,
     visibility_id INT NOT NULL,
@@ -75,6 +75,7 @@ CREATE TABLE MarkerPostImage (
 CREATE TABLE MarkerPostTags (
     marker_id INT NOT NULL,
     tag_id INT NOT NULL,
+    mime_type VARCHAR(50) NOT NULL,
     FOREIGN KEY (marker_id) REFERENCES MarkerPost(id),
     FOREIGN KEY (tag_id) REFERENCES Tags(id)
 );

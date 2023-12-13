@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import Compressor from 'compressorjs';
+
 
 export default function LocationInfo({ show, setShow, longitude, latitude, onHide }) {
 
-    const [image, setImage] = useState(null)
-    const [description, setDescription] = useState(null)
+    const user = useSelector((state) => state.user.value);
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0]
-        setImage(file)
-    }
+    const [image, setImage] = useState(null);
+    const [description, setDescription] = useState(null);
+    const [likes, setLikes] = useState(0);
+    const [visibilityID, setVisibilityID] = useState(null);
 
     const handleClose = () => {
         onHide()
@@ -20,15 +22,15 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
 
     const handleOnSubmit = () => {
     
-        const formData = new FormData();
-        formData.append("latitude", latitude);
-        formData.append("longitude", longitude);
-        formData.append("image", image);
-        formData.append("description", description);
-        formData.append("visibilityID", 1);
-        formData.append("userID", 1);
-    
-        axios.post("http://localhost:8080/marker-posts/new", formData)
+        axios.post("http://localhost:8080/marker-posts/new", {
+            latitude,
+            longitude,
+            description,
+            image,
+            likes,
+            visibilityID,
+            userEmail: user.email,
+        })
             .then((response) => {
                 console.log(response.data);
             })
@@ -36,6 +38,34 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
                 console.log(error);
             });
     };
+
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+    
+        if (!file) {
+            return;
+        }
+    
+        new Compressor(file, {
+            quality: 0.7,
+            success(result) {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    // Convert the result to a base64-encoded string
+                    const base64String = reader.result.split(',')[1];
+                    setImage(base64String);
+    
+                    console.log(base64String);
+                };
+                reader.readAsDataURL(result);
+            },
+            error(err) {
+                console.error('[Compressor.js] Error:', err.message);
+            },
+        });
+    };
+    
+  
     
 
     return (
