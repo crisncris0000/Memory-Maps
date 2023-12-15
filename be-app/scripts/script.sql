@@ -67,7 +67,8 @@ CREATE TABLE MarkerPost (
 
 CREATE TABLE MarkerPostImage (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    image BLOB NOT NULL,
+    image LONGBLOB NOT NULL,
+    mime_type VARCHAR(50),
     marker_id INT NOT NULL,
     FOREIGN KEY (marker_id) REFERENCES MarkerPost(id)
 );
@@ -101,3 +102,5 @@ VALUES('Public'), ('Private');
 SELECT * FROM Users;
 
 SELECT * FROM MarkerPost;
+
+SELECT * FROM MarkerPostImage;

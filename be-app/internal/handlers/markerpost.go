@@ -65,7 +65,8 @@ func (mHandler *MarkerPostHandler) CreateMarkerPost(context *gin.Context) {
 		Longitude:    markerPostDTO.Longitude,
 		Description:  markerPostDTO.Description,
 		Likes:        markerPostDTO.Likes,
-		VisibilityID: markerPostDTO.VisibilityID,
+		VisibilityID: 1,
+		UserID:       1,
 	})
 
 	if err != nil {
