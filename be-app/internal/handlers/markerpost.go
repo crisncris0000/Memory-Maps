@@ -60,7 +60,7 @@ func (mHandler *MarkerPostHandler) CreateMarkerPost(context *gin.Context) {
 		return
 	}
 
-	err := mHandler.DB.CreateMarkerPost(models.MarkerPost{
+	markerID, err := mHandler.DB.CreateMarkerPost(models.MarkerPost{
 		Lattitude:    markerPostDTO.Lattitude,
 		Longitude:    markerPostDTO.Longitude,
 		Description:  markerPostDTO.Description,
@@ -74,6 +74,23 @@ func (mHandler *MarkerPostHandler) CreateMarkerPost(context *gin.Context) {
 			"error":   err,
 		})
 		return
+	}
+
+	markerPostImage := models.MarkerPostImage{
+		Image:    markerPostDTO.Image,
+		MimeType: markerPostDTO.MimeType,
+		MarkerID: int(markerID),
+	}
+
+	iModel := models.NewMarkerPostImageModel(mHandler.DB.DB)
+
+	err = iModel.CreateSingleImage(markerPostImage)
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "error creating marker post image with given data",
+			"error":   err,
+		})
 	}
 
 	context.JSON(http.StatusInternalServerError, gin.H{

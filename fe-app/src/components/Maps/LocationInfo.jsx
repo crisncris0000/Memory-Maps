@@ -11,6 +11,7 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
     const user = useSelector((state) => state.user.value);
 
     const [image, setImage] = useState(null);
+    const [mimeType, setMimeType] = useState(null);
     const [description, setDescription] = useState(null);
     const [likes, setLikes] = useState(0);
     const [visibilityID, setVisibilityID] = useState(null);
@@ -27,6 +28,7 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
             longitude,
             description,
             image,
+            mimeType,
             likes,
             visibilityID,
             userEmail: user.email,
@@ -55,6 +57,7 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
                     setImage(base64String);
                 };
                 reader.readAsDataURL(result);
+                setMimeType(result.type);
             },
             error(err) {
                 console.error('[Compressor.js] Error:', err.message);
@@ -91,7 +94,6 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
                         <Button variant="primary" type="submit">
                             Submit
                         </Button>
-                    
                     </Modal.Footer>
                 </form>
             </Modal>

@@ -13,6 +13,8 @@ type MarkerPostImage struct {
 }
 
 type MarkerPostImageModel interface {
+	CreateSingleImage(markerPostImage MarkerPostImage) error
+	CreateMultipleImages(markerPostImage []MarkerPostImage) error
 }
 
 type MarkerPostImageImpl struct {

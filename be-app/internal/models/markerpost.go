@@ -94,10 +94,10 @@ func (mModel *MarkerPostImpl) GetPostsByDate(startDate, endDate time.Time) ([]Ma
 	return posts, nil
 }
 
-func (mModel *MarkerPostImpl) CreateMarkerPost(post MarkerPost) error {
+func (mModel *MarkerPostImpl) CreateMarkerPost(post MarkerPost) (int64, error) {
 
-	query := `INSERT INTO MarkerPost(latitude, longitude, image, description, likes, visibility_id, user_id, created_at, updated_at)
-	VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`
+	query := `INSERT INTO MarkerPost(latitude, longitude, description, likes, visibility_id, user_id, created_at, updated_at)
+	VALUES(?, ?, ?, ?, ?, ?, ?, ?)`
 
 	created := time.Now()
 	updated := time.Now()
@@ -109,16 +109,16 @@ func (mModel *MarkerPostImpl) CreateMarkerPost(post MarkerPost) error {
 
 	if err != nil {
 		fmt.Println("Error inserting marker post within the database", err)
-		return err
+		return -1, err
 	}
 
-	_, err = res.LastInsertId()
+	id, err := res.LastInsertId()
 
 	if err != nil {
 		fmt.Println("Error getting id of last inserted", err)
 	}
 
-	return nil
+	return id, nil
 }
 
 func (mModel *MarkerPostImpl) UpdatePost(post MarkerPost) error {
