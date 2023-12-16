@@ -54,6 +54,10 @@ func main() {
 	mHandler := handlers.NewMarkerPostHandler(mModel)
 	mRouter := routes.NewMarkerPostRouter(mHandler)
 
+	iModel := models.NewMarkerPostImageModel(database)
+	iHandler := handlers.NewMarkerPostImageHandler(iModel)
+	iRouter := routes.NewMarkerPostImageRouter(iHandler)
+
 	vModel := models.NewVisibilityModel(database)
 	vHandler := handlers.NewVisibilityHandler(vModel)
 	vRouter := routes.NewVisibilityRouter(vHandler)
@@ -73,6 +77,7 @@ func main() {
 	uRouter.InitializeUserRouter(r)
 	rRouter.InitializeRouter(r)
 	mRouter.InitializeRouter(r)
+	iRouter.InitializeRoutes(r)
 	vRouter.InitializeRouter(r)
 	pRouter.InitializeRouter(r)
 	fRouter.InitializeRouter(r)

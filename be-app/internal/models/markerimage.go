@@ -25,6 +25,32 @@ func NewMarkerPostImageModel(db *sql.DB) *MarkerPostImageImpl {
 	return &MarkerPostImageImpl{DB: db}
 }
 
+func (iModel *MarkerPostImageImpl) GetMarkerPostImages(id int) ([]MarkerPostImage, error) {
+
+	var markerPostImages []MarkerPostImage
+
+	query := `SELECT * FROM MarkerPostImage WHERE MarkerPostImage.id = ?`
+
+	rows, err := iModel.DB.Query(query, id)
+
+	if err != nil {
+		fmt.Println("error retrieving MarkerPostImages", err)
+	}
+
+	for rows.Next() {
+		var markerPostImage MarkerPostImage
+
+		err := rows.Scan(&markerPostImage.ID, &markerPostImage.Image, &markerPostImage.MimeType, &markerPostImage.MarkerID)
+
+		if err != nil {
+			fmt.Println("error scanning into MarkerPostImage")
+			return nil, err
+		}
+	}
+
+	return markerPostImages, nil
+}
+
 func (iModel *MarkerPostImageImpl) CreateSingleImage(markerPostImage MarkerPostImage) error {
 	query := `INSERT INTO MarkerPostImage (image, mime_type, marker_id) VALUES(?, ?, ?)`
 
