@@ -19,6 +19,7 @@ export default function Maps() {
     const [selectedMarker, setSelectedMarker] = useState(null);
     const [longitude, setLongitude] = useState(null);
     const [latitude, setLatitude] = useState(null);
+    const [markerPosts, setMarkerPosts] = useState(null);
 
     const handleOnRetrieve = (result) => {
        const coords = result.features[0].geometry.coordinates;
@@ -42,6 +43,9 @@ export default function Maps() {
     useEffect(() => {
 
         axios.get("http://localhost:8080/marker-posts").then((response) => {
+
+            setMarkerPosts(response.data.markerposts);
+            
             response.data.markerposts.forEach((post) => {
                 const marker = new mapboxgl.Marker()
                 .setLngLat([post.longitude, post.latitude])

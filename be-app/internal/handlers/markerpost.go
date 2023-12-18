@@ -94,7 +94,7 @@ func (mHandler *MarkerPostHandler) CreateMarkerPost(context *gin.Context) {
 		})
 	}
 
-	context.JSON(http.StatusInternalServerError, gin.H{
+	context.JSON(http.StatusOK, gin.H{
 		"message": "marker post created",
 	})
 }

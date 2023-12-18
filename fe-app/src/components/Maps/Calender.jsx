@@ -25,6 +25,7 @@ export default function Calender() {
         <DatePicker
           value={selectedEndDate}
           onChange={handleEndDate}
+          minDate={selectedStartDate}
         />
       </LocalizationProvider>
     );

@@ -21,7 +21,7 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
         setShow(false);
     }
 
-    const handleOnSubmit = () => {
+    const handleOnSubmit = (e) => {
     
         axios.post("http://localhost:8080/marker-posts/new", {
             latitude,
