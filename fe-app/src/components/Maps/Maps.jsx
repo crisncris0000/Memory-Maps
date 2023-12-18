@@ -43,21 +43,7 @@ export default function Maps() {
     useEffect(() => {
 
         axios.get("http://localhost:8080/marker-posts").then((response) => {
-
             setMarkerPosts(response.data.markerposts);
-            
-            response.data.markerposts.forEach((post) => {
-                const marker = new mapboxgl.Marker()
-                .setLngLat([post.longitude, post.latitude])
-                .addTo(mapRef.current);
-
-                marker.getElement().addEventListener('click', () => {
-                    setShowMarkerInfo(true);
-                    setSelectedMarker(post);
-                })
-                
-                markerRef.current = marker;
-            })
         }).catch((error) => {
             console.log(error);
         });
@@ -77,6 +63,19 @@ export default function Maps() {
 
     return (
         <>
+            {markerPosts ? markerPosts.forEach((post) => {
+                const marker = new mapboxgl.Marker()
+                .setLngLat([post.longitude, post.latitude])
+                .addTo(mapRef.current);
+
+                marker.getElement().addEventListener('click', () => {
+                    setShowMarkerInfo(true);
+                    setSelectedMarker(post);
+                })
+                
+                markerRef.current = marker;
+            }) : null
+            }
             <Navigation />
             <Calender />
             <LocationInfo show={showForm} setShow={setShowForm} longitude={longitude} latitude={latitude} onHide={handleOnClose}/>
