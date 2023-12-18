@@ -1,13 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
-import Map from '../../images/pinpoint-map.jpg';
+import axios from 'axios';
 
 export default function MarkerInfo({ show, setShow, markerPost}) {
 
   const handleClose = () => setShow(false);
 
   useEffect(() => {
-    console.log(markerPost)
+    if(show) {
+      axios.get(`http://localhost:8080/marker-post/images/${markerPost.id}`)
+        .then((response) => {
+          console.log(response.data);
+        }).catch((error) => {
+          console.log(error);
+        })
+    }
   })
 
   return (
@@ -17,7 +24,6 @@ export default function MarkerInfo({ show, setShow, markerPost}) {
           <Modal.Header> 
             <Modal.Title>
               <div className="img-container">
-                <img src={Map}/>
               </div>
             </Modal.Title>
           </Modal.Header>

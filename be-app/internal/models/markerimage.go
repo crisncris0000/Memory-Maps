@@ -13,6 +13,7 @@ type MarkerPostImage struct {
 }
 
 type MarkerPostImageModel interface {
+	GetMarkerPostImages(id int) ([]MarkerPostImage, error)
 	CreateSingleImage(markerPostImage MarkerPostImage) error
 	CreateMultipleImages(markerPostImage []MarkerPostImage) error
 }
@@ -29,23 +30,25 @@ func (iModel *MarkerPostImageImpl) GetMarkerPostImages(id int) ([]MarkerPostImag
 
 	var markerPostImages []MarkerPostImage
 
-	query := `SELECT * FROM MarkerPostImage WHERE MarkerPostImage.id = ?`
+	query := `SELECT * FROM MarkerPostImage WHERE MarkerPostImage.marker_id = ?`
 
 	rows, err := iModel.DB.Query(query, id)
 
 	if err != nil {
 		fmt.Println("error retrieving MarkerPostImages", err)
+		return nil, err
 	}
 
 	for rows.Next() {
 		var markerPostImage MarkerPostImage
 
-		err := rows.Scan(&markerPostImage.ID, &markerPostImage.Image, &markerPostImage.MimeType, &markerPostImage.MarkerID)
-
-		if err != nil {
-			fmt.Println("error scanning into MarkerPostImage")
+		if err := rows.Scan(&markerPostImage.ID, &markerPostImage.Image,
+			&markerPostImage.MimeType, &markerPostImage.MarkerID); err != nil {
+			fmt.Println("error scanning MarkerPostImages", err)
 			return nil, err
 		}
+
+		markerPostImages = append(markerPostImages, markerPostImage)
 	}
 
 	return markerPostImages, nil
