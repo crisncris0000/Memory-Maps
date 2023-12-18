@@ -6,6 +6,7 @@ import LocationInfo from './LocationInfo';
 import axios from 'axios';
 import MarkerInfo from './MarkerInfo';
 import Navigation from './Navigation';
+import Calender from './Calender';
 
 
 export default function Maps() {
@@ -73,6 +74,7 @@ export default function Maps() {
     return (
         <>
             <Navigation />
+            <Calender />
             <LocationInfo show={showForm} setShow={setShowForm} longitude={longitude} latitude={latitude} onHide={handleOnClose}/>
             <MarkerInfo show={showMarkerInfo} setShow={setShowMarkerInfo} markerPost={selectedMarker}/>
             <div className="map-container">
