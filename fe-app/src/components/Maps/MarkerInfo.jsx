@@ -6,11 +6,14 @@ export default function MarkerInfo({ show, setShow, markerPost}) {
 
   const handleClose = () => setShow(false);
 
+  const [imagesInfo, setImagesInfo] = useState();
+
   useEffect(() => {
     if(show) {
       axios.get(`http://localhost:8080/marker-post/images/${markerPost.id}`)
         .then((response) => {
-          console.log(response.data);
+          console.log(response.data.images);
+          setImagesInfo(response.data.images);
         }).catch((error) => {
           console.log(error);
         })
@@ -24,6 +27,9 @@ export default function MarkerInfo({ show, setShow, markerPost}) {
           <Modal.Header> 
             <Modal.Title>
               <div className="img-container">
+              {imagesInfo ? imagesInfo.map((image, index) => (
+                <img key={index} src={`data:${image.mimeType};base64,${image.image}`} />
+              )) : null}
               </div>
             </Modal.Title>
           </Modal.Header>
