@@ -40,6 +40,21 @@ export default function Maps() {
         }
     }
 
+    const getMarkerPosts = () => {
+        markerPosts.forEach((post) => {
+            const marker = new mapboxgl.Marker()
+            .setLngLat([post.longitude, post.latitude])
+            .addTo(mapRef.current);
+
+            marker.getElement().addEventListener('click', () => {
+                setShowMarkerInfo(true);
+                setSelectedMarker(post);
+            })
+            
+            markerRef.current = marker;
+        })
+    }
+
     useEffect(() => {
 
         axios.get("http://localhost:8080/marker-posts").then((response) => {
@@ -63,19 +78,7 @@ export default function Maps() {
 
     return (
         <>
-            {markerPosts ? markerPosts.forEach((post) => {
-                const marker = new mapboxgl.Marker()
-                .setLngLat([post.longitude, post.latitude])
-                .addTo(mapRef.current);
-
-                marker.getElement().addEventListener('click', () => {
-                    setShowMarkerInfo(true);
-                    setSelectedMarker(post);
-                })
-                
-                markerRef.current = marker;
-            }) : null
-            }
+            {markerPosts ? getMarkerPosts() : null}
             <Navigation />
             <Calender />
             <LocationInfo show={showForm} setShow={setShowForm} longitude={longitude} latitude={latitude} onHide={handleOnClose}/>
