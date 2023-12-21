@@ -80,7 +80,7 @@ export default function Maps() {
         <>
             {markerPosts ? getMarkerPosts() : null}
             <Navigation />
-            <Calender />
+            <Calender setMarkerPosts={setMarkerPosts} markerPosts={markerPosts}/>
             <LocationInfo show={showForm} setShow={setShowForm} longitude={longitude} latitude={latitude} onHide={handleOnClose}/>
             <MarkerInfo show={showMarkerInfo} setShow={setShowMarkerInfo} markerPost={selectedMarker}/>
             <div className="map-container">

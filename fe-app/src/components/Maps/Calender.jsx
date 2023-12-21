@@ -16,15 +16,21 @@ export default function Calender({ setMarkerPosts, markerPosts }) {
     };
 
     const handleSubmit = (e) => {
-
       e.preventDefault();
-
-      console.log(markerPosts)
-
-      // const filteredArray = markerPosts.filter(() => {
-      //   return null
-      // })
-    }
+    
+      const startDateString = new Date(selectedStartDate).toLocaleDateString();
+      const endDateString = new Date(selectedEndDate).toLocaleDateString();
+    
+      const filteredArray = markerPosts.filter((post) => {
+        const postDateString = new Date(post.createdAt).toLocaleDateString();
+    
+        return postDateString >= startDateString && postDateString <= endDateString;
+      });
+    
+      console.log(filteredArray);
+    };
+    
+    
   
     return (
       <form onSubmit={handleSubmit}>
