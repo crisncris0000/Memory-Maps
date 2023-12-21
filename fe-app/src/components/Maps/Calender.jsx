@@ -13,20 +13,24 @@ export default function Calender({ setMarkerPosts, markerPosts }) {
 
     const handleEndDate = (date) => {
       setSelectedEndDate(date);
-    }
+    };
   
     return (
-      <LocalizationProvider dateAdapter={AdapterDateFns} locale={zhCN}>
-        <DatePicker
-          value={selectedStartDate}
-          onChange={handleStartDate}
-        />
+      <form onSubmit={handleSubmit}>
+        <LocalizationProvider dateAdapter={AdapterDateFns} locale={zhCN}>
+          <DatePicker
+            value={selectedStartDate}
+            onChange={handleStartDate}
+          />
 
-        <DatePicker
-          value={selectedEndDate}
-          onChange={handleEndDate}
-          minDate={selectedStartDate}
-        />
-      </LocalizationProvider>
+          <DatePicker
+            value={selectedEndDate}
+            onChange={handleEndDate}
+            minDate={selectedStartDate}
+          />
+        </LocalizationProvider>
+        
+        <button type="submit">Filter</button>
+      </form>
     );
 }

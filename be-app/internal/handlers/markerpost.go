@@ -20,7 +20,7 @@ type DateRange struct {
 }
 
 type MarkerPostDTO struct {
-	Lattitude    float32 `json:"lattitude"`
+	Lattitude    float32 `json:"latitude"`
 	Longitude    float32 `json:"longitude"`
 	Description  string  `json:"description"`
 	Image        []byte  `json:"image"`

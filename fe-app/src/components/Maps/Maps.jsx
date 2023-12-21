@@ -24,14 +24,14 @@ export default function Maps() {
     const handleOnRetrieve = (result) => {
        const coords = result.features[0].geometry.coordinates;
 
+       mapRef.current.flyTo({
+        center: [coords[0], coords[1]],
+        zoom: 20
+    });
+        
        setLongitude(coords[0]);
        setLatitude(coords[1]);
        setShowForm(true);
-
-       mapRef.current.flyTo({
-            center: [longitude, latitude],
-            zoom: 20
-       });
     }
 
     const handleOnClose = () => {
@@ -80,7 +80,7 @@ export default function Maps() {
         <>
             {markerPosts ? getMarkerPosts() : null}
             <Navigation />
-            <Calender />
+            <Calender setMarkerPosts={setMarkerPosts} markerPosts={markerPosts}/>
             <LocationInfo show={showForm} setShow={setShowForm} longitude={longitude} latitude={latitude} onHide={handleOnClose}/>
             <MarkerInfo show={showMarkerInfo} setShow={setShowMarkerInfo} markerPost={selectedMarker}/>
             <div className="map-container">

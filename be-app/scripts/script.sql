@@ -99,4 +99,4 @@ VALUES ('ADMIN'), ('USER');
 INSERT INTO Visibility(view)
 VALUES('Public'), ('Private');
 
-SELECT * FROM MarkerPostImage;
+SELECT * FROM MarkerPost;
