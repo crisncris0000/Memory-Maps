@@ -21,14 +21,13 @@ export default function Calender({ setMarkerPosts, markerPosts }) {
       const startDateString = new Date(selectedStartDate).toLocaleDateString();
       const endDateString = new Date(selectedEndDate).toLocaleDateString();
     
-      // Filter the markerPosts based on date range
       const filteredArray = markerPosts.filter((post) => {
         const postDateString = new Date(post.createdAt).toLocaleDateString();
+
         return postDateString >= startDateString && postDateString <= endDateString;
       });
-    
-      // Update the state with the filtered array
-      setMarkerPosts(filteredArray);
+
+      console.log(filteredArray);
     };
     
   

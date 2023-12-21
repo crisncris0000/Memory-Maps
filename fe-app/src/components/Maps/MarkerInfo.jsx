@@ -13,6 +13,7 @@ export default function MarkerInfo({ show, setShow, markerPost}) {
       axios.get(`http://localhost:8080/marker-post/images/${markerPost.id}`)
         .then((response) => {
           setImagesInfo(response.data.images);
+          console.log(markerPost);
         }).catch((error) => {
           console.log(error);
         })
