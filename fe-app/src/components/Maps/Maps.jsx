@@ -24,14 +24,14 @@ export default function Maps() {
     const handleOnRetrieve = (result) => {
        const coords = result.features[0].geometry.coordinates;
 
+       mapRef.current.flyTo({
+        center: [coords[0], coords[1]],
+        zoom: 20
+    });
+        
        setLongitude(coords[0]);
        setLatitude(coords[1]);
        setShowForm(true);
-
-       mapRef.current.flyTo({
-            center: [longitude, latitude],
-            zoom: 20
-       });
     }
 
     const handleOnClose = () => {

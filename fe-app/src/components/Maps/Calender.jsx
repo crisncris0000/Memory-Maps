@@ -3,7 +3,7 @@ import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { zhCN } from '@mui/x-date-pickers/locales';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
-export default function Calender() {
+export default function Calender({ setMarkerPosts, markerPosts }) {
     const [selectedStartDate, setSelectedStartDate] = React.useState(new Date());
     const [selectedEndDate, setSelectedEndDate] = React.useState(new Date());
 
@@ -14,19 +14,34 @@ export default function Calender() {
     const handleEndDate = (date) => {
       setSelectedEndDate(date);
     };
+
+    const handleSubmit = (e) => {
+
+      e.preventDefault();
+
+      console.log(markerPosts)
+
+      // const filteredArray = markerPosts.filter(() => {
+      //   return null
+      // })
+    }
   
     return (
-      <LocalizationProvider dateAdapter={AdapterDateFns} locale={zhCN}>
-        <DatePicker
-          value={selectedStartDate}
-          onChange={handleStartDate}
-        />
+      <form onSubmit={handleSubmit}>
+        <LocalizationProvider dateAdapter={AdapterDateFns} locale={zhCN}>
+          <DatePicker
+            value={selectedStartDate}
+            onChange={handleStartDate}
+          />
 
-        <DatePicker
-          value={selectedEndDate}
-          onChange={handleEndDate}
-          minDate={selectedStartDate}
-        />
-      </LocalizationProvider>
+          <DatePicker
+            value={selectedEndDate}
+            onChange={handleEndDate}
+            minDate={selectedStartDate}
+          />
+        </LocalizationProvider>
+        
+        <button type="submit">Filter</button>
+      </form>
     );
 }
