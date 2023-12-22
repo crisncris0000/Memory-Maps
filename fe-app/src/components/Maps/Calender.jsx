@@ -16,7 +16,6 @@ export default function Calender({ setMarkerPosts, markerPosts }) {
     };
 
     const handleSubmit = (e) => {
-      e.preventDefault();
     
       const startDateString = new Date(selectedStartDate).toLocaleDateString();
       const endDateString = new Date(selectedEndDate).toLocaleDateString();
@@ -27,7 +26,7 @@ export default function Calender({ setMarkerPosts, markerPosts }) {
         return postDateString >= startDateString && postDateString <= endDateString;
       });
     
-      console.log(filteredArray);
+      setMarkerPosts(filteredArray);
     };
     
     
