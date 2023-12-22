@@ -9,7 +9,7 @@ export default function Calender({ setMarkerPosts, markerPosts }) {
 
     const handleStartDate = (date) => {
       setSelectedStartDate(date);
-    };
+    }
 
     const handleEndDate = (date) => {
       setSelectedEndDate(date);
@@ -22,13 +22,12 @@ export default function Calender({ setMarkerPosts, markerPosts }) {
     
       const filteredArray = markerPosts.filter((post) => {
         const postDateString = new Date(post.createdAt).toLocaleDateString();
-    
+
         return postDateString >= startDateString && postDateString <= endDateString;
       });
     
       setMarkerPosts(filteredArray);
     };
-    
     
   
     return (
