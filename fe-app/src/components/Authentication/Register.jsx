@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../../css/register.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
  
 export default function Register() {
@@ -10,6 +10,8 @@ export default function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const navigate = useNavigate();
+
     const handleSubmit = () => {
         axios.post("http://localhost:8080/users/new", {
             firstName,
@@ -18,6 +20,7 @@ export default function Register() {
             password
         }).then((response) => {
             console.log(response);
+            navigate('/login');
         }).catch((error) => {
             console.log(error);
         })
@@ -56,8 +59,8 @@ export default function Register() {
                         Register
                     </button>
                 </form>
-                <Link to="/" style={{"margin": "20px"}}>Return to Home</Link>
-                <Link to="/login" style={{"margin": "20px"}}>Return to Login</Link>
+                <Link to="/" style={{margin: "30px"}}>Return to Home</Link>
+                <Link to="/login" style={{margin: "30px"}}>Return to Login</Link>
             </div>
         </>
     )
