@@ -19,7 +19,7 @@ export default function Maps() {
     const [selectedMarker, setSelectedMarker] = useState(null);
     const [longitude, setLongitude] = useState(null);
     const [latitude, setLatitude] = useState(null);
-    const [markerPosts, setMarkerPosts] = useState(null);
+    const [markerPosts, setMarkerPosts] = useState([]);
 
     const handleOnRetrieve = (result) => {
        const coords = result.features[0].geometry.coordinates;
