@@ -56,7 +56,6 @@ export default function Maps() {
     }
 
     useEffect(() => {
-
         axios.get("http://localhost:8080/marker-posts").then((response) => {
             setMarkerPosts(response.data.markerposts);
         }).catch((error) => {
