@@ -29,7 +29,6 @@ export default function Login() {
                 scope: ""
             })
         }
-
         gapi.load("client:auth2", start)
     });
 

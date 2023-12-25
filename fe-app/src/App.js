@@ -8,6 +8,7 @@ import Maps from './components/Maps/Maps';
 import Register from './components/Authentication/Register';
 import { Provider } from 'react-redux';
 import store from './state/store';
+import ResetPassword from './components/Authentication/ResetPassword';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
             <Route path='/login' element={<Login />}></Route>
             <Route path='/maps' element={<Maps />}></Route>
             <Route path='/register' element={<Register />}></Route>
+            <Route path='/reset-password' element={<ResetPassword />}></Route>
           </Routes>
         </div>
       </Provider>
