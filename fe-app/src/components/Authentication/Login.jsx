@@ -5,9 +5,11 @@ import axios from 'axios';
 import GoogleAuth from './GoogleAuth';
 import { gapi } from 'gapi-script';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setUser } from '../../user/userSlice';
 import { jwtDecode } from "jwt-decode";
+import { useLocation } from 'react-router-dom';
+import Error from '../Messages/Error';
 
 const clientID = process.env.REACT_APP_CLIENT_KEY
 
@@ -16,6 +18,9 @@ export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const dispatch = useDispatch();
+    const location = useLocation();
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
         function start() {
@@ -33,16 +38,15 @@ export default function Login() {
         e.preventDefault();
 
         axios.post("http://localhost:8080/users/login", {
-            email, 
+            email,
             password,
         }).then((response) => {
-
             const decodedJWT = jwtDecode(response.data.token);
-
             dispatch(setUser(decodedJWT))
-
             localStorage.setItem("token", response.data.token);
         }).catch((error) => {
+            setErrorMessage(error.response.data.message);
+            setError(true);
             console.log(error);
         })
     }
@@ -53,7 +57,7 @@ export default function Login() {
             <form className="form-container" onSubmit={handleSubmit}>
                 <div className="input-group">
                     <label htmlFor="email">Email</label>
-                    <input type="email" id="email" name="email" required 
+                    <input type="email" id="email" name="email" required value={location.state?.email} 
                     onChange={(e) => setEmail(e.target.value)}/>
                 </div>
                 
@@ -62,6 +66,8 @@ export default function Login() {
                     <input type="password" id="password" name="password" required 
                     onChange={(e) => setPassword(e.target.value)}/>
                 </div>
+                
+                <Error error={error} setError={setError} errorMessage={errorMessage}/>
 
                 <Link to="/register"><button type="submit">Register</button></Link>
                 <button type="submit">Login</button>

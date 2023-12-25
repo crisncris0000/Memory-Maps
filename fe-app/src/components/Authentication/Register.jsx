@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../../css/register.css';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Error from '../Messages/Error';
  
 export default function Register() {
 
@@ -9,10 +10,14 @@ export default function Register() {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState(false);
 
     const navigate = useNavigate();
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+
+        e.preventDefault();
+
         axios.post("http://localhost:8080/users/new", {
             firstName,
             lastName,
@@ -20,12 +25,13 @@ export default function Register() {
             password
         }).then((response) => {
             console.log(response);
-            navigate('/login');
+            navigate('/login', {state: {email}});
         }).catch((error) => {
-            console.log(error);
+            setError(true);
+            console.log(error.response);
         })
     }
-
+    
     return (
         <>
             <div className="register-container">
@@ -34,25 +40,26 @@ export default function Register() {
                     <div className="form-group">
                         <label className="label">First Name</label>
                         <input type="text" className="input" placeholder="Enter your first name"
-                        onChange={(e) => setFirstName(e.target.value)}/>
+                        onChange={(e) => setFirstName(e.target.value)} required/>
                     </div>
 
                     <div className="form-group">
                         <label className="label">Last Name</label>
                         <input type="text" className="input" placeholder="Enter your last name"
-                        onChange={(e) => setLastName(e.target.value)}/>
+                        onChange={(e) => setLastName(e.target.value)} required/>
                     </div>
 
                     <div className="form-group">
                         <label className="label">Email</label>
                         <input type="email" className="input" placeholder="Enter your email"
-                        onChange={(e) => setEmail(e.target.value)}/>
+                        onChange={(e) => setEmail(e.target.value)} required/>
+                        { error ? <Error errorMessage={"User already exists with that email"} error={error} setError={setError}/> : null }
                     </div>
 
                     <div className="form-group">
                         <label className="label">Password</label>
                         <input type="password" className="input" placeholder="Enter your password"
-                        onChange={(e) => setPassword(e.target.value)}/>
+                        onChange={(e) => setPassword(e.target.value)} required/>
                     </div>
 
                     <button type="submit" className="button">

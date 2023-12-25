@@ -33,7 +33,6 @@ export default function Calender({ setMarkerPosts, markerPosts }) {
 
         setMarkerPosts(filteredArray);
 
-        console.log(filteredArray);
     };
 
     return (
