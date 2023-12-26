@@ -2,9 +2,11 @@ package utils
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt"
+	"github.com/joho/godotenv"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -46,4 +48,15 @@ func GenerateJWTToken(email string, role int) (string, error) {
 	}
 
 	return tokenString, nil
+}
+
+func GetValueOfEnvKey(key string) string {
+	err := godotenv.Load(".env")
+
+	if err != nil {
+		fmt.Println("Error getting .env file")
+		return ""
+	}
+
+	return os.Getenv(key)
 }

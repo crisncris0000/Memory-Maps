@@ -23,6 +23,7 @@ type UserModel interface {
 	GetUserByEmail(email string) (*User, error)
 	CreateUser(user User) error
 	UserExists(email string) error
+	SendUserEmail(from, subject, body string)
 }
 
 type UserModelImpl struct {

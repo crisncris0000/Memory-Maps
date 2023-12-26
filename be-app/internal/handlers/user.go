@@ -1,12 +1,15 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
+	"net/smtp"
 	"strconv"
 
 	"github.com/crisncris0000/Memory-Maps/be-app/internal/models"
 	"github.com/crisncris0000/Memory-Maps/be-app/internal/utils"
 	"github.com/gin-gonic/gin"
+	"github.com/jordan-wright/email"
 )
 
 type UserHandler struct {
@@ -16,6 +19,12 @@ type UserHandler struct {
 type LoginForm struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
+}
+
+type SendEmail struct {
+	Subject string
+	Email   string
+	Body    string
 }
 
 func NewUserHandler(uModelImpl *models.UserModelImpl) *UserHandler {
@@ -121,7 +130,7 @@ func (uHandler *UserHandler) AuthenticateUser(context *gin.Context) {
 
 	if !matches {
 		context.JSON(http.StatusNotAcceptable, gin.H{
-			"message": "passwords do not match",
+			"message": "Passwords do not match",
 			"error":   err,
 		})
 		return
@@ -134,10 +143,50 @@ func (uHandler *UserHandler) AuthenticateUser(context *gin.Context) {
 			"message": "Error retrieving JWT",
 			"error":   err,
 		})
+		return
 	}
 
 	context.JSON(http.StatusAccepted, gin.H{
 		"message": "Successfully login user",
 		"token":   token,
+	})
+}
+
+func (uHandler *UserHandler) SendEmail(context *gin.Context) {
+
+	var emailMessage SendEmail
+
+	if err := context.ShouldBindJSON(&emailMessage); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{
+			"message": "Could not bind to JSON",
+			"error":   err,
+		})
+		return
+	}
+
+	email := &email.Email{
+		To:      []string{"Christopherrivera384@gmail.com"},
+		From:    emailMessage.Email,
+		Subject: emailMessage.Subject,
+		Text:    []byte(emailMessage.Body),
+	}
+
+	userEmail := utils.GetValueOfEnvKey("GMAIL_APP_USERNAME")
+
+	password := utils.GetValueOfEnvKey("GMAIL_APP_PASSWORD")
+
+	err := email.Send("smtp.gmail.com:587", smtp.PlainAuth("", userEmail, password, "smtp.gmail.com"))
+
+	if err != nil {
+		fmt.Println(err)
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Could not send email",
+			"error":   err,
+		})
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{
+		"message": "Email sent successfully",
 	})
 }
