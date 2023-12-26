@@ -10,6 +10,7 @@ import { setUser } from '../../user/userSlice';
 import { jwtDecode } from "jwt-decode";
 import { useLocation } from 'react-router-dom';
 import Error from '../Messages/Error';
+import { useNavigate } from 'react-router-dom';
 
 const clientID = process.env.REACT_APP_CLIENT_KEY
 
@@ -21,6 +22,7 @@ export default function Login() {
     const location = useLocation();
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => {
         function start() {
@@ -43,6 +45,8 @@ export default function Login() {
             const decodedJWT = jwtDecode(response.data.token);
             dispatch(setUser(decodedJWT))
             localStorage.setItem("token", response.data.token);
+
+            navigate("/maps")
         }).catch((error) => {
             setErrorMessage(error.response.data.message);
             setError(true);
