@@ -9,12 +9,10 @@ import Compressor from 'compressorjs';
 export default function LocationInfo({ show, setShow, longitude, latitude, onHide }) {
 
     const user = useSelector((state) => state.user.value);
-
-    const [image, setImage] = useState(null);
-    const [mimeType, setMimeType] = useState(null);
-    const [description, setDescription] = useState(null);
+    const [imageData, setImageData] = useState([]);
+    const [description, setDescription] = useState("");
     const [likes, setLikes] = useState(0);
-    const [visibilityID, setVisibilityID] = useState(null);
+    const [visibilityID, setVisibilityID] = useState(0);
 
     const handleClose = () => {
         onHide()
@@ -27,8 +25,7 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
             latitude,
             longitude,
             description,
-            image,
-            mimeType,
+            imageData,
             likes,
             visibilityID,
             userEmail: user.email,
@@ -54,10 +51,15 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
                 const reader = new FileReader();
                 reader.onloadend = () => {
                     const base64String = reader.result.split(',')[1];
-                    setImage(base64String);
+
+                    const newImageData = {
+                        image: base64String,
+                        mimeType: result.type
+                    }
+                    
+                    setImageData((imageData) => [...imageData, newImageData]);
                 };
                 reader.readAsDataURL(result);
-                setMimeType(result.type);
             },
             error(err) {
                 console.error('[Compressor.js] Error:', err.message);
@@ -78,7 +80,7 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
                     <Modal.Body>
                         <div className="form-group">
                             <label className="upload-label">Image upload *</label>
-                            <input type="file" required className="form-control upload-input" onChange={handleImageChange} />
+                            <input type="file" required className="form-control upload-input" multiple onChange={handleImageChange} />
                         </div>
 
                         <div className="form-group">

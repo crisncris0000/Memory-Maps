@@ -20,14 +20,13 @@ type DateRange struct {
 }
 
 type MarkerPostDTO struct {
-	Lattitude    float32 `json:"latitude"`
-	Longitude    float32 `json:"longitude"`
-	Description  string  `json:"description"`
-	Image        []byte  `json:"image"`
-	MimeType     string  `json:"mimeType"`
-	Likes        int     `json:"likes"`
-	VisibilityID int     `json:"visibilityID"`
-	UserEmail    string  `json:"userEmail"`
+	Lattitude    float32                  `json:"latitude"`
+	Longitude    float32                  `json:"longitude"`
+	Description  string                   `json:"description"`
+	ImageData    []models.MarkerPostImage `json:"imageData"`
+	VisibilityID int                      `json:"visibilityID"`
+	UserEmail    string                   `json:"userEmail"`
+	Likes        int                      `json:"likes"`
 }
 
 func NewMarkerPostHandler(mModel *models.MarkerPostImpl) *MarkerPostHandler {
@@ -77,15 +76,9 @@ func (mHandler *MarkerPostHandler) CreateMarkerPost(context *gin.Context) {
 		return
 	}
 
-	markerPostImage := models.MarkerPostImage{
-		Image:    markerPostDTO.Image,
-		MimeType: markerPostDTO.MimeType,
-		MarkerID: int(markerID),
-	}
-
 	iModel := models.NewMarkerPostImageModel(mHandler.DB.DB)
 
-	err = iModel.CreateSingleImage(markerPostImage)
+	err = iModel.CreateImages(markerPostDTO.ImageData, markerID)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{

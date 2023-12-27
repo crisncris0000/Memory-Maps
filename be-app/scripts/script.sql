@@ -100,3 +100,4 @@ INSERT INTO Visibility(view)
 VALUES('Public'), ('Private');
 
 SELECT * FROM MarkerPost;
+SELECT * FROM MarkerPostImage;

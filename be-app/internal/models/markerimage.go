@@ -14,8 +14,7 @@ type MarkerPostImage struct {
 
 type MarkerPostImageModel interface {
 	GetMarkerPostImages(id int) ([]MarkerPostImage, error)
-	CreateSingleImage(markerPostImage MarkerPostImage) error
-	CreateMultipleImages(markerPostImage []MarkerPostImage) error
+	CreateImage(markerPostImage []MarkerPostImage) error
 }
 
 type MarkerPostImageImpl struct {
@@ -54,24 +53,11 @@ func (iModel *MarkerPostImageImpl) GetMarkerPostImages(id int) ([]MarkerPostImag
 	return markerPostImages, nil
 }
 
-func (iModel *MarkerPostImageImpl) CreateSingleImage(markerPostImage MarkerPostImage) error {
-	query := `INSERT INTO MarkerPostImage (image, mime_type, marker_id) VALUES(?, ?, ?)`
-
-	_, err := iModel.DB.Exec(query, markerPostImage.Image, markerPostImage.MimeType, markerPostImage.MarkerID)
-
-	if err != nil {
-		fmt.Println("error inserting image", err)
-		return err
-	}
-
-	return nil
-}
-
-func (iModel *MarkerPostImageImpl) CreateMultipleImages(markerPostImage []MarkerPostImage) error {
+func (iModel *MarkerPostImageImpl) CreateImages(markerPostImage []MarkerPostImage, markerID int) error {
 	query := `INSERT INTO MarkerPostImage (image, mime_type, marker_id) VALUES(?, ?, ?)`
 
 	for i := 0; i < len(markerPostImage); i++ {
-		_, err := iModel.DB.Exec(query, markerPostImage[i].Image, markerPostImage[i].MimeType, markerPostImage[i].MarkerID)
+		_, err := iModel.DB.Exec(query, markerPostImage[i].Image, markerPostImage[i].MimeType, markerID)
 
 		if err != nil {
 			fmt.Println("error inserting images", err)
