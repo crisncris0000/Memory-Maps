@@ -15,7 +15,8 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
     const [visibilityID, setVisibilityID] = useState(0);
 
     const handleClose = () => {
-        onHide()
+        onHide();
+        setImageData([]);
         setShow(false);
     }
 
@@ -67,8 +68,6 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
         });
     };
     
-  
-    
 
     return (
         <>
@@ -87,6 +86,11 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
                             <label className="description-label">Description *</label>
                             <textarea type="text" placeholder="Please enter description" className="form-control description" 
                             onChange={e => setDescription(e.target.value)}/>
+                        </div>
+
+                        <div className="visibility-container">
+                            <input type="checkbox" />
+                            <input type="checkbox" />
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
