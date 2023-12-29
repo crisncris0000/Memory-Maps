@@ -4,6 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import Compressor from 'compressorjs';
+import PreviewImages from './PreviewImages';
 
 
 export default function LocationInfo({ show, setShow, longitude, latitude, onHide }) {
@@ -92,6 +93,8 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
                             <input type="checkbox" />
                             <input type="checkbox" />
                         </div>
+
+                        <PreviewImages imageData={imageData} setImageData={setImageData}/>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleClose}>
