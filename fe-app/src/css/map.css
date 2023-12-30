@@ -34,3 +34,15 @@
 .img-container img {
   width: 100%;
 }
+
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  filter: brightness(0.5); /* Adjust the brightness value to darken or lighten the arrows */
+}
+
+/* Optionally, you can add hover styles for a more interactive effect */
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  background-color: rgba(0, 0, 0, 0.5); /* Darken the background color on hover */
+}

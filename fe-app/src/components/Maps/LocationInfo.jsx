@@ -4,7 +4,6 @@ import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import Compressor from 'compressorjs';
-import PreviewImages from './PreviewImages';
 
 
 export default function LocationInfo({ show, setShow, longitude, latitude, onHide }) {
@@ -41,33 +40,42 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
     };
 
     const handleImageChange = (event) => {
-        const file = event.target.files[0];
+        const files = event.target.files;
     
-        if (!file) {
+        if (!files || files.length === 0) {
             return;
         }
     
-        new Compressor(file, {
-            quality: 0.7,
-            success(result) {
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                    const base64String = reader.result.split(',')[1];
+        const newImages = [];
+    
+        for (const file of files) {
+            new Compressor(file, {
+                quality: 0.7,
+                success(result) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        const base64String = reader.result.split(',')[1];
+    
+                        const newImageData = {
+                            image: base64String,
+                            mimeType: result.type
+                        };
+    
+                        newImages.push(newImageData);
 
-                    const newImageData = {
-                        image: base64String,
-                        mimeType: result.type
-                    }
-                    
-                    setImageData((imageData) => [...imageData, newImageData]);
-                };
-                reader.readAsDataURL(result);
-            },
-            error(err) {
-                console.error('[Compressor.js] Error:', err.message);
-            },
-        });
+                        if (newImages.length === files.length) {
+                            setImageData((prevImageData) => [...prevImageData, ...newImages]);
+                        }
+                    };
+                    reader.readAsDataURL(result);
+                },
+                error(err) {
+                    console.error('[Compressor.js] Error:', err.message);
+                },
+            });
+        }
     };
+    
     
 
     return (
@@ -94,7 +102,6 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
                             <input type="checkbox" />
                         </div>
 
-                        <PreviewImages imageData={imageData} setImageData={setImageData}/>
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleClose}>
