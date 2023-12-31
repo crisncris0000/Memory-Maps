@@ -74,8 +74,7 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
                 },
             });
         }
-    };
-    
+    }
     
 
     return (
@@ -97,9 +96,16 @@ export default function LocationInfo({ show, setShow, longitude, latitude, onHid
                             onChange={e => setDescription(e.target.value)}/>
                         </div>
 
+
                         <div className="visibility-container">
-                            <input type="checkbox" />
-                            <input type="checkbox" />
+                            <div className="radio-container">
+                                <input type="radio" className="radio" name="visibility" id="public" onClick={() => {setVisibilityID(1)}} required/>
+                                <label className="radio-label" htmlFor="public">Public</label>
+                            </div>
+                            <div className="radio-container">
+                                <input type="radio" className="radio" name="visibility" id="private" onClick={() => {setVisibilityID(2)}}required/>
+                                <label className="radio-label" htmlFor="private">Private</label>
+                            </div>
                         </div>
 
                     </Modal.Body>

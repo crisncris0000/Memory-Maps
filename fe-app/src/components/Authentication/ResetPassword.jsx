@@ -6,7 +6,6 @@ export default function ResetPassword() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add your password reset logic here
     console.log(`Password reset requested for email: ${email}`);
   };
 

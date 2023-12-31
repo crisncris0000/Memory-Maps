@@ -38,11 +38,47 @@
 
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-  filter: brightness(0.5); /* Adjust the brightness value to darken or lighten the arrows */
+  filter: brightness(0.5);
 }
 
-/* Optionally, you can add hover styles for a more interactive effect */
 .carousel-control-prev:hover,
 .carousel-control-next:hover {
-  background-color: rgba(0, 0, 0, 0.5); /* Darken the background color on hover */
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.visibility-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radio-container {
+  display: flex;
+  align-items: center;
+}
+
+.radio-label {
+  margin-right: 10px;
+}
+
+.radio {
+  margin-right: 5px;
+}
+
+.radio {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #555;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+}
+
+.radio:checked {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #fff;
 }
