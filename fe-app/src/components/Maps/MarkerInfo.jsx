@@ -3,6 +3,8 @@ import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 import Carousel from 'react-bootstrap/Carousel';
 
+// ... (other imports and code)
+
 export default function MarkerInfo({ show, setShow, markerPost }) {
 
   const handleClose = () => setShow(false);
@@ -44,14 +46,23 @@ export default function MarkerInfo({ show, setShow, markerPost }) {
 
             <div className="description">
               <h2>Description</h2>
-
-              <p>
-                {markerPost.description}
-              </p>
+              <p>{markerPost.description}</p>
             </div>
           </Modal.Body>
+
+          <Modal.Footer>
+            <div className="likes-comments">
+              <div className="likes">
+                <span role="img" aria-label="likes">👍</span> {markerPost.likes}
+              </div>
+              <div className="comments">
+                <span role="img" aria-label="comments">💬</span> {markerPost.comments}
+              </div>
+            </div>
+          </Modal.Footer>
         </Modal>
       }
     </>
   );
 }
+
