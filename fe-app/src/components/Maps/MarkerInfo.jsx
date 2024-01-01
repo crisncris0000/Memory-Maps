@@ -34,13 +34,21 @@ export default function MarkerInfo({ show, setShow, markerPost }) {
               {imagesInfo.map((image, index) => (
                 <Carousel.Item key={index}>
                   <img
-                    className="d-block w-100"
+                    className="carousel-img"
                     src={`data:${image.mimeType};base64,${image.image}`}
                     alt={`Image ${index + 1}`}
                   />
                 </Carousel.Item>
               ))}
             </Carousel>
+
+            <div className="description">
+              <h2>Description</h2>
+
+              <p>
+                {markerPost.description}
+              </p>
+            </div>
           </Modal.Body>
         </Modal>
       }
