@@ -82,8 +82,10 @@ function MarkerPost({ show, setShow, markerPost, setShowComments }) {
 function MarkerComments({ show, markerPost, setShow, setShowComments }) {
 
   const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState('');
 
-  const user = useSelector(state => state.user.value);
+  const user = useSelector((state) => state.user.value);
+  console.log(user);
 
   const handleClose = () => {
     setShow(false);
@@ -91,7 +93,19 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
   }
 
   const handleAddComment = () => {
+
     console.log(user);
+
+    axios.post("http://localhost:8080/comments/new", {
+      userID: user.id,
+      markerID: markerPost.id,
+      comment: newComment,
+      likes: 0,
+    }).then((response) => {
+      console.log(response.data);
+    }).catch((error) => {
+      console.log(error);
+    })
   }
 
   const handleReturn = () => {
@@ -101,7 +115,7 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
   useEffect(() => {
     axios.get(`http://localhost:8080/comments/${markerPost.id}`)
       .then((response) => {
-        setComments(response.data);
+        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -127,6 +141,7 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
                   type="text"
                   placeholder="Add a comment..."
                   className="form-control"
+                  onChange={(e) => setNewComment(e.target.value)}
                 />
               </div>
               <div className="comment-button">

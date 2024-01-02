@@ -14,10 +14,7 @@ export default function Register() {
 
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
-
-        e.preventDefault();
-
+    const handleSubmit = () => {
         axios.post("http://localhost:8080/users/new", {
             firstName,
             lastName,

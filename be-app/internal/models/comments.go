@@ -8,8 +8,8 @@ import (
 
 type Comments struct {
 	ID        int       `json:"id" db:"id"`
-	UserID    int       `json:"user_id" db:"user_id"`
-	MarkerID  int       `json:"marker_id" db:"marker_id"`
+	UserID    int       `json:"userID" db:"user_id"`
+	MarkerID  int       `json:"markerID" db:"marker_id"`
 	Comment   string    `json:"comment" db:"comment"`
 	Likes     int       `json:"likes" db:"likes"`
 	CreatedAt time.Time `json:"created_at" db:"created_at"`
@@ -86,7 +86,7 @@ func (cModel *CommentsModelImpl) GetCommentsByMarkerID(id int) ([]Comments, erro
 }
 
 func (cModel *CommentsModelImpl) CreateComment(comment Comments) error {
-	query := `INSERT INTO Comments (user_id, marker_id, comment, likes, createdAt, updatedAt) VALUES (?, ?, ?, ?, ?, ?)`
+	query := `INSERT INTO Comments (user_id, marker_id, comment, likes, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)`
 
 	createdAt := time.Now()
 	updatedAt := time.Now()
@@ -95,6 +95,7 @@ func (cModel *CommentsModelImpl) CreateComment(comment Comments) error {
 
 	if err != nil {
 		fmt.Println("Error inserting into table comments", err)
+		return err
 	}
 
 	return nil
