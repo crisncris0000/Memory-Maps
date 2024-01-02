@@ -132,3 +132,16 @@
 .likes span, .comments span {
   margin-right: 5px;
 }
+
+.footer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-content button {
+  height: 50px;
+  margin-left: 20px;
+  margin-right: 20px;
+}

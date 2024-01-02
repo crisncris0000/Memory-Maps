@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 import Carousel from 'react-bootstrap/Carousel';
+import { useSelector } from 'react-redux';
 
 
 export default function MarkerInfo({ show, setShow, markerPost }) {
@@ -82,12 +83,19 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
 
   const [comments, setComments] = useState([]);
 
+  const user = useSelector(state => state.user.value);
+
   const handleClose = () => {
     setShow(false);
     setShowComments(false);
   }
 
   const handleAddComment = () => {
+    console.log(user);
+  }
+
+  const handleReturn = () => {
+    setShowComments(false);
   }
 
   useEffect(() => {
@@ -112,17 +120,20 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
           </Modal.Body>
 
           <Modal.Footer>
-            <div className="comment-input">
-              <input
-                type="text"
-                placeholder="Add a comment..."
-                className="form-control"
-              />
-            </div>
-            <div className="comment-button">
-              <button onClick={handleAddComment} className="btn btn-primary">
-                Add Comment
-              </button>
+            <div className="footer-content">
+              <button className="btn btn-primary" onClick={handleReturn}>Return</button>
+              <div className="comment-input">
+                <input
+                  type="text"
+                  placeholder="Add a comment..."
+                  className="form-control"
+                />
+              </div>
+              <div className="comment-button">
+                <button onClick={handleAddComment} className="btn btn-primary">
+                  Send
+                </button>
+              </div>
             </div>
           </Modal.Footer>
         </Modal>
