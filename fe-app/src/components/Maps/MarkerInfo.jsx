@@ -12,7 +12,7 @@ export default function MarkerInfo({ show, setShow, markerPost }) {
       {showComments === false ? 
       <MarkerPost show={show} setShow={setShow} markerPost={markerPost} showComments={showComments} setShowComments={setShowComments}/> 
       : 
-      <MarkerComments show={show} setShow={setShow} showComments={showComments} setShowComments={setShowComments}/>}
+      <MarkerComments show={show} setShow={setShow} markerPost={markerPost} setShowComments={setShowComments}/>}
     </>
   );
 }
@@ -78,24 +78,56 @@ function MarkerPost({ show, setShow, markerPost, setShowComments }) {
   );
 }
 
-function MarkerComments ({ show, setShow, showComments, setShowComments }) {
+function MarkerComments({ show, markerPost, setShow, setShowComments }) {
 
-  const handleClose = () => setShow(false);
+  const [comments, setComments] = useState([]);
+
+  const handleClose = () => {
+    setShow(false);
+    setShowComments(false);
+  }
+
+  const handleAddComment = () => {
+  }
+
+  useEffect(() => {
+    axios.get(`http://localhost:8080/comments/${markerPost.id}`)
+      .then((response) => {
+        setComments(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [markerPost.id]);
 
   return (
     <>
       {show &&
         <Modal show={show} onHide={handleClose} animation={false} className="location-modal mx-auto" centered>
           <Modal.Header closeButton>
-            <Modal.Title>Marker Comments</Modal.Title>
+            <Modal.Title className="text-center">Marker Comments</Modal.Title>
           </Modal.Header>
+
           <Modal.Body>
           </Modal.Body>
 
           <Modal.Footer>
+            <div className="comment-input">
+              <input
+                type="text"
+                placeholder="Add a comment..."
+                className="form-control"
+              />
+            </div>
+            <div className="comment-button">
+              <button onClick={handleAddComment} className="btn btn-primary">
+                Add Comment
+              </button>
+            </div>
           </Modal.Footer>
         </Modal>
       }
     </>
   );
 }
+
