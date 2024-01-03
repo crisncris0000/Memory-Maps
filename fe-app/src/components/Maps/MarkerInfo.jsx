@@ -85,7 +85,6 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
   const [newComment, setNewComment] = useState('');
 
   const user = useSelector((state) => state.user.value);
-  console.log(user);
 
   const handleClose = () => {
     setShow(false);
@@ -100,7 +99,7 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
       comment: newComment,
       likes: 0,
     }).then((response) => {
-      console.log(response.data);
+      console.log(response.data.comments);
     }).catch((error) => {
       console.log(error);
     })
@@ -113,7 +112,7 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
   useEffect(() => {
     axios.get(`http://localhost:8080/comments/${markerPost.id}`)
       .then((response) => {
-        console.log(response.data);
+        setComments(response.data.comments);
       })
       .catch((error) => {
         console.log(error);
@@ -130,13 +129,16 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
 
           <Modal.Body>
             <div className="comments-container">
-              <div className="comment">
-                <div className="comment-header">
-                  <strong>John Doe:</strong>
-                  <button className="btn btn-sm btn-danger delete-button">Delete</button>
-                </div>
-                <div className="comment-text">This is a sample comment.</div>
-              </div>
+              {comments.map((comment) => (
+                <div className="comment">
+                  <div className="comment-header">
+                    <strong>John Doe:</strong>
+                    <button className="btn btn-sm btn-danger delete-button">Delete</button>
+                  </div>
+                  <div className="comment-text">This is a sample comment.</div>
+                </div>              
+              ))}
+
             </div>
           </Modal.Body>
 
