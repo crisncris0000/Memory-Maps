@@ -86,7 +86,7 @@ func (cModel *CommentsModelImpl) GetCommentsByMarkerID(id int) ([]Comments, erro
 }
 
 func (cModel *CommentsModelImpl) CreateComment(comment Comments) error {
-	query := `INSERT INTO Comments (first_name, last_name, marker_id, comment, likes, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)`
+	query := `INSERT INTO Comments (user_id, marker_id, comment, likes, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)`
 
 	createdAt := time.Now()
 	updatedAt := time.Now()
