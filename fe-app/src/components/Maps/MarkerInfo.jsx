@@ -95,7 +95,7 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
     console.log(newComment)
 
     axios.post("http://localhost:8080/comments/new", {
-      id: user.id,
+      userID: user.id,
       markerID: markerPost.id,
       comment: newComment,
       likes: 0,
@@ -118,7 +118,7 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
       .catch((error) => {
         console.log(error);
       });
-  }, [markerPost.id]);
+  }, []);
 
   console.log(comments);
 
