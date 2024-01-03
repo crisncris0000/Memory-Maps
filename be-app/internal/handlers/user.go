@@ -136,7 +136,7 @@ func (uHandler *UserHandler) AuthenticateUser(context *gin.Context) {
 		return
 	}
 
-	token, err := utils.GenerateJWTToken(user.ID, user.Email, user.RoleID)
+	token, err := utils.GenerateJWTToken(user.FirstName, user.LastName, user.Email, user.ID, user.RoleID)
 
 	if err != nil {
 		context.JSON(http.StatusNotAcceptable, gin.H{

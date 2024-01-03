@@ -85,6 +85,7 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
   const [newComment, setNewComment] = useState('');
 
   const user = useSelector((state) => state.user.value);
+  console.log(user);
 
   const handleClose = () => {
     setShow(false);
@@ -94,12 +95,12 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
   const handleAddComment = () => {
 
     axios.post("http://localhost:8080/comments/new", {
-      userID: user.id,
+      firstName: user.firstName,
       markerID: markerPost.id,
       comment: newComment,
       likes: 0,
     }).then((response) => {
-      console.log(response.data.comments);
+      console.log(response.data);
     }).catch((error) => {
       console.log(error);
     })
@@ -129,7 +130,7 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
 
           <Modal.Body>
             <div className="comments-container">
-              {comments.map((comment) => (
+              {comments ? comments.map((comment) => (
                 <div className="comment">
                   <div className="comment-header">
                     <strong>John Doe:</strong>
@@ -137,7 +138,7 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
                   </div>
                   <div className="comment-text">This is a sample comment.</div>
                 </div>              
-              ))}
+              )) : null}
 
             </div>
           </Modal.Body>

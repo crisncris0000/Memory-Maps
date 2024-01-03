@@ -12,6 +12,8 @@ import (
 type User struct {
 	ID        int       `json:"id" db:"id"`
 	Email     string    `json:"email" db:"email"`
+	FirstName string    `json:"firstName" db:"first_name"`
+	LastName  string    `json:"lastName" db:"last_name"`
 	Password  string    `json:"password" db:"password"`
 	RoleID    int       `json:"role_id" db:"role_id"`
 	CreatedAt time.Time `json:"createdAt" db:"created_at"`
@@ -49,7 +51,7 @@ func (uModel *UserModelImpl) GetUsers() (*[]User, error) {
 	for rows.Next() {
 		var user User
 
-		err = rows.Scan(&user.ID, &user.Email, &user.Password, &user.RoleID, &user.CreatedAt, &user.UpdatedAt)
+		err = rows.Scan(&user.ID, &user.Email, &user.FirstName, &user.LastName, &user.Password, &user.RoleID, &user.CreatedAt, &user.UpdatedAt)
 
 		if err != nil {
 			fmt.Println("Error retrieving users", err)
@@ -98,8 +100,8 @@ func (uModel *UserModelImpl) GetUserByID(id int) (*User, error) {
 }
 
 func (uModel *UserModelImpl) CreateUser(user User) error {
-	query := `INSERT INTO Users (email, password, role_id, created_at, updated_at)
-				VALUES(?, ?, ?, ?, ?)`
+	query := `INSERT INTO Users (email, first_name, last_name, password, role_id, created_at, updated_at)
+				VALUES(?, ?, ?, ?, ?, ?, ?)`
 
 	createdAt := time.Now()
 	updatedAt := time.Now()
@@ -122,7 +124,7 @@ func (uModel *UserModelImpl) CreateUser(user User) error {
 		return err
 	}
 
-	_, err = uModel.DB.Exec(query, user.Email, hashedPassword, user.RoleID, createdAt, updatedAt)
+	_, err = uModel.DB.Exec(query, user.Email, user.FirstName, user.LastName, hashedPassword, user.RoleID, createdAt, updatedAt)
 
 	if err != nil {
 		fmt.Println("Error querying a database", err)

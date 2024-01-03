@@ -8,7 +8,8 @@ import (
 
 type Comments struct {
 	ID        int       `json:"id" db:"id"`
-	UserID    int       `json:"userID" db:"user_id"`
+	FirstName string    `json:"firstName" db:"first_name"`
+	LastName  string    `json:"lastName" db:"last_name"`
 	MarkerID  int       `json:"markerID" db:"marker_id"`
 	Comment   string    `json:"comment" db:"comment"`
 	Likes     int       `json:"likes" db:"likes"`
@@ -45,7 +46,7 @@ func (cModel *CommentsModelImpl) GetAllComments() ([]Comments, error) {
 	for rows.Next() {
 		var comment Comments
 
-		err = rows.Scan(&comment.ID, &comment.UserID, &comment.MarkerID, &comment.Comment,
+		err = rows.Scan(&comment.ID, &comment.FirstName, &comment.LastName, &comment.MarkerID, &comment.Comment,
 			&comment.Comment)
 
 		if err != nil {
@@ -72,7 +73,7 @@ func (cModel *CommentsModelImpl) GetCommentsByMarkerID(id int) ([]Comments, erro
 	for rows.Next() {
 		var comment Comments
 
-		err = rows.Scan(&comment.ID, &comment.UserID, &comment.MarkerID, &comment.Comment,
+		err = rows.Scan(&comment.ID, &comment.FirstName, comment.LastName, &comment.MarkerID, &comment.Comment,
 			&comment.Comment, &comment.CreatedAt, &comment.UpdatedAt)
 
 		if err != nil {
@@ -86,12 +87,13 @@ func (cModel *CommentsModelImpl) GetCommentsByMarkerID(id int) ([]Comments, erro
 }
 
 func (cModel *CommentsModelImpl) CreateComment(comment Comments) error {
-	query := `INSERT INTO Comments (user_id, marker_id, comment, likes, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)`
+	query := `INSERT INTO Comments (first_name, last_name, marker_id, comment, likes, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)`
 
 	createdAt := time.Now()
 	updatedAt := time.Now()
 
-	_, err := cModel.DB.Exec(query, comment.UserID, comment.MarkerID, comment.Comment, comment.Likes, createdAt, updatedAt)
+	_, err := cModel.DB.Exec(query, comment.FirstName, comment.LastName,
+		comment.MarkerID, comment.Comment, comment.Likes, createdAt, updatedAt)
 
 	if err != nil {
 		fmt.Println("Error inserting into table comments", err)
