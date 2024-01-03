@@ -73,8 +73,8 @@ func (cModel *CommentsModelImpl) GetCommentsByMarkerID(id int) ([]Comments, erro
 	for rows.Next() {
 		var comment Comments
 
-		err = rows.Scan(&comment.ID, &comment.FirstName, comment.LastName, &comment.MarkerID, &comment.Comment,
-			&comment.Comment, &comment.CreatedAt, &comment.UpdatedAt)
+		err = rows.Scan(&comment.ID, &comment.FirstName, &comment.LastName, &comment.MarkerID, &comment.Comment,
+			&comment.Likes, &comment.CreatedAt, &comment.UpdatedAt)
 
 		if err != nil {
 			fmt.Println("Error Scanning comment by marker ID", err)

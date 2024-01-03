@@ -29,7 +29,6 @@ function MarkerPost({ show, setShow, markerPost, setShowComments }) {
       axios.get(`http://localhost:8080/marker-post/images/${markerPost.id}`)
         .then((response) => {
           setImagesInfo(response.data.images);
-          console.log(markerPost);
         })
         .catch((error) => {
           console.log(error);
@@ -93,9 +92,11 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
   }
 
   const handleAddComment = () => {
+    console.log(newComment)
 
     axios.post("http://localhost:8080/comments/new", {
       firstName: user.firstName,
+      lastName: user.lastName,
       markerID: markerPost.id,
       comment: newComment,
       likes: 0,
@@ -120,6 +121,8 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
       });
   }, [markerPost.id]);
 
+  console.log(comments);
+
   return (
     <>
       {show &&
@@ -130,13 +133,13 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
 
           <Modal.Body>
             <div className="comments-container">
-              {comments ? comments.map((comment) => (
+              {comments ? comments.map((userComment) => (
                 <div className="comment">
                   <div className="comment-header">
-                    <strong>John Doe:</strong>
+                    <strong>{`${userComment.firstName} ${userComment.lastName}`}</strong>
                     <button className="btn btn-sm btn-danger delete-button">Delete</button>
                   </div>
-                  <div className="comment-text">This is a sample comment.</div>
+                  <div className="comment-text">{`${userComment.comment}`}</div>
                 </div>              
               )) : null}
 
