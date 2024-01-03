@@ -85,13 +85,13 @@ CREATE TABLE MarkerPostTags (
 
 CREATE TABLE Comments (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    first_name VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255) NOT NULL,
+    user_id INT NOT NULL,
     marker_id INT NOT NULL,
     comment TEXT NOT NULL,
     likes INT NOT NULL,
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES Users(id),
     FOREIGN KEY (marker_id) REFERENCES MarkerPost(id)
 );
 

@@ -95,8 +95,7 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
     console.log(newComment)
 
     axios.post("http://localhost:8080/comments/new", {
-      firstName: user.firstName,
-      lastName: user.lastName,
+      id: user.id,
       markerID: markerPost.id,
       comment: newComment,
       likes: 0,
@@ -134,7 +133,7 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
           <Modal.Body>
             <div className="comments-container">
               {comments ? comments.map((userComment) => (
-                <div className="comment">
+                <div className="comment" key={userComment.id}>
                   <div className="comment-header">
                     <strong>{`${userComment.firstName} ${userComment.lastName}`}</strong>
                     <button className="btn btn-sm btn-danger delete-button">Delete</button>

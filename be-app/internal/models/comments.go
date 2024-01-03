@@ -8,8 +8,7 @@ import (
 
 type Comments struct {
 	ID        int       `json:"id" db:"id"`
-	FirstName string    `json:"firstName" db:"first_name"`
-	LastName  string    `json:"lastName" db:"last_name"`
+	UserID    int       `json:"userID" db:"user_id"`
 	MarkerID  int       `json:"markerID" db:"marker_id"`
 	Comment   string    `json:"comment" db:"comment"`
 	Likes     int       `json:"likes" db:"likes"`
@@ -46,7 +45,7 @@ func (cModel *CommentsModelImpl) GetAllComments() ([]Comments, error) {
 	for rows.Next() {
 		var comment Comments
 
-		err = rows.Scan(&comment.ID, &comment.FirstName, &comment.LastName, &comment.MarkerID, &comment.Comment,
+		err = rows.Scan(&comment.ID, &comment.UserID, &comment.MarkerID, &comment.Comment,
 			&comment.Comment)
 
 		if err != nil {
@@ -73,7 +72,7 @@ func (cModel *CommentsModelImpl) GetCommentsByMarkerID(id int) ([]Comments, erro
 	for rows.Next() {
 		var comment Comments
 
-		err = rows.Scan(&comment.ID, &comment.FirstName, &comment.LastName, &comment.MarkerID, &comment.Comment,
+		err = rows.Scan(&comment.ID, &comment.UserID, &comment.MarkerID, &comment.Comment,
 			&comment.Likes, &comment.CreatedAt, &comment.UpdatedAt)
 
 		if err != nil {
@@ -92,7 +91,7 @@ func (cModel *CommentsModelImpl) CreateComment(comment Comments) error {
 	createdAt := time.Now()
 	updatedAt := time.Now()
 
-	_, err := cModel.DB.Exec(query, comment.FirstName, comment.LastName,
+	_, err := cModel.DB.Exec(query, comment.UserID,
 		comment.MarkerID, comment.Comment, comment.Likes, createdAt, updatedAt)
 
 	if err != nil {
