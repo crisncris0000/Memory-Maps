@@ -74,7 +74,8 @@ func (uModel *UserModelImpl) GetUserByEmail(email string) (*User, error) {
 
 	var user User
 
-	err := uModel.DB.QueryRow(query, email).Scan(&user.ID, &user.Email, &user.Password, &user.RoleID, &user.CreatedAt, &user.UpdatedAt)
+	err := uModel.DB.QueryRow(query, email).Scan(&user.ID, &user.Email, &user.FirstName, &user.LastName,
+		&user.Password, &user.RoleID, &user.CreatedAt, &user.UpdatedAt)
 
 	if err != nil {
 		fmt.Println("User does not exist", err)
@@ -89,7 +90,7 @@ func (uModel *UserModelImpl) GetUserByID(id int) (*User, error) {
 
 	var user User
 
-	err := uModel.DB.QueryRow(query, id).Scan(&user.ID, &user.Email, &user.Password, &user.RoleID, &user.CreatedAt, &user.UpdatedAt)
+	err := uModel.DB.QueryRow(query, id).Scan(&user.ID, &user.Email, &user.FirstName, &user.LastName, &user.Password, &user.RoleID, &user.CreatedAt, &user.UpdatedAt)
 
 	if err != nil {
 		fmt.Println("User not found with the id", id)

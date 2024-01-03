@@ -104,3 +104,4 @@ VALUES('Public'), ('Private');
 SELECT * FROM MarkerPost;
 SELECT * FROM MarkerPostImage;
 SELECT * FROM Comments;
+SELECT * FROM Users;
