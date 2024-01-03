@@ -94,8 +94,6 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
 
   const handleAddComment = () => {
 
-    console.log(user);
-
     axios.post("http://localhost:8080/comments/new", {
       userID: user.id,
       markerID: markerPost.id,
@@ -131,7 +129,18 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
           </Modal.Header>
 
           <Modal.Body>
+            <div className="comments-container">
+              <div className="comment">
+                <div className="comment-header">
+                  <strong>John Doe:</strong>
+                  <button className="btn btn-sm btn-danger delete-button">Delete</button>
+                </div>
+                <div className="comment-text">This is a sample comment.</div>
+              </div>
+            </div>
           </Modal.Body>
+
+
 
           <Modal.Footer>
             <div className="footer-content">

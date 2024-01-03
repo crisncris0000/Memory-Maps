@@ -145,3 +145,43 @@
   margin-left: 20px;
   margin-right: 20px;
 }
+
+.location-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  height: 100vh;
+}
+
+.comments-container {
+  margin-top: 20px;
+}
+
+.comment {
+  border: 1px solid #ddd;
+  padding: 10px;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: #fff;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.comment-text {
+  margin-top: 5px;
+  word-wrap: break-word;
+}
+
