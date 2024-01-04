@@ -100,7 +100,7 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
       comment: newComment,
       likes: 0,
     }).then((response) => {
-      console.log(response.data);
+      setComments((prevComments) => [...prevComments, response.data.comment]);
     }).catch((error) => {
       console.log(error);
     })
@@ -119,8 +119,6 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
         console.log(error);
       });
   }, []);
-
-  console.log(comments);
 
   return (
     <>

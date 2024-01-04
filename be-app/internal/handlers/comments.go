@@ -79,7 +79,10 @@ func (cHandler *CommentsHandler) CreateComment(context *gin.Context) {
 		return
 	}
 
-	context.JSON(http.StatusAccepted, gin.H{"message": "Comment has been posted"})
+	context.JSON(http.StatusAccepted, gin.H{
+		"message": "Comment has been posted",
+		"comment": comment,
+	})
 }
 
 func (cHandler *CommentsHandler) UpdateComment(context *gin.Context) {
