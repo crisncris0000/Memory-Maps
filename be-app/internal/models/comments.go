@@ -71,7 +71,7 @@ func (cModel *CommentsModelImpl) GetAllComments() ([]Comments, error) {
 
 func (cModel *CommentsModelImpl) GetCommentsAndUsersByMarkerID(id int) ([]JoinCommentsUsers, error) {
 	query := `
-		SELECT c.*, u.email, u.first_name, u.last_name
+		SELECT c.*, u.first_name, u.last_name, u.email
 		FROM Comments c
 		INNER JOIN Users u ON c.user_id = u.id
 		WHERE c.marker_id = ?
@@ -136,7 +136,7 @@ func (cModel *CommentsModelImpl) UpdateComment(comment string) error {
 }
 
 func (cModel *CommentsModelImpl) DeleteCommentByID(id int) error {
-	query := "DELETE Comments WHERE id = ?"
+	query := "DELETE FROM Comments WHERE id = ?"
 
 	_, err := cModel.DB.Exec(query, id)
 

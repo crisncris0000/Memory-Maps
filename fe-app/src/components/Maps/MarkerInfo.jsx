@@ -112,6 +112,10 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
     axios.delete(`http://localhost:8080/comments/delete/${id}`)
     .then((response) => {
       console.log(response.data);
+      const filteredArr = comments.filter((comment) => (
+        comment.id !== id
+      ));
+      setComments(filteredArr);
     }).catch((error) => {
       console.log(error);
     })
