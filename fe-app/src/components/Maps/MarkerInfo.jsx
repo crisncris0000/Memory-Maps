@@ -145,7 +145,7 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
                 <div className="comment" key={userComment.id}>
                   <div className="comment-header">
                     <strong>{`${userComment.firstName} ${userComment.lastName}`}</strong>
-                    { user.email === userComment.email ? 
+                    {user.email === userComment.email ? 
                     <button className="btn btn-sm btn-danger delete-button" onClick={() => handleDelete(userComment.id)}>Delete</button> 
                     : null}
                   </div>

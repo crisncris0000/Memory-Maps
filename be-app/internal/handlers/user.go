@@ -22,9 +22,9 @@ type LoginForm struct {
 }
 
 type SendEmail struct {
-	Subject string
-	Email   string
-	Body    string
+	Subject string `json:"subject"`
+	Email   string `json:"email"`
+	Body    string `json:"body"`
 }
 
 func NewUserHandler(uModelImpl *models.UserModelImpl) *UserHandler {
@@ -189,4 +189,8 @@ func (uHandler *UserHandler) SendEmail(context *gin.Context) {
 	context.JSON(http.StatusOK, gin.H{
 		"message": "Email sent successfully",
 	})
+}
+
+func (uHandler *UserHandler) ResetPassword(context *gin.Context) {
+
 }
