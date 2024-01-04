@@ -108,6 +108,15 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
     setShowComments(false);
   }
 
+  const handleDelete = (id) => {
+    axios.delete(`http://localhost:8080/comments/delete/${id}`)
+    .then((response) => {
+      console.log(response.data);
+    }).catch((error) => {
+      console.log(error);
+    })
+  }
+
   useEffect(() => {
     axios.get(`http://localhost:8080/comments/${markerPost.id}`)
       .then((response) => {
@@ -132,7 +141,9 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
                 <div className="comment" key={userComment.id}>
                   <div className="comment-header">
                     <strong>{`${userComment.firstName} ${userComment.lastName}`}</strong>
-                    <button className="btn btn-sm btn-danger delete-button">Delete</button>
+                    { user.email === userComment.email ? 
+                    <button className="btn btn-sm btn-danger delete-button" onClick={() => handleDelete(userComment.id)}>Delete</button> 
+                    : null}
                   </div>
                   <div className="comment-text">{`${userComment.comment}`}</div>
                 </div>              
