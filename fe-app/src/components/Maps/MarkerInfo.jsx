@@ -92,8 +92,6 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
   }
 
   const handleAddComment = () => {
-    console.log(newComment)
-
     axios.post("http://localhost:8080/comments/new", {
       userID: user.id,
       markerID: markerPost.id,

@@ -42,7 +42,7 @@ func (cHandler *CommentsHandler) GetAllCommentsByMarkerPostID(context *gin.Conte
 		})
 	}
 
-	comments, err := cHandler.DB.GetCommentsByMarkerID(id)
+	comments, err := cHandler.DB.GetCommentsAndUsersByMarkerID(id)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{

@@ -16,6 +16,19 @@ type Comments struct {
 	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
 }
 
+type JoinCommentsUsers struct {
+	ID        int       `json:"id" db:"id"`
+	UserID    int       `json:"userID" db:"user_id"`
+	MarkerID  int       `json:"markerID" db:"marker_id"`
+	Comment   string    `json:"comment" db:"comment"`
+	Likes     int       `json:"likes" db:"likes"`
+	CreatedAt time.Time `json:"created_at" db:"created_at"`
+	UpdatedAt time.Time `json:"updated_at" db:"updated_at"`
+	FirstName string    `json:"firstName" db:"first_name"`
+	LastName  string    `json:"lastName" db:"last_name"`
+	Email     string    `json:"email" db:"email"`
+}
+
 type CommentsModel interface {
 	CreateComment(comment Comments) error
 	GetAllComments() ([]Comments, error)
@@ -45,22 +58,26 @@ func (cModel *CommentsModelImpl) GetAllComments() ([]Comments, error) {
 	for rows.Next() {
 		var comment Comments
 
-		err = rows.Scan(&comment.ID, &comment.UserID, &comment.MarkerID, &comment.Comment,
-			&comment.Comment)
+		err = rows.Scan(&comment.ID, &comment.UserID, &comment.MarkerID,
+			&comment.Comment, &comment.Likes, &comment.CreatedAt, &comment.UpdatedAt)
 
 		if err != nil {
 			fmt.Println("Error scanning row", err)
 			return nil, err
 		}
 	}
-
 	return comments, nil
 }
 
-func (cModel *CommentsModelImpl) GetCommentsByMarkerID(id int) ([]Comments, error) {
-	query := `SELECT * FROM Comments WHERE marker_id = ?`
+func (cModel *CommentsModelImpl) GetCommentsAndUsersByMarkerID(id int) ([]JoinCommentsUsers, error) {
+	query := `
+		SELECT c.*, u.email, u.first_name, u.last_name
+		FROM Comments c
+		INNER JOIN Users u ON c.user_id = u.id
+		WHERE c.marker_id = ?
+	`
 
-	var comments []Comments
+	var comments []JoinCommentsUsers
 
 	rows, err := cModel.DB.Query(query, id)
 
@@ -70,10 +87,11 @@ func (cModel *CommentsModelImpl) GetCommentsByMarkerID(id int) ([]Comments, erro
 	}
 
 	for rows.Next() {
-		var comment Comments
+		var comment JoinCommentsUsers
 
 		err = rows.Scan(&comment.ID, &comment.UserID, &comment.MarkerID, &comment.Comment,
-			&comment.Likes, &comment.CreatedAt, &comment.UpdatedAt)
+			&comment.Likes, &comment.CreatedAt, &comment.UpdatedAt, &comment.FirstName,
+			&comment.LastName, &comment.Email)
 
 		if err != nil {
 			fmt.Println("Error Scanning comment by marker ID", err)
