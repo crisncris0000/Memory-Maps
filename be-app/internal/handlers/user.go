@@ -192,5 +192,36 @@ func (uHandler *UserHandler) SendEmail(context *gin.Context) {
 }
 
 func (uHandler *UserHandler) ResetPassword(context *gin.Context) {
+	var resetEmail SendEmail
 
+	if err := context.ShouldBindJSON(&resetEmail); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{
+			"message": "Could not bind to JSON",
+			"error":   err,
+		})
+		return
+	}
+
+	email := &email.Email{
+		To:      []string{"Christopherrivera384@gmail.com"},
+		From:    resetEmail.Email,
+		Subject: "Reset password request",
+		Text:    []byte(""),
+	}
+
+	userEmail := utils.GetValueOfEnvKey("GMAIL_APP_USERNAME")
+
+	password := utils.GetValueOfEnvKey("GMAIL_APP_PASSWORD")
+
+	err := email.Send("smtp.gmail.com:587", smtp.PlainAuth("", userEmail, password, "smtp.gmail.com"))
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error sending the email",
+			"error":   err,
+		})
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{"message": "Email sent successfully"})
 }

@@ -79,7 +79,12 @@ export default function Login() {
             <p>Or login using one of the following services:</p>
             <GoogleAuth />
 
+            <Link to="/reset-password" style={{margin: "20px"}}>Reset Password</Link>
             <Link to="/">Return to home</Link>
         </div>
     );
+}
+
+function EnterResetCode() {
+    
 }

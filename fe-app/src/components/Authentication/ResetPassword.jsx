@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import '../../css/reset-password.css';
 
 export default function ResetPassword() {
@@ -7,6 +8,14 @@ export default function ResetPassword() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(`Password reset requested for email: ${email}`);
+
+    axios.post("http://localhost:8080/users/reset", {
+      email
+    }).then((response) => {
+      console.log(response);
+    }).catch((error) => {
+      console.log(error);
+    })
   };
 
   return (

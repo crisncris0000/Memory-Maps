@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS MarkerPostTags;
 DROP TABLE IF EXISTS MarkerPostImage;
 DROP TABLE IF EXISTS MarkerPost;
 DROP TABLE IF EXISTS Tags;
+DROP TABLE IF EXISTS ResetToken;
 DROP TABLE IF EXISTS Users;
 DROP TABLE IF EXISTS Roles;
 DROP TABLE IF EXISTS Visibility;
@@ -93,6 +94,13 @@ CREATE TABLE Comments (
     updated_at TIMESTAMP NOT NULL,
     FOREIGN KEY (user_id) REFERENCES Users(id),
     FOREIGN KEY (marker_id) REFERENCES MarkerPost(id)
+);
+
+CREATE TABLE ResetToken(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    token VARCHAR(10) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES Users(id)
 );
 
 INSERT INTO Roles(role_name)
