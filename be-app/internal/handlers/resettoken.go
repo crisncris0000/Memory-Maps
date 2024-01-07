@@ -20,7 +20,7 @@ func (rt *ResetTokenHandler) GetResetToken(context *gin.Context) {
 	var resetToken models.ResetToken
 
 	if err := context.ShouldBindJSON(&resetToken); err != nil {
-		context.JSON(http.StatusNotFound, gin.H{
+		context.JSON(http.StatusBadRequest, gin.H{
 			"message": "Error binding JSON",
 			"error":   err,
 		})
@@ -41,4 +41,27 @@ func (rt *ResetTokenHandler) GetResetToken(context *gin.Context) {
 		"message": "Token retrieved",
 		"token":   token,
 	})
+}
+
+func (rt *ResetTokenHandler) CreateResetToken(context *gin.Context) {
+	var resetToken models.ResetToken
+
+	if err := context.ShouldBindHeader(&resetToken); err != nil {
+		context.JSON(http.StatusBadRequest, gin.H{
+			"message": "Error binding to json",
+			"error":   err,
+		})
+		return
+	}
+
+	err := rt.DB.CreateResetToken(resetToken)
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error creating Reset Token",
+			"error":   err,
+		})
+		return
+	}
+
 }
