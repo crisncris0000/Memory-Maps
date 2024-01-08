@@ -2,10 +2,13 @@ package handlers
 
 import (
 	"net/http"
+	"net/smtp"
 	"strconv"
 
 	"github.com/crisncris0000/Memory-Maps/be-app/internal/models"
+	"github.com/crisncris0000/Memory-Maps/be-app/internal/utils"
 	"github.com/gin-gonic/gin"
+	"github.com/jordan-wright/email"
 )
 
 type ResetTokenHandler struct {
@@ -64,6 +67,43 @@ func (rt *ResetTokenHandler) CreateResetToken(context *gin.Context) {
 		})
 		return
 	}
+
+	userModel := models.NewUserModel(rt.DB.DB)
+
+	user, err := userModel.GetUserByID(resetToken.UserID)
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error retrieving user by ID",
+			"error":   err,
+		})
+		return
+	}
+
+	email := &email.Email{
+		To:      []string{user.Email},
+		From:    "christopherrivera384@gmail.com",
+		Subject: "Reset password request",
+		Text:    []byte(""),
+	}
+
+	userEmail := utils.GetValueOfEnvKey("GMAIL_APP_USERNAME")
+
+	password := utils.GetValueOfEnvKey("GMAIL_APP_PASSWORD")
+
+	err = email.Send("smtp.gmail.com:587", smtp.PlainAuth("", userEmail, password, "smtp.gmail.com"))
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error sending the email",
+			"error":   err,
+		})
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{
+		"message": "Please check your email for the code",
+	})
 }
 
 func (rt *ResetTokenHandler) DeleteResetToken(context *gin.Context) {
