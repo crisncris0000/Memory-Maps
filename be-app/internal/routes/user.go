@@ -18,6 +18,5 @@ func (uRouter *UserRouter) InitializeUserRouter(router *gin.Engine) {
 	router.GET("/users/:id", uRouter.UserHandler.GetUserByID)
 	router.POST("/users/new", uRouter.UserHandler.CreateUser)
 	router.POST("/users/login", uRouter.UserHandler.AuthenticateUser)
-	router.POST("/users/reset", uRouter.UserHandler.ResetPassword)
 	router.POST("/users/send-email", uRouter.UserHandler.SendEmail)
 }

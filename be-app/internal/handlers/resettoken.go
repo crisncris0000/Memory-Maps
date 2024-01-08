@@ -1,10 +1,16 @@
 package handlers
 
 import (
+	"math/rand"
 	"net/http"
+	"net/smtp"
+	"strconv"
+	"time"
 
 	"github.com/crisncris0000/Memory-Maps/be-app/internal/models"
+	"github.com/crisncris0000/Memory-Maps/be-app/internal/utils"
 	"github.com/gin-gonic/gin"
+	"github.com/jordan-wright/email"
 )
 
 type ResetTokenHandler struct {
@@ -27,7 +33,7 @@ func (rt *ResetTokenHandler) GetResetToken(context *gin.Context) {
 		return
 	}
 
-	token, err := rt.DB.GetResetToken(resetToken.Token, resetToken.UserID)
+	token, err := rt.DB.GetResetToken(resetToken.Token, resetToken.Email)
 
 	if err != nil {
 		context.JSON(http.StatusNotFound, gin.H{
@@ -46,7 +52,7 @@ func (rt *ResetTokenHandler) GetResetToken(context *gin.Context) {
 func (rt *ResetTokenHandler) CreateResetToken(context *gin.Context) {
 	var resetToken models.ResetToken
 
-	if err := context.ShouldBindHeader(&resetToken); err != nil {
+	if err := context.ShouldBindJSON(&resetToken); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{
 			"message": "Error binding to json",
 			"error":   err,
@@ -54,7 +60,32 @@ func (rt *ResetTokenHandler) CreateResetToken(context *gin.Context) {
 		return
 	}
 
-	err := rt.DB.CreateResetToken(resetToken)
+	seed := time.Now().UnixNano()
+	rng := rand.New(rand.NewSource(seed))
+	code := rng.Intn(1000000)
+
+	email := &email.Email{
+		To:      []string{resetToken.Email},
+		From:    "christopherrivera384@gmail.com",
+		Subject: "Reset password request",
+		Text:    []byte(strconv.Itoa(code)),
+	}
+
+	userEmail := utils.GetValueOfEnvKey("GMAIL_APP_USERNAME")
+
+	password := utils.GetValueOfEnvKey("GMAIL_APP_PASSWORD")
+
+	err := email.Send("smtp.gmail.com:587", smtp.PlainAuth("", userEmail, password, "smtp.gmail.com"))
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error sending the email",
+			"error":   err,
+		})
+		return
+	}
+
+	err = rt.DB.CreateResetToken(resetToken)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{
@@ -64,4 +95,41 @@ func (rt *ResetTokenHandler) CreateResetToken(context *gin.Context) {
 		return
 	}
 
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error retrieving user by ID",
+			"error":   err,
+		})
+		return
+	}
+
+	context.JSON(http.StatusOK, gin.H{
+		"message": "Please check your email for the code",
+	})
+}
+
+func (rt *ResetTokenHandler) DeleteResetToken(context *gin.Context) {
+	param := context.Param("id")
+
+	id, err := strconv.Atoi(param)
+
+	if err != nil {
+		context.JSON(http.StatusNotAcceptable, gin.H{
+			"message": "Cannot convert param to integer",
+			"error":   err,
+		})
+	}
+
+	err = rt.DB.DeleteResetTokenByID(id)
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error deleting Reset Token",
+			"error":   err,
+		})
+	}
+
+	context.JSON(http.StatusOK, gin.H{
+		"message": "Successfully removed token",
+	})
 }

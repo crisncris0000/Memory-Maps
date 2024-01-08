@@ -6,12 +6,15 @@ import (
 )
 
 type ResetToken struct {
-	ID     int    `json:"id" db:"id"`
-	UserID int    `json:"userID" db:"user_id"`
-	Token  string `json:"token" db:"token"`
+	ID    int    `json:"id" db:"id"`
+	Email string `json:"email" db:"user_email"`
+	Token string `json:"token" db:"token"`
 }
 
 type ResetTokenModel interface {
+	GetResetToken(token, email string) (string, error)
+	CreateResetToken(resetToken ResetToken) error
+	DeleteResetTokenByID(id int) error
 }
 
 type ResetTokenImpl struct {
@@ -22,27 +25,27 @@ func NewResetTokenModel(db *sql.DB) *ResetTokenImpl {
 	return &ResetTokenImpl{DB: db}
 }
 
-func (rt *ResetTokenImpl) GetResetToken(token string, id int) (string, error) {
-	query := `SELECT * FROM ResetToken WHERE token = ? AND WHERE user_id = ?`
+func (rt *ResetTokenImpl) GetResetToken(token, email string) (string, error) {
+	query := `SELECT * FROM ResetToken WHERE token = ? AND WHERE user_email = ?`
 
 	var resetToken ResetToken
 
-	row, err := rt.DB.Query(query, token, id)
+	row, err := rt.DB.Query(query, token, email)
 
 	if err != nil {
 		fmt.Println("Error querying the database", err)
 		return "", err
 	}
 
-	row.Scan(&resetToken.ID, &resetToken.Token, &resetToken.UserID)
+	row.Scan(&resetToken.ID, &resetToken.Token, &resetToken.Email)
 
 	return resetToken.Token, nil
 }
 
 func (rt *ResetTokenImpl) CreateResetToken(resetToken ResetToken) error {
-	query := `INSERT INTO ResetToken(user_id, token) VALUES(?, ?)`
+	query := `INSERT INTO ResetToken(user_email, token) VALUES(?, ?)`
 
-	_, err := rt.DB.Exec(query, resetToken.UserID, resetToken.Token)
+	_, err := rt.DB.Exec(query, resetToken.Email, resetToken.Token)
 
 	if err != nil {
 		fmt.Println("Error inserting into database", err)
@@ -52,10 +55,10 @@ func (rt *ResetTokenImpl) CreateResetToken(resetToken ResetToken) error {
 	return nil
 }
 
-func (rt *ResetTokenImpl) DeleteResetToken(token string) error {
-	query := `DELETE FROM ResetToken WHERE ResetToken.token = ?`
+func (rt *ResetTokenImpl) DeleteResetTokenByID(id int) error {
+	query := `DELETE FROM ResetToken WHERE id = ?`
 
-	_, err := rt.DB.Exec(query, token)
+	_, err := rt.DB.Exec(query, id)
 
 	if err != nil {
 		fmt.Println("Error deleting from database", err)
