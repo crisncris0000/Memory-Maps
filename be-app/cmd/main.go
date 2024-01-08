@@ -74,6 +74,10 @@ func main() {
 	cHandler := handlers.NewCommentsHandler(cModel)
 	cRouter := routes.NewCommentsRouter(cHandler)
 
+	rtModel := models.NewResetTokenModel(database)
+	rtHandler := handlers.NewResetTokenHandler(rtModel)
+	rtRouter := routes.NewResetTokenRouter(rtHandler)
+
 	uRouter.InitializeUserRouter(r)
 	rRouter.InitializeRouter(r)
 	mRouter.InitializeRouter(r)
@@ -82,6 +86,7 @@ func main() {
 	pRouter.InitializeRouter(r)
 	fRouter.InitializeRouter(r)
 	cRouter.InitializeRouter(r)
+	rtRouter.InitializeRouter(r)
 
 	log.Fatal(r.Run(cf.Port))
 }

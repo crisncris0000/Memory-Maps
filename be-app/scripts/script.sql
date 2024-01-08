@@ -98,9 +98,8 @@ CREATE TABLE Comments (
 
 CREATE TABLE ResetToken(
     id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT NOT NULL,
-    token VARCHAR(10) NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES Users(id)
+    user_email VARCHAR(255) NOT NULL,
+    token VARCHAR(10) NOT NULL
 );
 
 INSERT INTO Roles(role_name)
@@ -109,7 +108,4 @@ VALUES ('ADMIN'), ('USER');
 INSERT INTO Visibility(view)
 VALUES('Public'), ('Private');
 
-SELECT * FROM MarkerPost;
-SELECT * FROM MarkerPostImage;
-SELECT * FROM Comments;
-SELECT * FROM Users;
+SELECT * FROM ResetToken;

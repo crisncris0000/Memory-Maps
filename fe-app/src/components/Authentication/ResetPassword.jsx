@@ -7,10 +7,10 @@ export default function ResetPassword() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(`Password reset requested for email: ${email}`);
 
-    axios.post("http://localhost:8080/users/reset", {
-      email
+    axios.post(`http://localhost:8080/reset-token/new`, {
+      email,
+      token: "123",
     }).then((response) => {
       console.log(response);
     }).catch((error) => {

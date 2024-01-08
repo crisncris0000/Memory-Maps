@@ -31,7 +31,7 @@ func (rt *ResetTokenHandler) GetResetToken(context *gin.Context) {
 		return
 	}
 
-	token, err := rt.DB.GetResetToken(resetToken.Token, resetToken.UserID)
+	token, err := rt.DB.GetResetToken(resetToken.Token, resetToken.Email)
 
 	if err != nil {
 		context.JSON(http.StatusNotFound, gin.H{
@@ -50,7 +50,7 @@ func (rt *ResetTokenHandler) GetResetToken(context *gin.Context) {
 func (rt *ResetTokenHandler) CreateResetToken(context *gin.Context) {
 	var resetToken models.ResetToken
 
-	if err := context.ShouldBindHeader(&resetToken); err != nil {
+	if err := context.ShouldBindJSON(&resetToken); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{
 			"message": "Error binding to json",
 			"error":   err,
@@ -68,10 +68,6 @@ func (rt *ResetTokenHandler) CreateResetToken(context *gin.Context) {
 		return
 	}
 
-	userModel := models.NewUserModel(rt.DB.DB)
-
-	user, err := userModel.GetUserByID(resetToken.UserID)
-
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error retrieving user by ID",
@@ -81,7 +77,7 @@ func (rt *ResetTokenHandler) CreateResetToken(context *gin.Context) {
 	}
 
 	email := &email.Email{
-		To:      []string{user.Email},
+		To:      []string{resetToken.Email},
 		From:    "christopherrivera384@gmail.com",
 		Subject: "Reset password request",
 		Text:    []byte(""),
@@ -118,7 +114,7 @@ func (rt *ResetTokenHandler) DeleteResetToken(context *gin.Context) {
 		})
 	}
 
-	err = rt.DB.DeleteResetToken(id)
+	err = rt.DB.DeleteResetTokenByID(id)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{
