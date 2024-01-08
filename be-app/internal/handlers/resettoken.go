@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/crisncris0000/Memory-Maps/be-app/internal/models"
 	"github.com/gin-gonic/gin"
@@ -63,5 +64,30 @@ func (rt *ResetTokenHandler) CreateResetToken(context *gin.Context) {
 		})
 		return
 	}
+}
 
+func (rt *ResetTokenHandler) DeleteResetToken(context *gin.Context) {
+	param := context.Param("id")
+
+	id, err := strconv.Atoi(param)
+
+	if err != nil {
+		context.JSON(http.StatusNotAcceptable, gin.H{
+			"message": "Cannot convert param to integer",
+			"error":   err,
+		})
+	}
+
+	err = rt.DB.DeleteResetToken(id)
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error deleting Reset Token",
+			"error":   err,
+		})
+	}
+
+	context.JSON(http.StatusOK, gin.H{
+		"message": "Successfully removed token",
+	})
 }
