@@ -12,6 +12,9 @@ type ResetToken struct {
 }
 
 type ResetTokenModel interface {
+	GetResetToken(token, email string) (string, error)
+	CreateResetToken(resetToken ResetToken) error
+	DeleteResetTokenByID(id int) error
 }
 
 type ResetTokenImpl struct {
@@ -22,7 +25,7 @@ func NewResetTokenModel(db *sql.DB) *ResetTokenImpl {
 	return &ResetTokenImpl{DB: db}
 }
 
-func (rt *ResetTokenImpl) GetResetToken(token string, email string) (string, error) {
+func (rt *ResetTokenImpl) GetResetToken(token, email string) (string, error) {
 	query := `SELECT * FROM ResetToken WHERE token = ? AND WHERE user_email = ?`
 
 	var resetToken ResetToken

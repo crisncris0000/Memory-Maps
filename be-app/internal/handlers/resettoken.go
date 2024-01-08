@@ -1,9 +1,11 @@
 package handlers
 
 import (
+	"math/rand"
 	"net/http"
 	"net/smtp"
 	"strconv"
+	"time"
 
 	"github.com/crisncris0000/Memory-Maps/be-app/internal/models"
 	"github.com/crisncris0000/Memory-Maps/be-app/internal/utils"
@@ -58,7 +60,32 @@ func (rt *ResetTokenHandler) CreateResetToken(context *gin.Context) {
 		return
 	}
 
-	err := rt.DB.CreateResetToken(resetToken)
+	seed := time.Now().UnixNano()
+	rng := rand.New(rand.NewSource(seed))
+	code := rng.Intn(1000000)
+
+	email := &email.Email{
+		To:      []string{resetToken.Email},
+		From:    "christopherrivera384@gmail.com",
+		Subject: "Reset password request",
+		Text:    []byte(strconv.Itoa(code)),
+	}
+
+	userEmail := utils.GetValueOfEnvKey("GMAIL_APP_USERNAME")
+
+	password := utils.GetValueOfEnvKey("GMAIL_APP_PASSWORD")
+
+	err := email.Send("smtp.gmail.com:587", smtp.PlainAuth("", userEmail, password, "smtp.gmail.com"))
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error sending the email",
+			"error":   err,
+		})
+		return
+	}
+
+	err = rt.DB.CreateResetToken(resetToken)
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{
@@ -71,27 +98,6 @@ func (rt *ResetTokenHandler) CreateResetToken(context *gin.Context) {
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error retrieving user by ID",
-			"error":   err,
-		})
-		return
-	}
-
-	email := &email.Email{
-		To:      []string{resetToken.Email},
-		From:    "christopherrivera384@gmail.com",
-		Subject: "Reset password request",
-		Text:    []byte(""),
-	}
-
-	userEmail := utils.GetValueOfEnvKey("GMAIL_APP_USERNAME")
-
-	password := utils.GetValueOfEnvKey("GMAIL_APP_PASSWORD")
-
-	err = email.Send("smtp.gmail.com:587", smtp.PlainAuth("", userEmail, password, "smtp.gmail.com"))
-
-	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Error sending the email",
 			"error":   err,
 		})
 		return
