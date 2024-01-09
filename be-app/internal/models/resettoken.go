@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 )
 
@@ -26,18 +27,20 @@ func NewResetTokenModel(db *sql.DB) *ResetTokenImpl {
 }
 
 func (rt *ResetTokenImpl) GetResetToken(token, email string) (string, error) {
-	query := `SELECT * FROM ResetToken WHERE token = ? AND WHERE user_email = ?`
+	query := `SELECT * FROM ResetToken WHERE token = ? AND user_email = ?`
 
 	var resetToken ResetToken
 
-	row, err := rt.DB.Query(query, token, email)
+	row := rt.DB.QueryRow(query, token, email)
 
-	if err != nil {
-		fmt.Println("Error querying the database", err)
+	err := row.Scan(&resetToken.ID, &resetToken.Email, &resetToken.Token)
+
+	if err == sql.ErrNoRows {
+		return "", errors.New("Token not found")
+	} else if err != nil {
+		fmt.Println("Error scanning into struct", err)
 		return "", err
 	}
-
-	row.Scan(&resetToken.ID, &resetToken.Token, &resetToken.Email)
 
 	return resetToken.Token, nil
 }

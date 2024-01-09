@@ -21,11 +21,17 @@ func NewResetTokenHandler(db *models.ResetTokenImpl) *ResetTokenHandler {
 	return &ResetTokenHandler{DB: *db}
 }
 
+type ResetPasswordDTO struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Token    string `json:"token"`
+}
+
 func (rt *ResetTokenHandler) GetResetToken(context *gin.Context) {
 
-	var resetToken models.ResetToken
+	var resetPasswordDTO ResetPasswordDTO
 
-	if err := context.ShouldBindJSON(&resetToken); err != nil {
+	if err := context.ShouldBindJSON(&resetPasswordDTO); err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{
 			"message": "Error binding JSON",
 			"error":   err,
@@ -33,7 +39,7 @@ func (rt *ResetTokenHandler) GetResetToken(context *gin.Context) {
 		return
 	}
 
-	token, err := rt.DB.GetResetToken(resetToken.Token, resetToken.Email)
+	token, err := rt.DB.GetResetToken(resetPasswordDTO.Token, resetPasswordDTO.Email)
 
 	if err != nil {
 		context.JSON(http.StatusNotFound, gin.H{
@@ -84,6 +90,8 @@ func (rt *ResetTokenHandler) CreateResetToken(context *gin.Context) {
 		})
 		return
 	}
+
+	resetToken.Token = strconv.Itoa(code)
 
 	err = rt.DB.CreateResetToken(resetToken)
 

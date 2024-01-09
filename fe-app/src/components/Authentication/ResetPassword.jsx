@@ -5,25 +5,26 @@ import '../../css/reset-password.css';
 export default function ResetPassword() {
 
   const [isTokenSent, setIsTokenSent] = useState(false);
+  const [email, setEmail] = useState('');
 
   return(
     <>
-      {isTokenSent === false ? <SendEmail /> : <VerifyToken />}
+      {isTokenSent === false ? <SendEmail isTokenSent={isTokenSent} setIsTokenSent={setIsTokenSent} email={email} setEmail={setEmail} /> : 
+      <VerifyToken email={email} />}
     </>
   );
 }
 
-function SendEmail({isTokenSent, setIsTokenSent}) {
-  const [email, setEmail] = useState('');
+function SendEmail({ isTokenSent, setIsTokenSent, email, setEmail }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     axios.post(`http://localhost:8080/reset-token/new`, {
       email,
-      token: "123",
     }).then((response) => {
       console.log(response);
+      setIsTokenSent(true);
     }).catch((error) => {
       console.log(error);
     })
@@ -49,13 +50,22 @@ function SendEmail({isTokenSent, setIsTokenSent}) {
   );
 }
 
-function VerifyToken() {
+function VerifyToken({ email }) {
   const [token, setToken] = useState('');
-  const [verificationResult, setVerificationResult] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confrimPassword, setConfirmPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(`Verifying token: ${token}`);
+    axios.post("http://localhost:8080/reset-token", {
+      email,
+      password: newPassword,
+      token,
+    }).then((response) => {
+      console.log(response.data);
+    }).catch((error) => {
+      console.log(error);
+    })
   }
   
   return (
@@ -64,19 +74,18 @@ function VerifyToken() {
         <h2>Verify Token</h2>
         <div className="form-group">
           <label htmlFor="token">Token:</label>
-          <input
-            type="text"
-            id="token"
-            value={token}
-            onChange={(e) => setToken(e.target.value)}
-            required
-          />
+          <input type="text" placeholder="Enter token" id="token" value={token} onChange={(e) => setToken(e.target.value)} required/>
+
+          <label htmlFor="new-password">New password</label>
+          <input type="text" placeholder="Enter your new password" name="new-password" id="new-password" value={newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}/>
+
+          <label htmlFor="confirm-password">Confirm password</label>
+          <input type="text" placeholder="Enter it again to confirm" name="confirm-password" id="confrim-password" value={confrimPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}/>
         </div>
-        <button type="submit">Verify Token</button>
+        <button type="submit">Change Password</button>
       </form>
-      <div className="verification-result">
-        {verificationResult && <p>{verificationResult}</p>}
-      </div>
     </div>
   );
 }
