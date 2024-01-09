@@ -49,6 +49,28 @@ func (rt *ResetTokenHandler) GetResetToken(context *gin.Context) {
 		return
 	}
 
+	uModel := models.NewUserModel(rt.DB.DB)
+
+	hashedPassword, err := utils.HashPassword(resetPasswordDTO.Password)
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error hashing password",
+			"error":   err,
+		})
+		return
+	}
+
+	err = uModel.UpdateUser(resetPasswordDTO.Email, hashedPassword)
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error updating user",
+			"error":   err,
+		})
+		return
+	}
+
 	context.JSON(http.StatusOK, gin.H{
 		"message": "Token retrieved",
 		"token":   token,

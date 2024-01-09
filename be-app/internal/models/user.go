@@ -26,6 +26,7 @@ type UserModel interface {
 	CreateUser(user User) error
 	UserExists(email string) error
 	SendUserEmail(from, subject, body string)
+	UpdateUser()
 }
 
 type UserModelImpl struct {
@@ -150,4 +151,17 @@ func (uModel *UserModelImpl) UserExists(email string) (bool, error) {
 	}
 
 	return count > 0, nil
+}
+
+func (uModel *UserModelImpl) UpdateUser(email string, newPassword string) error {
+	query := `UPDATE Users SET password = ? WHERE email = ?`
+
+	_, err := uModel.DB.Exec(query, newPassword, email)
+
+	if err != nil {
+		fmt.Println("Error updating user", err)
+		return err
+	}
+
+	return nil
 }
