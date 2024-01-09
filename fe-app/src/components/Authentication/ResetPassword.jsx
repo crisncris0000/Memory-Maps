@@ -3,10 +3,17 @@ import axios from 'axios';
 import '../../css/reset-password.css';
 
 export default function ResetPassword() {
-  <VerifyToken />
+
+  const [isTokenSent, setIsTokenSent] = useState(false);
+
+  return(
+    <>
+      {isTokenSent === false ? <SendEmail /> : <VerifyToken />}
+    </>
+  );
 }
 
-function SendEmail() {
+function SendEmail({isTokenSent, setIsTokenSent}) {
   const [email, setEmail] = useState('');
 
   const handleSubmit = (e) => {
