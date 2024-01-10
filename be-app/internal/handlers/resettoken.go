@@ -27,7 +27,7 @@ type ResetPasswordDTO struct {
 	Token    string `json:"token"`
 }
 
-func (rt *ResetTokenHandler) GetResetToken(context *gin.Context) {
+func (rt *ResetTokenHandler) ChangeUserPassword(context *gin.Context) {
 
 	var resetPasswordDTO ResetPasswordDTO
 
@@ -88,6 +88,25 @@ func (rt *ResetTokenHandler) CreateResetToken(context *gin.Context) {
 		return
 	}
 
+	uModel := models.NewUserModel(rt.DB.DB)
+
+	exists, err := uModel.UserExists(resetToken.Email)
+
+	if err != nil {
+		context.JSON(http.StatusNotFound, gin.H{
+			"message": "User does not exist",
+			"error":   err,
+		})
+		return
+	}
+
+	if !exists {
+		context.JSON(http.StatusNotFound, gin.H{
+			"message": "User does not exist",
+		})
+		return
+	}
+
 	seed := time.Now().UnixNano()
 	rng := rand.New(rand.NewSource(seed))
 	code := rng.Intn(1000000)
@@ -103,7 +122,7 @@ func (rt *ResetTokenHandler) CreateResetToken(context *gin.Context) {
 
 	password := utils.GetValueOfEnvKey("GMAIL_APP_PASSWORD")
 
-	err := email.Send("smtp.gmail.com:587", smtp.PlainAuth("", userEmail, password, "smtp.gmail.com"))
+	err = email.Send("smtp.gmail.com:587", smtp.PlainAuth("", userEmail, password, "smtp.gmail.com"))
 
 	if err != nil {
 		context.JSON(http.StatusInternalServerError, gin.H{

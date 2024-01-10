@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../../css/reset-password.css';
+import Error from '../Messages/Error';
 
 export default function ResetPassword() {
 
@@ -17,6 +18,9 @@ export default function ResetPassword() {
 
 function SendEmail({ isTokenSent, setIsTokenSent, email, setEmail }) {
 
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -27,6 +31,8 @@ function SendEmail({ isTokenSent, setIsTokenSent, email, setEmail }) {
       setIsTokenSent(true);
     }).catch((error) => {
       console.log(error);
+      setError(true);
+      setErrorMessage(error.response.data.message);
     })
   };
 
@@ -43,6 +49,7 @@ function SendEmail({ isTokenSent, setIsTokenSent, email, setEmail }) {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+          <Error error={error} setError={setError} errorMessage={errorMessage}/>
         </div>
         <button type="submit">Reset Password</button>
       </form>

@@ -14,7 +14,7 @@ func NewResetTokenRouter(resetTokenHandler *handlers.ResetTokenHandler) *ResetTo
 }
 
 func (rtRouter *ResetTokenRouter) InitializeRouter(router *gin.Engine) {
-	router.POST("/reset-token", rtRouter.ResetTokenHandler.GetResetToken)
+	router.POST("/reset-token", rtRouter.ResetTokenHandler.ChangeUserPassword)
 	router.POST("reset-token/new", rtRouter.ResetTokenHandler.CreateResetToken)
 	router.DELETE("/reset-token/delete/:id", rtRouter.ResetTokenHandler.DeleteResetToken)
 }

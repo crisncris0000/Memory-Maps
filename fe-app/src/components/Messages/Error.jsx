@@ -6,9 +6,9 @@ export default function Error({errorMessage, error, setError}) {
         if(error === true) {
             setTimeout(() => {
                 setError(false);
-            }, 5000)
+            }, 3000)
         }
-    })
+    }, [error])
 
     return (
         <div>
