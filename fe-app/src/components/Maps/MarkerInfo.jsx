@@ -84,8 +84,7 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
   const [newComment, setNewComment] = useState('');
 
   const user = useSelector((state) => state.user.value);
-  console.log(user);
-
+  console.log(user)
   const handleClose = () => {
     setShow(false);
     setShowComments(false);
@@ -98,7 +97,13 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
       comment: newComment,
       likes: 0,
     }).then((response) => {
-      setComments((prevComments) => [...prevComments, response.data.comment]);
+      console.log(response.data);
+      setComments((prevComments) => 
+        [...prevComments, 
+          {firstName: user.firstName, 
+          lastName: user.lastName, 
+          comment: response.data.comment.comment}
+        ]);
     }).catch((error) => {
       console.log(error);
     })
