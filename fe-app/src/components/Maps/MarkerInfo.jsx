@@ -41,7 +41,7 @@ function MarkerPost({ show, setShow, markerPost, setShowComments }) {
     setLikes(likes + 1);
 
     if(likes % 5 === 0) {
-      axios.post(`http://localhost:8080/marker-posts/update/${markerPost.id}`, {
+      axios.put(`http://localhost:8080/marker-posts/update`, {
         id: markerPost.id,
         likes
       }).then((response) => {
