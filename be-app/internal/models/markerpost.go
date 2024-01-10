@@ -120,11 +120,9 @@ func (mModel *MarkerPostImpl) CreateMarkerPost(post MarkerPost) (int, error) {
 }
 
 func (mModel *MarkerPostImpl) UpdatePost(post MarkerPost) error {
-	query := `UPDATE MarkerPost SET latitude = ?, longitude = ?, image = ?, 
-	description = ?, likes = ?, visibility = ?, user_id = ?, created_at = ?, updated_at = ? WHERE id = ?`
+	query := `UPDATE MarkerPost SET likes = ? WHERE id = ?`
 
-	_, err := mModel.DB.Exec(query, post.Lattitude, post.Longitude, post.Description,
-		post.Likes, post.VisibilityID, post.UserID, post.CreatedAt, post.UpdatedAt, post.ID)
+	_, err := mModel.DB.Exec(query, post.Likes, post.ID)
 
 	if err != nil {
 		fmt.Println("Error updating post", err)

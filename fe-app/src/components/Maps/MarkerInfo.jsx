@@ -21,6 +21,7 @@ export default function MarkerInfo({ show, setShow, markerPost }) {
 function MarkerPost({ show, setShow, markerPost, setShowComments }) {
 
   const handleClose = () => setShow(false);
+  const [likes, setLikes] = useState(0);
 
   const [imagesInfo, setImagesInfo] = useState([]);
 
@@ -35,6 +36,21 @@ function MarkerPost({ show, setShow, markerPost, setShowComments }) {
         });
     }
   }, [show]);
+
+  const handleLikesClick = () => {
+    setLikes(likes + 1);
+
+    if(likes % 5 === 0) {
+      axios.post(`http://localhost:8080/marker-posts/update/${markerPost.id}`, {
+        id: markerPost.id,
+        likes
+      }).then((response) => {
+        console.log(response.data);
+      }).catch((error) => {
+        console.log(error);
+      })
+    }
+  }
 
   return (
     <>
@@ -64,7 +80,7 @@ function MarkerPost({ show, setShow, markerPost, setShowComments }) {
 
           <Modal.Footer>
             <div className="likes-comments">
-              <button className="likes" style={{backgroundColor: "transparent"}}>
+              <button className="likes" style={{backgroundColor: "transparent"}} onClick={handleLikesClick}>
                 <span role="img" aria-label="likes">👍</span> {markerPost.likes} Likes
               </button>
               <button className="comments" style={{backgroundColor: "transparent"}} onClick={() => setShowComments(true)}>
@@ -84,7 +100,7 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
   const [newComment, setNewComment] = useState('');
 
   const user = useSelector((state) => state.user.value);
-  console.log(user)
+
   const handleClose = () => {
     setShow(false);
     setShowComments(false);
@@ -100,9 +116,12 @@ function MarkerComments({ show, markerPost, setShow, setShowComments }) {
       console.log(response.data);
       setComments((prevComments) => 
         [...prevComments, 
-          {firstName: user.firstName, 
-          lastName: user.lastName, 
-          comment: response.data.comment.comment}
+          {
+            firstName: user.firstName, 
+            lastName: user.lastName, 
+            comment: response.data.comment.comment,
+            email: user.email
+          }
         ]);
     }).catch((error) => {
       console.log(error);
