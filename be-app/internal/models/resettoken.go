@@ -58,11 +58,10 @@ func (rt *ResetTokenImpl) CreateResetToken(resetToken ResetToken) error {
 	return nil
 }
 
-func (rt *ResetTokenImpl) DeleteResetTokenByID(id int) error {
-	query := `DELETE FROM ResetToken WHERE id = ?`
+func (rt *ResetTokenImpl) DeleteResetToken(token string) error {
+	query := `DELETE FROM ResetToken WHERE token = ?`
 
-	_, err := rt.DB.Exec(query, id)
-
+	_, err := rt.DB.Exec(query, token)
 	if err != nil {
 		fmt.Println("Error deleting from database", err)
 		return err

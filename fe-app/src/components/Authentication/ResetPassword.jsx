@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../../css/reset-password.css';
 import Error from '../Messages/Error';
+import { useNavigate } from 'react-router-dom';
 
 export default function ResetPassword() {
 
@@ -61,15 +62,27 @@ function VerifyToken({ email }) {
   const [token, setToken] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confrimPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if(confrimPassword !== newPassword) {
+      setErrorMessage("Passwords do not match")
+      setError(true);
+      return;
+    }
+
     axios.post("http://localhost:8080/reset-token", {
       email,
       password: newPassword,
       token,
     }).then((response) => {
       console.log(response.data);
+      navigate("/login");
     }).catch((error) => {
       console.log(error);
     })
@@ -84,12 +97,14 @@ function VerifyToken({ email }) {
           <input type="text" placeholder="Enter token" id="token" value={token} onChange={(e) => setToken(e.target.value)} required/>
 
           <label htmlFor="new-password">New password</label>
-          <input type="text" placeholder="Enter your new password" name="new-password" id="new-password" value={newPassword}
+          <input type="password" placeholder="Enter your new password" name="new-password" id="new-password" value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}/>
 
           <label htmlFor="confirm-password">Confirm password</label>
-          <input type="text" placeholder="Enter it again to confirm" name="confirm-password" id="confrim-password" value={confrimPassword}
+          <input type="password" placeholder="Enter it again to confirm" name="confirm-password" id="confrim-password" value={confrimPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}/>
+          
+          <Error error={error} setError={setError} errorMessage={errorMessage}/>
         </div>
         <button type="submit">Change Password</button>
       </form>

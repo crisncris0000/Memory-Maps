@@ -71,6 +71,15 @@ func (rt *ResetTokenHandler) ChangeUserPassword(context *gin.Context) {
 		return
 	}
 
+	err = rt.DB.DeleteResetToken(token)
+
+	if err != nil {
+		context.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error deleting token",
+			"error":   err,
+		})
+	}
+
 	context.JSON(http.StatusOK, gin.H{
 		"message": "Token retrieved",
 		"token":   token,
@@ -154,31 +163,5 @@ func (rt *ResetTokenHandler) CreateResetToken(context *gin.Context) {
 
 	context.JSON(http.StatusOK, gin.H{
 		"message": "Please check your email for the code",
-	})
-}
-
-func (rt *ResetTokenHandler) DeleteResetToken(context *gin.Context) {
-	param := context.Param("id")
-
-	id, err := strconv.Atoi(param)
-
-	if err != nil {
-		context.JSON(http.StatusNotAcceptable, gin.H{
-			"message": "Cannot convert param to integer",
-			"error":   err,
-		})
-	}
-
-	err = rt.DB.DeleteResetTokenByID(id)
-
-	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Error deleting Reset Token",
-			"error":   err,
-		})
-	}
-
-	context.JSON(http.StatusOK, gin.H{
-		"message": "Successfully removed token",
 	})
 }
