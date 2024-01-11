@@ -6,7 +6,7 @@ export default function Error({errorMessage, error, setError}) {
         if(error === true) {
             setTimeout(() => {
                 setError(false);
-            }, 3000)
+            }, 5000)
         }
     }, [error])
 

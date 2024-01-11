@@ -133,9 +133,27 @@ func (mModel *MarkerPostImpl) UpdatePost(post MarkerPost) error {
 }
 
 func (mModel *MarkerPostImpl) DeletePost(id int) error {
-	query := `DELETE FROM MarkerPost WHERE id = ?`
+	imageQuery := `DELETE FROM MarkerPostImage WHERE marker_id = ?`
 
-	_, err := mModel.DB.Exec(query, id)
+	_, err := mModel.DB.Exec(imageQuery, id)
+
+	if err != nil {
+		fmt.Println("Error deleting images", err)
+		return err
+	}
+
+	commentsQuery := `DELETE FROM Comments WHERE marker_id = ?`
+
+	_, err = mModel.DB.Exec(commentsQuery, id)
+
+	if err != nil {
+		fmt.Println("Error deleting comments", err)
+		return err
+	}
+
+	markerQuery := `DELETE FROM MarkerPost WHERE id = ?`
+
+	_, err = mModel.DB.Exec(markerQuery, id)
 
 	if err != nil {
 		fmt.Println("Error deleting post", err)

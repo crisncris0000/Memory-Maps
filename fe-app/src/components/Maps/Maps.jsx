@@ -17,8 +17,8 @@ export default function Maps() {
     const [showForm, setShowForm] = useState(false);
     const [showMarkerInfo, setShowMarkerInfo] = useState(false);
     const [selectedMarker, setSelectedMarker] = useState(null);
-    const [longitude, setLongitude] = useState(null);
-    const [latitude, setLatitude] = useState(null);
+    const [longitude, setLongitude] = useState(0);
+    const [latitude, setLatitude] = useState(0);
     const [markerPosts, setMarkerPosts] = useState([]);
 
     const handleOnRetrieve = (result) => {

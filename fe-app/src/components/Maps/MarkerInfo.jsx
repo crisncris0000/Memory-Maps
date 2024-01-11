@@ -25,6 +25,8 @@ function MarkerPost({ show, setShow, markerPost, setShowComments }) {
 
   const [imagesInfo, setImagesInfo] = useState([]);
 
+  const user = useSelector((state) => state.user.value);
+
   useEffect(() => {
     if (show) {
       axios.get(`http://localhost:8080/marker-post/images/${markerPost.id}`)
@@ -52,9 +54,18 @@ function MarkerPost({ show, setShow, markerPost, setShowComments }) {
     }
   }
 
+  const handleDeleteClick = () => {
+    axios.delete(`http://localhost:8080/marker-posts/delete/${markerPost.id}`)
+    .then((response) => {
+      console.log(response.data);
+    }).catch((error) => {
+      console.log(error);
+    })
+  }
+
   return (
     <>
-      {show &&
+      {show && (
         <Modal show={show} onHide={handleClose} animation={false} className="location-modal mx-auto" centered>
           <Modal.Header closeButton>
             <Modal.Title>Marker Details</Modal.Title>
@@ -71,28 +82,32 @@ function MarkerPost({ show, setShow, markerPost, setShowComments }) {
                 </Carousel.Item>
               ))}
             </Carousel>
-
+  
             <div className="description">
               <h2>Description</h2>
               <p>{markerPost.description}</p>
             </div>
           </Modal.Body>
-
+  
           <Modal.Footer>
             <div className="likes-comments">
-              <button className="likes" style={{backgroundColor: "transparent"}} onClick={handleLikesClick}>
+              <button className="likes" style={{ backgroundColor: "transparent" }} onClick={handleLikesClick}>
                 <span role="img" aria-label="likes">👍</span> {markerPost.likes} Likes
               </button>
-              <button className="comments" style={{backgroundColor: "transparent"}} onClick={() => setShowComments(true)}>
+              <button className="comments" style={{ backgroundColor: "transparent" }} onClick={() => setShowComments(true)}>
                 <span role="img" aria-label="comments">💬</span> {markerPost.comments} Comments
+              </button>
+
+              <button className="delete" style={{ backgroundColor: "transparent", color: "red" }} onClick={handleDeleteClick}>
+                {markerPost.userID === user.id ? <span role="img" aria-label="delete">🗑️ Delete</span> : null}
               </button>
             </div>
           </Modal.Footer>
         </Modal>
-      }
+      )}
     </>
   );
-}
+}  
 
 function MarkerComments({ show, markerPost, setShow, setShowComments }) {
 
