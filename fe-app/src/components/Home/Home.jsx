@@ -13,7 +13,6 @@ export default function Home() {
         </p>
 
         <Link to="/login" className="link">Get Started</Link>
-        <Link to="/maps" className="link">Map</Link>
       </div>
 
       <About />
