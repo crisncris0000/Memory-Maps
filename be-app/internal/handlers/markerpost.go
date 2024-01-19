@@ -25,7 +25,7 @@ type MarkerPostDTO struct {
 	Description  string                   `json:"description"`
 	ImageData    []models.MarkerPostImage `json:"imageData"`
 	VisibilityID int                      `json:"visibilityID"`
-	UserEmail    string                   `json:"userEmail"`
+	UserID       int                      `json:"userID"`
 	Likes        int                      `json:"likes"`
 }
 
@@ -64,8 +64,8 @@ func (mHandler *MarkerPostHandler) CreateMarkerPost(context *gin.Context) {
 		Longitude:    markerPostDTO.Longitude,
 		Description:  markerPostDTO.Description,
 		Likes:        markerPostDTO.Likes,
-		VisibilityID: 1,
-		UserID:       1,
+		VisibilityID: markerPostDTO.VisibilityID,
+		UserID:       markerPostDTO.UserID,
 	})
 
 	if err != nil {

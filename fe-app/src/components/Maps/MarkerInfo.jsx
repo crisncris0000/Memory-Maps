@@ -24,8 +24,11 @@ function MarkerPost({ show, setShow, markerPost, setShowComments }) {
   const [likes, setLikes] = useState(0);
 
   const [imagesInfo, setImagesInfo] = useState([]);
+  const [postCreatedBy, setPostCreatedBy] = useState(null);
 
   const user = useSelector((state) => state.user.value);
+
+  console.log(markerPost);
 
   useEffect(() => {
     if (show) {
@@ -36,6 +39,13 @@ function MarkerPost({ show, setShow, markerPost, setShowComments }) {
         .catch((error) => {
           console.log(error);
         });
+
+        axios.get(`http://localhost:8080/users/${markerPost.userID}`)
+        .then((response) => {
+          setPostCreatedBy(response.data.user);
+        }).catch((error) => {
+          console.log(error);
+        })
     }
   }, [show]);
 
@@ -68,7 +78,9 @@ function MarkerPost({ show, setShow, markerPost, setShowComments }) {
       {show && (
         <Modal show={show} onHide={handleClose} animation={false} className="location-modal mx-auto" centered>
           <Modal.Header closeButton>
-            <Modal.Title>Marker Details</Modal.Title>
+            <Modal.Title>
+              Post created by {postCreatedBy ? postCreatedBy.firstName + " " + postCreatedBy.lastName : null}
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Carousel>
@@ -102,6 +114,7 @@ function MarkerPost({ show, setShow, markerPost, setShowComments }) {
                 {markerPost.userID === user.id ? <span role="img" aria-label="delete">🗑️ Delete</span> : null}
               </button>
             </div>
+            {postCreatedBy.email}
           </Modal.Footer>
         </Modal>
       )}
