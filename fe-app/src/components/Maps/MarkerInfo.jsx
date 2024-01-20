@@ -28,8 +28,6 @@ function MarkerPost({ show, setShow, markerPost, setShowComments }) {
 
   const user = useSelector((state) => state.user.value);
 
-  console.log(markerPost);
-
   useEffect(() => {
     if (show) {
       axios.get(`http://localhost:8080/marker-post/images/${markerPost.id}`)
@@ -39,13 +37,6 @@ function MarkerPost({ show, setShow, markerPost, setShowComments }) {
         .catch((error) => {
           console.log(error);
         });
-
-        axios.get(`http://localhost:8080/users/${markerPost.userID}`)
-        .then((response) => {
-          setPostCreatedBy(response.data.user);
-        }).catch((error) => {
-          console.log(error);
-        })
     }
   }, [show]);
 
