@@ -114,7 +114,6 @@ function MarkerPost({ show, setShow, markerPost, setShowComments }) {
                 {markerPost.userID === user.id ? <span role="img" aria-label="delete">🗑️ Delete</span> : null}
               </button>
             </div>
-            {postCreatedBy.email}
           </Modal.Footer>
         </Modal>
       )}
